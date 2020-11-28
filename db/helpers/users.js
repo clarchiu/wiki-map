@@ -1,5 +1,4 @@
-/** Function getUserMapInfo obtains all of the information about a user's favorited
- * maps or maps they have contributed to.
+/** obtains all of the information about a user's favorited maps or maps they have contributed to.
  *
  * @param {*} db postgres database object
  * @param {*} user_id id of the user
@@ -23,10 +22,10 @@ const getUserMapInfo = (db, user_id) => {
     .then(res => res.rows);
 };
 
-/**
+/** obtains all of the user's favorited maps
  *
- * @param {*} db
- * @param {*} user_id
+ * @param {*} db postgres database object
+ * @param {*} user_id id of user
  */
 const getUserMapFavorites = (db, user_id) => {
   const query = `
@@ -46,10 +45,12 @@ const getUserMapFavorites = (db, user_id) => {
     .then(res => res.rows);
 };
 
-/**
+/** obtains the user's maps that they have contributed to via pin additions.
+ * Maps that have been contributed to but have had those contributions deleted
+ * will not be selected.
  *
- * @param {*} db
- * @param {*} user_id
+ * @param {*} db postgres database object
+ * @param {*} user_id id of the user
  */
 const getUserPinnedMaps = (db, user_id) => {
   const query = `
@@ -68,10 +69,10 @@ const getUserPinnedMaps = (db, user_id) => {
     .then(res => res.rows);
 };
 
-/**
+/** obtains the maps created by the user.
  *
- * @param {*} db
- * @param {*} user_id
+ * @param {*} db postgres database object
+ * @param {*} user_id id of the user
  */
 const getUserOwnedMaps = (db, user_id) => {
   const query = `
