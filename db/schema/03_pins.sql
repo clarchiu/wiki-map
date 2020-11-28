@@ -9,5 +9,5 @@ CREATE TABLE pins (
   img_url VARCHAR(255),
   latitude FLOAT NOT NULL,
   longitude FLOAT NOT NULL,
-  created_at TIMESTAMP DEFAULT NOW()
+  created_at TIMESTAMP NOT NULL DEFAULT NOW()
 );

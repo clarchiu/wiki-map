@@ -6,6 +6,6 @@ CREATE TABLE maps (
   name VARCHAR(255) NOT NULL,
   latitude FLOAT NOT NULL,
   longitude FLOAT NOT NULL,
-  created_by TIMESTAMP NOW(),
-  views BIGINT DEFAULT 0
+  created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+  views BIGINT NOT NULL DEFAULT 0
 );

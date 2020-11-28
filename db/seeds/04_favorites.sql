@@ -1,0 +1,2 @@
+INSERT INTO favorites () VALUES
+  (),
