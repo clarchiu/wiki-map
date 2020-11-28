@@ -37,9 +37,9 @@ const favorite = function($target, mid) {
   .then(res => {
     console.log(res.favorited); // debugging line
     if (res.favorited) {
-      $target.addClass('favorited');
+      $target.removeClass('unfavorited').addClass('favorited');
     } else {
-      $target.addClass('unfavorited');
+      $target.removeClass('favorited').addClass('unfavorited');
     }
   })
   .catch(err => {
