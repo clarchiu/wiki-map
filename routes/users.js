@@ -21,5 +21,37 @@ module.exports = (db) => {
           .json({ error: err.message });
       });
   });
+
+  router.get("/:id", (req, res) => {
+    db.getUserMapInfo(req.params.id)
+      .then(data => {
+        res.render('user.ejs', { data });
+      })
+      .catch(err => {
+        res
+          .status(500)
+          .render('error.ejs', { status: 500, msg: err.message });
+      });
+  });
+
+  router.post("/:id/favorite", (req, res) => {
+    if (!req.session.user_id || req.session.user_id !== req.params.id) {
+      return res.status(401).render('error.ejs', { status: 401, msg: 'unauthorized access' });
+    }
+    db.updateFavorite(req.params.id,req.body.id)
+      .then(isFav => res.json(isFav))
+      .catch(err => {
+        res
+          .status(500)
+          .render('error.ejs', { status: 500, msg: err.message });
+      });
+  });
+
+  router.post("/login/:id", (req, res) => {
+    req.session.user_id = req.params.id;
+    res.redirect('/');
+  });
+
+
   return router;
 };
