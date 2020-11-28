@@ -24,7 +24,7 @@ module.exports = (db) => {
 
   // GET /:id, used for getting a user's profile
   router.get("/:id", (req, res) => {
-    db.getUserMapInfo(req.params.id)
+    getUserMapInfo(db, req.params.id)
       .then(data => {
         res.render('user.ejs', { data });
       })
@@ -40,7 +40,7 @@ module.exports = (db) => {
     if (!req.session.user_id || req.session.user_id !== req.params.id) {
       return res.status(401).render('error.ejs', { status: 401, msg: 'unauthorized access' });
     }
-    db.updateFavorite(req.params.id,req.body.id)
+    updateFavorite(db, req.params.id,req.body.id)
       .then(isFav => res.json(isFav))
       .catch(err => {
         res
