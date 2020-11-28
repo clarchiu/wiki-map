@@ -7,6 +7,7 @@
 
 const express = require('express');
 const router  = express.Router();
+const { getUserMapInfo, updateFavorite } = require('../db/helpers/users');
 
 module.exports = (db) => {
   router.get("/", (req, res) => {
