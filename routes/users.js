@@ -23,7 +23,7 @@ module.exports = (db) => {
       });
   });
 
-  router.get("/me", () => {
+  router.get("/me", (req, res) => {
     if (!req.session.user_id) {
       return res.status(400).render('error.ejs', { status: 401, msg: 'Please log in to see your profile' });
     }
