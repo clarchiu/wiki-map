@@ -8,6 +8,8 @@
 const express = require('express');
 const router  = express.Router();
 
+const { getAllMaps, getMapById } = require('../db/helpers/maps-get.js');
+
 const checkUserAuthenticated = (req, onFalse, onTrue) => {
   return req.session.isAuthenticated;
 }
@@ -19,7 +21,8 @@ module.exports = (db) => {
     //render index.html
     getAllMaps(db)
       .then (maps => {
-        res.render("maps_index", { maps });
+        res.send(maps);
+        //res.render("maps_index", { maps });
       })
       .catch (err => {
         res
@@ -45,12 +48,14 @@ module.exports = (db) => {
     // including all pins and data
     getMapById(db, req.params.map_id)
       .then(map => {
-        res.render("map_show", map);
+        res.send(map);
+        //res.render("map_show", map);
       })
       .catch(err => {
         res
           .status(400)
-          .render("error", { status: 400, msg: err.msg });
+          .error({ status: 400, msg: err.msg })
+          //.render("error", { status: 400, msg: err.msg });
       });
   });
 
