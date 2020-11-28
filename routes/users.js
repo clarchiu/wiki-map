@@ -23,6 +23,13 @@ module.exports = (db) => {
       });
   });
 
+  router.get("/me", () => {
+    if (!req.session.user_id) {
+      return res.status(400).render('error.ejs', { status: 401, msg: 'Please log in to see your profile' });
+    }
+    res.redirect(`/users/${req.session.user_id}`);
+  });
+
   // GET /:id, used for getting a user's profile
   router.get("/:id", (req, res) => {
     getUserMapInfo(db, req.params.id)
