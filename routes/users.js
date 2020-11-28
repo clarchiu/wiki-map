@@ -50,8 +50,8 @@ module.exports = (db) => {
       });
   });
 
-  // POST /login/:id, used for logging into a user account. Purely for testing.
-  router.post("/login/:id", (req, res) => {
+  // GET /login/:id, used for logging into a user account. Purely for testing.
+  router.get("/login/:id", (req, res) => {
     req.session.user_id = req.params.id;
     res.redirect('/');
   });

@@ -32,7 +32,7 @@ const favorite = function($target, mid) {
   }
   return $.ajax({
     method: 'post',
-    route: `users/${mid}/favorite`,
+    url: `/users/${mid}/favorite`,
   })
   .then(res => {
     console.log(res.favorited); // debugging line
