@@ -27,7 +27,7 @@ module.exports = (db) => {
   router.get("/:id", (req, res) => {
     getUserMapInfo(db, req.params.id)
       .then(data => {
-        res.render('user.ejs', { data });
+        res.render('user.ejs', { maps: data });
       })
       .catch(err => {
         res
