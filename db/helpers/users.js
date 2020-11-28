@@ -1,7 +1,8 @@
-/**
+/** Function getUserMapInfo obtains all of the information about a user's favorited
+ * maps or maps they have contributed to.
  *
- * @param {*} db
- * @param {*} user_id
+ * @param {*} db postgres database object
+ * @param {*} user_id id of the user
  */
 const getUserMapInfo = (db, user_id) => {
   const query = `
@@ -22,11 +23,12 @@ const getUserMapInfo = (db, user_id) => {
     .then(res => res.rows);
 };
 
-/** updateFavorite uses a user id and a map id to insert or update a favorites row,
+/** updateFavorite uses a user id and a map id to insert or update a favorites row.
+ * The favorites row will be updated if it exists, otherwise it will be inserted.
  *
- * @param {*} db
- * @param {*} user_id
- * @param {*} map_id
+ * @param {*} db postgres database object
+ * @param {*} user_id id of the user
+ * @param {*} map_id id of the map
  */
 const updateFavorite = (db,user_id,map_id) => {
   const query = `
