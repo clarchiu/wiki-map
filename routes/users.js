@@ -38,10 +38,10 @@ module.exports = (db) => {
 
   // POST /:id/favorite, used for added/removing a map from a user's favorites list
   router.post("/:id/favorite", (req, res) => {
-    if (!req.session.user_id || req.session.user_id !== req.params.id) {
+    if (!req.session.user_id || !res.params.id) {
       return res.status(401).render('error.ejs', { status: 401, msg: 'unauthorized access' });
     }
-    updateFavorite(db, req.params.id,req.body.id)
+    updateFavorite(db, req.session.user_id,req.params.id)
       .then(isFav => res.json(isFav))
       .catch(err => {
         res
@@ -50,8 +50,8 @@ module.exports = (db) => {
       });
   });
 
-  // POST /login/:id, used for logging into a user account. Purely for testing.
-  router.post("/login/:id", (req, res) => {
+  // GET /login/:id, used for logging into a user account. Purely for testing.
+  router.get("/login/:id", (req, res) => {
     req.session.user_id = req.params.id;
     res.redirect('/');
   });

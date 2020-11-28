@@ -61,7 +61,7 @@
 ## /users
 ### GET /users/:user_id
 * Show user favorites and contributions
-### POST /user/:user_id/favorites
+### POST /user/:map_id/favorites
 * Add/remove a favorited map, based on if it is already favorited or not. (only if authorized)
 
 ## users/login
