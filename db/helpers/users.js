@@ -23,6 +23,51 @@ const getUserMapInfo = (db, user_id) => {
     .then(res => res.rows);
 };
 
+/**
+ *
+ * @param {*} db
+ * @param {*} user_id
+ */
+const getUserMapFavorites = (db, user_id) => {
+  const query = `
+  SELECT DISTINCT creator, maps.name, maps.latitude, maps.longitude, maps.views
+  FROM users
+  JOIN favorites ON users.id=favorites.user_id
+  JOIN maps ON favorites.map_id=maps.id
+  JOIN (
+    SELECT users.id AS id, users.name AS owner FROM
+    users JOIN maps ON users.id=maps.owner_id
+  ) AS creator ON maps.owner_id=owners.id
+  WHERE users.id = $1
+  AND favorited
+  ORDER BY maps.views DESC;
+  `;
+  return db.query(query,[ user_id ])
+    .then(res => res.rows);
+};
+
+/**
+ *
+ * @param {*} db
+ * @param {*} user_id
+ */
+const getUserPinnedMaps = (db, user_id) => {
+  const query = `
+  SELECT DISTINCT creator, maps.name, maps.latitude, maps.longitude, maps.views
+  FROM users
+  JOIN pins ON users.id=pins.user_id
+  JOIN maps ON pins.map_id=maps.id
+  JOIN (
+    SELECT users.id AS id, users.name AS owner FROM
+    users JOIN maps ON users.id=maps.owner_id
+  ) AS creator ON maps.owner_id=owners.id
+  WHERE users.id = $1
+  ORDER BY maps.views DESC;
+  `;
+  return db.query(query,[ user_id ])
+    .then(res => res.rows);
+};
+
 /** updateFavorite uses a user id and a map id to insert or update a favorites row.
  * The favorites row will be updated if it exists, otherwise it will be inserted.
  *
@@ -50,5 +95,7 @@ const updateFavorite = (db,user_id,map_id) => {
 
 module.exports = {
   getUserMapInfo,
-  updateFavorite
+  getUserMapFavorites,
+  getUserPinnedMaps,
+  updateFavorite,
 };
