@@ -20,23 +20,22 @@ const createError = function(msg) {
 }
 
 /** favorites a specific element, and updates their status to the database using
- * its mid and the user's uid.
+ * its mid and the current user's login cookie.
  *
  * @param {*} $target the element to change
- * @param {*} uid the user's id
  * @param {*} mid the map's id
  * @returns a promise, containing either an error or undefined
  */
-const favorite = function($target, uid, mid) {
-  if (!uid || !mid) {
+const favorite = function($target, mid) {
+  if (!mid) {
   return Promise.resolve(createError('Please log in to favorite a map'));
   }
   return $.ajax({
     method: 'post',
-    route: `users/${uid}/favorite?id=${mid}`,
+    route: `users/${mid}/favorite`,
   })
   .then(res => {
-    console.log(res.favorited);
+    console.log(res.favorited); // debugging line
     if (res.favorited) {
       $target.addClass('favorited');
     } else {
