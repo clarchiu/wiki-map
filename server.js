@@ -6,6 +6,7 @@ const PORT       = process.env.PORT || 8080;
 const ENV        = process.env.ENV || "development";
 const express    = require("express");
 const bodyParser = require("body-parser");
+const cookieSession = require('cookie-session');
 const sass       = require("node-sass-middleware");
 const app        = express();
 const morgan     = require('morgan');
@@ -22,6 +23,10 @@ db.connect();
 app.use(morgan('dev'));
 
 app.set("view engine", "ejs");
+app.use(cookieSession({
+  session: 'session',
+  keys: ["one","two"],
+}));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/styles", sass({
   src: __dirname + "/styles",
