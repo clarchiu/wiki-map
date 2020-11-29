@@ -29,14 +29,14 @@ const getUserMapInfo = (db, user_id) => {
  */
 const getUserMapFavorites = (db, user_id) => {
   const query = `
-  SELECT DISTINCT creators.id, creators.name, maps.id, maps.name, maps.latitude, maps.longitude, maps.created_at, maps.views
+  SELECT DISTINCT creator_id, creator_name, maps.id, maps.name, maps.latitude, maps.longitude, maps.created_at, maps.views
   FROM users
   JOIN favorites ON users.id=favorites.user_id
   JOIN maps ON favorites.map_id=maps.id
   JOIN (
-    SELECT users.id AS id, users.name AS name FROM
+    SELECT users.id AS creator_id, users.name AS creator_name FROM
     users JOIN maps ON users.id=maps.owner_id
-  ) AS creators ON maps.owner_id=creators.id
+  ) AS creators ON maps.owner_id=creator_id
   WHERE users.id = $1
   AND favorited
   ORDER BY maps.views DESC;
@@ -54,14 +54,14 @@ const getUserMapFavorites = (db, user_id) => {
  */
 const getUserPinnedMaps = (db, user_id) => {
   const query = `
-  SELECT DISTINCT creators.id, creators.name, maps.id, maps.name, maps.latitude, maps.longitude, maps.created_at, maps.views
+  SELECT DISTINCT creator_id, creator_name, maps.id, maps.name, maps.latitude, maps.longitude, maps.created_at, maps.views
   FROM users
   JOIN pins ON users.id=pins.user_id
   JOIN maps ON pins.map_id=maps.id
   JOIN (
-    SELECT users.id AS id, users.name AS name FROM
+    SELECT users.id AS creator_id, users.name AS creator_name FROM
     users JOIN maps ON users.id=maps.owner_id
-  ) AS creators ON maps.owner_id=creators.id
+  ) AS creators ON maps.owner_id=creator_id
   WHERE users.id = $1
   ORDER BY maps.views DESC;
   `;

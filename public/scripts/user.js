@@ -1,9 +1,10 @@
 $( function() {
+
   const formatMapData = function(mapData) {
     const $map = $(`
     <tr>
-      <td><%= map.creator %></td>
-      <td><a href="/maps/${mapData.id}">${mapData.map_name}</a></td>
+      <td>${mapData.creator_name}</td>
+      <td><a href="/maps/${mapData.id}">${mapData.name}</a></td>
       <td>${mapData.latitude}, ${mapData.longitude}</td>
       <td>${mapData.created_at}</td>
       <td>${mapData.views}</td>
@@ -15,7 +16,6 @@ $( function() {
 
   const renderRequest = function($target, promise) {
     return promise.then(maps => {
-      console.log(maps);
       for (const map of maps) {
         let $map = formatMapData(map);
         $target.append($map);
@@ -33,6 +33,6 @@ $( function() {
       });
   }
 
-  loadMapData($('favorites'),window.location.pathname + 'favorites');
-  console.log(window.location.pathname + '/favorites');
+  loadMapData($('#favorites'), window.location.pathname + '/favorites');
+  loadMapData($('#contributions'), window.location.pathname + '/contributions');
 });

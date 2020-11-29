@@ -48,7 +48,17 @@ module.exports = (db) => {
       })
       .catch(err => {
         res.json(err);
+      });
+  });
+
+  router.get("/:id/contributions", (req, res) => {
+    getUserPinnedMaps(db, req.params.id)
+      .then(data => {
+        res.json(data);
       })
+      .catch(err => {
+        res.json(err);
+      });
   });
 
   // POST /:id/favorite, used for added/removing a map from a user's favorites list
