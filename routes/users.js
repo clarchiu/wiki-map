@@ -7,7 +7,13 @@
 
 const express = require('express');
 const router  = express.Router();
-const { getUserMapInfo, updateFavorite } = require('../db/helpers/users');
+const {
+  getUserMapInfo,
+  getUserMapFavorites,
+  getUserPinnedMaps,
+  getUserOwnedMaps,
+  updateFavorite,
+} = require('../db/helpers/users');
 
 module.exports = (db) => {
   router.get("/", (req, res) => {
@@ -32,15 +38,17 @@ module.exports = (db) => {
 
   // GET /:id, used for getting a user's profile
   router.get("/:id", (req, res) => {
-    getUserMapInfo(db, req.params.id)
+    res.render('user.ejs');
+  });
+
+  router.get("/:id/favorites", (req, res) => {
+    getUserMapFavorites(db, req.params.id)
       .then(data => {
-        res.render('user.ejs', { maps: data });
+        res.json(data);
       })
       .catch(err => {
-        res
-          .status(500)
-          .render('error.ejs', { status: 500, msg: err.message });
-      });
+        res.json(err);
+      })
   });
 
   // POST /:id/favorite, used for added/removing a map from a user's favorites list

@@ -21,28 +21,9 @@
 
   <body>
     <main>
-      <section class="maps">
-        <table>
-          <thead>
-            <th>Owner</th>
-            <th>Map Name</th>
-            <th>Coordinates</th>
-            <th>Date created</th>
-            <th>Views</th>
-          </thead>
-          <tbody>
-            <% for (const map of maps) { %>
-              <tr>
-                <td><%= map.owner %></td>
-                <td><%= map.map_name %></td>
-                <td><%= map.latitude %>, <%= map.longitude %></td>
-                <td><%= map.created_at %></td>
-                <td><%= map.views %></td>
-              </tr>
-            <% } %>
-          </tbody>
-        </table>
-      </section>
+      <table id="favorites" class="maps">
+
+      </table>
     </main>
   </body>
 </html>
