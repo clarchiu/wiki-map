@@ -31,7 +31,7 @@ module.exports = (db) => {
 
   router.get("/me", (req, res) => {
     if (!req.session.user_id) {
-      return res.status(400).render('error.ejs', { status: 400, msg: 'Please log in to see your profile' });
+      return res.status(400).render('error.ejs', { status: 400, msg: 'please log in to see your profile' });
     }
     res.redirect(`/users/${req.session.user_id}`);
   });
@@ -43,7 +43,7 @@ module.exports = (db) => {
   });
 
   router.get("/logout", (req, res) => {
-    req.session = {};
+    req.session = null;
     res.redirect('/');
   });
 
