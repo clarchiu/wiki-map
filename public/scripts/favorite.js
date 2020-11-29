@@ -28,12 +28,15 @@ $( function() {
   $('.maps').on('submit', (event) => {
     event.preventDefault();
 
-    const $favBtn = $(event.target);
-    const url = $favBtn.attr('action');
-    $favBtn.addClass('loading');
+    const $form = $(event.target);
+    const url = $form.attr('action');
 
-    favorite($favBtn, url)
-      .then(() => $favBtn.removeClass('loading'));
+    if (!url) return $form.insertBefore(createError('url not found'));
+
+    $form.addClass('loading');
+
+    favorite($form, url)
+      .then(() => $form.removeClass('loading'));
   });
 
 });
