@@ -37,12 +37,12 @@ const formatMapData = function(mapData, userFav) {
 
 const renderRequest = function($target, promise) {
   return promise.then(maps => {
+    if ( !maps[0] ) return $target.append('<span>Nothing to see here...</span>');
     return $.ajax({
       method: 'get',
       url: '/users/me/favorites',
     })
     .then((favs) => {
-      if ( !maps[0] ) return $target.append('<span>Nothing to see here...</span>');
       let userFav = {};
       for (const fav of favs) {
         userFav[fav.map_id] = fav.favorited;
