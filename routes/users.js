@@ -63,7 +63,7 @@ module.exports = (db) => {
 
   // POST /:id/favorite, used for added/removing a map from a user's favorites list
   router.post("/:id/favorite", (req, res) => {
-    if (!req.session.user_id || !res.params.id) {
+    if (!req.session.user_id || !req.params.id) {
       return res.status(401).render('error.ejs', { status: 401, msg: 'unauthorized access' });
     }
     updateFavorite(db, req.session.user_id,req.params.id)
