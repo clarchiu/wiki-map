@@ -2,8 +2,16 @@
  * Get all map data from db and return as Promise
  * @param {*} db
  */
-const getAllMaps = (db) => {
-  return db.query(`SELECT * FROM maps`)
+const getAllMaps = (db, uid) => {
+  return db.query(`
+  SELECT maps.*, favorited
+  FROM maps
+  LEFT JOIN (
+    SELECT *
+    FROM favorites
+    WHERE favorites.user_id = $1
+  ) as user_favorites ON maps.id = user_favorites.map_id
+  `, [uid])
     .then((res) => {
       return res.rows;
     })

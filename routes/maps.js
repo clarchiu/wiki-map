@@ -19,7 +19,7 @@ module.exports = (db) => {
   router.get("/", (req, res) => {
     //query database to show all maps
     //render index.html
-    getAllMaps(db)
+    getAllMaps(db, req.session.user_id)
       .then (maps => {
         res.send(maps);
         //res.render("maps_index", { maps });
