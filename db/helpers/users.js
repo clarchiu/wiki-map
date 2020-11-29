@@ -29,7 +29,7 @@ const getUserMapInfo = (db, user_id) => {
  */
 const getUserMapFavorites = (db, user_id) => {
   const query = `
-  SELECT DISTINCT creator_id, creator_name, maps.id, maps.name, maps.latitude, maps.longitude, maps.created_at, maps.views
+  SELECT DISTINCT creator_id, creator_name, maps.id, maps.name, maps.latitude, maps.longitude, maps.created_at, maps.views, favorited
   FROM users
   JOIN favorites ON users.id=favorites.user_id
   JOIN maps ON favorites.map_id=maps.id
@@ -54,10 +54,11 @@ const getUserMapFavorites = (db, user_id) => {
  */
 const getUserPinnedMaps = (db, user_id) => {
   const query = `
-  SELECT DISTINCT creator_id, creator_name, maps.id, maps.name, maps.latitude, maps.longitude, maps.created_at, maps.views
+  SELECT DISTINCT creator_id, creator_name, maps.id, maps.name, maps.latitude, maps.longitude, maps.created_at, maps.views, favorited
   FROM users
   JOIN pins ON users.id=pins.user_id
   JOIN maps ON pins.map_id=maps.id
+  LEFT OUTER JOIN favorites ON maps.id=favorites.map_id AND pins.user_id=favorites.user_id
   JOIN (
     SELECT users.id AS creator_id, users.name AS creator_name FROM
     users JOIN maps ON users.id=maps.owner_id

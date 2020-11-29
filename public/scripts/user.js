@@ -1,6 +1,7 @@
 $( function() {
 
   const formatMapData = function(mapData) {
+    console.log(mapData.favorited);
     const $map = $(`
     <tr>
       <td>${mapData.creator_name}</td>
@@ -8,7 +9,9 @@ $( function() {
       <td>${mapData.latitude}, ${mapData.longitude}</td>
       <td>${mapData.created_at}</td>
       <td>${mapData.views}</td>
-      <td><form action="/users/${mapData.id}/favorite"><button><i class="fas fa-heart"></i></button></form></td>
+      <td><form class="${mapData.favorited ? "favorited" : "unfavorited"}" action="/users/${mapData.id}/favorite">
+            <button><i class="fas fa-heart"></i></button>
+      </form></td>
     </tr>
     `);
     return $map;
