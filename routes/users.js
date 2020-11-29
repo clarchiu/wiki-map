@@ -8,8 +8,8 @@
 const express = require('express');
 const router  = express.Router();
 const {
-  getUserMapInfo,
   getUserMapFavorites,
+  getUserFavorites,
   getUserPinnedMaps,
   getUserOwnedMaps,
   updateFavorite,
@@ -31,9 +31,33 @@ module.exports = (db) => {
 
   router.get("/me", (req, res) => {
     if (!req.session.user_id) {
-      return res.status(400).render('error.ejs', { status: 400, msg: 'Please log in to see your profile' });
+      return res.status(400).render('error.ejs', { status: 400, msg: 'please log in to see your profile' });
     }
     res.redirect(`/users/${req.session.user_id}`);
+  });
+
+  router.get("/me/favorites", (req, res) => {
+    if (!req.session.user_id) {
+      return res.json([{}]);
+    }
+    getUserFavorites(db, req.session.user_id)
+      .then(data => {
+        res.json(data);
+      })
+      .catch(err => {
+        res.json(err);
+      });
+  });
+
+  // GET /login/:id, used for logging into a user account. Purely for testing.
+  router.get("/login/:id", (req, res) => {
+    req.session.user_id = req.params.id;
+    res.redirect('/');
+  });
+
+  router.get("/logout", (req, res) => {
+    req.session = null;
+    res.redirect('/');
   });
 
   // GET /:id, used for getting a user's profile
@@ -64,7 +88,7 @@ module.exports = (db) => {
   // POST /:id/favorite, used for added/removing a map from a user's favorites list
   router.post("/:id/favorite", (req, res) => {
     if (!req.session.user_id || !req.params.id) {
-      return res.status(401).render('error.ejs', { status: 401, msg: 'unauthorized access' });
+      return res.status(401).json({ status: 401, msg: 'please log in to add maps to your favorites' });
     }
     updateFavorite(db, req.session.user_id,req.params.id)
       .then(isFav => res.json(isFav))
@@ -74,13 +98,6 @@ module.exports = (db) => {
           .render('error.ejs', { status: 500, msg: err.message });
       });
   });
-
-  // GET /login/:id, used for logging into a user account. Purely for testing.
-  router.get("/login/:id", (req, res) => {
-    req.session.user_id = req.params.id;
-    res.redirect('/');
-  });
-
 
   return router;
 };
