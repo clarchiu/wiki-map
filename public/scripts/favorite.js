@@ -20,7 +20,7 @@ $( function() {
       }
     })
     .catch(err => {
-      return createError(err.message);
+      return createError(err.responseJSON.msg);
     });
   };
 
@@ -35,7 +35,13 @@ $( function() {
     $form.addClass('loading');
 
     favorite($form, url)
-      .then(() => $form.removeClass('loading'));
+      .then((err) => {
+        $form.removeClass('loading');
+        if (err) {
+          $('.err').remove();
+          $form.append(err);
+        }
+      });
   });
 
 });

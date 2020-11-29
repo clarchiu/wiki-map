@@ -95,7 +95,7 @@ const getUserOwnedMaps = (db, user_id) => {
  * @param {*} map_id id of the map
  */
 const updateFavorite = (db,user_id,map_id) => {
-  const query = `
+  let query = `
   UPDATE favorites SET favorited = NOT favorited
   WHERE favorites.user_id = $1
   AND favorites.map_id = $2
@@ -104,7 +104,7 @@ const updateFavorite = (db,user_id,map_id) => {
   return db.query(query,[user_id, map_id])
     .then(res => {
       if (!res.rows[0]) {
-        query = `INSERT INTO favorites (user_id, map_id) VALUES ($1, $2)
+        query = `INSERT INTO favorites (user_id, map_id, favorited) VALUES ($1, $2, true)
         RETURNING favorited;`;
         return db.query(query,[user_id, map_id]).then(res => res.rows[0]);
       }

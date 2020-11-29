@@ -36,6 +36,17 @@ module.exports = (db) => {
     res.redirect(`/users/${req.session.user_id}`);
   });
 
+  // GET /login/:id, used for logging into a user account. Purely for testing.
+  router.get("/login/:id", (req, res) => {
+    req.session.user_id = req.params.id;
+    res.redirect('/');
+  });
+
+  router.get("/logout", (req, res) => {
+    req.session = {};
+    res.redirect('/');
+  });
+
   // GET /:id, used for getting a user's profile
   router.get("/:id", (req, res) => {
     res.render('user.ejs');
@@ -64,7 +75,7 @@ module.exports = (db) => {
   // POST /:id/favorite, used for added/removing a map from a user's favorites list
   router.post("/:id/favorite", (req, res) => {
     if (!req.session.user_id || !req.params.id) {
-      return res.status(401).render('error.ejs', { status: 401, msg: 'unauthorized access' });
+      return res.status(401).json({ status: 401, msg: 'please log in to add maps to your favorites' });
     }
     updateFavorite(db, req.session.user_id,req.params.id)
       .then(isFav => res.json(isFav))
@@ -74,13 +85,6 @@ module.exports = (db) => {
           .render('error.ejs', { status: 500, msg: err.message });
       });
   });
-
-  // GET /login/:id, used for logging into a user account. Purely for testing.
-  router.get("/login/:id", (req, res) => {
-    req.session.user_id = req.params.id;
-    res.redirect('/');
-  });
-
 
   return router;
 };
