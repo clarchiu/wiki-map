@@ -7,7 +7,13 @@
 
 const express = require('express');
 const router  = express.Router();
-const { getUserMapInfo, updateFavorite } = require('../db/helpers/users');
+const {
+  getUserMapInfo,
+  getUserMapFavorites,
+  getUserPinnedMaps,
+  getUserOwnedMaps,
+  updateFavorite,
+} = require('../db/helpers/users');
 
 module.exports = (db) => {
   router.get("/", (req, res) => {
@@ -23,16 +29,35 @@ module.exports = (db) => {
       });
   });
 
+  router.get("/me", (req, res) => {
+    if (!req.session.user_id) {
+      return res.status(400).render('error.ejs', { status: 400, msg: 'Please log in to see your profile' });
+    }
+    res.redirect(`/users/${req.session.user_id}`);
+  });
+
   // GET /:id, used for getting a user's profile
   router.get("/:id", (req, res) => {
-    getUserMapInfo(db, req.params.id)
+    res.render('user.ejs');
+  });
+
+  router.get("/:id/favorites", (req, res) => {
+    getUserMapFavorites(db, req.params.id)
       .then(data => {
-        res.render('user.ejs', { data });
+        res.json(data);
       })
       .catch(err => {
-        res
-          .status(500)
-          .render('error.ejs', { status: 500, msg: err.message });
+        res.json(err);
+      });
+  });
+
+  router.get("/:id/contributions", (req, res) => {
+    getUserPinnedMaps(db, req.params.id)
+      .then(data => {
+        res.json(data);
+      })
+      .catch(err => {
+        res.json(err);
       });
   });
 
