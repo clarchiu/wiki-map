@@ -1,27 +1,3 @@
-/** obtains all of the information about a user's favorited maps or maps they have contributed to.
- *
- * @param {*} db postgres database object
- * @param {*} user_id id of the user
- */
-const getUserMapInfo = (db, user_id) => {
-  const query = `
-  SELECT DISTINCT owners.id, owner, maps.name AS map_name, maps.latitude, maps.longitude, maps.created_at, maps.views
-  FROM users
-  LEFT OUTER JOIN favorites ON users.id=favorites.user_id
-  LEFT OUTER JOIN pins ON users.id=pins.user_id
-  LEFT OUTER JOIN maps ON (favorites.map_id=maps.id OR pins.map_id=maps.id)
-  JOIN (
-    SELECT users.id AS id, users.name AS owner FROM
-    users JOIN maps ON users.id=maps.owner_id
-  ) AS owners ON maps.owner_id=owners.id
-  WHERE users.id = $1
-  AND (favorites.favorited OR (pins.id IS NOT NULL AND favorites.favorited IS NULL))
-  ORDER BY maps.views DESC;
-  `;
-  return db.query(query,[ user_id ])
-    .then(res => res.rows);
-};
-
 /** obtains all of the user's favorited maps
  *
  * @param {*} db postgres database object
@@ -126,7 +102,6 @@ const updateFavorite = (db,user_id,map_id) => {
 };
 
 module.exports = {
-  getUserMapInfo,
   getUserMapFavorites,
   getUserFavorites,
   getUserPinnedMaps,
