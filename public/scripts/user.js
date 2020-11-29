@@ -8,7 +8,7 @@ $( function() {
       <td>${mapData.latitude}, ${mapData.longitude}</td>
       <td>${mapData.created_at}</td>
       <td>${mapData.views}</td>
-      <td><i class="fas fa-heart"></i></td>
+      <td><form action="/users/${mapData.id}/favorite"><button><i class="fas fa-heart"></i></button></form></td>
     </tr>
     `);
     return $map;
@@ -29,7 +29,7 @@ $( function() {
         url: url,
       }))
       .catch(err => {
-        $target.append(err.message);
+        $target.append(createError(err.message));
       });
   }
 
