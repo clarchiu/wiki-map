@@ -1,7 +1,6 @@
 $( function() {
 
   const formatMapData = function(mapData) {
-    console.log(mapData.favorited);
     const $map = $(`
     <tr>
       <td>${mapData.creator_name}</td>
@@ -19,6 +18,7 @@ $( function() {
 
   const renderRequest = function($target, promise) {
     return promise.then(maps => {
+      if ( !maps[0] ) return $target.append('<span>Nothing to see here...</span>');
       for (const map of maps) {
         let $map = formatMapData(map);
         $target.append($map);
