@@ -19,7 +19,7 @@ const createError = function(msg) {
   return $err;
 }
 
-const formatMapData = function(mapData) {
+const formatMapData = function(mapData, userFav) {
   const $map = $(`
   <tr>
     <td>${mapData.creator_name}</td>
@@ -27,7 +27,7 @@ const formatMapData = function(mapData) {
     <td>${mapData.latitude}, ${mapData.longitude}</td>
     <td>${mapData.created_at}</td>
     <td>${mapData.views}</td>
-    <td><form class="${mapData.favorited ? "favorited" : "unfavorited"}" action="/users/${mapData.id}/favorite">
+    <td><form class="${userFav[mapData.id] ? "favorited" : "unfavorited"}" action="/users/${mapData.id}/favorite">
           <button><i class="fas fa-heart"></i></button>
     </form></td>
   </tr>
@@ -37,11 +37,21 @@ const formatMapData = function(mapData) {
 
 const renderRequest = function($target, promise) {
   return promise.then(maps => {
-    if ( !maps[0] ) return $target.append('<span>Nothing to see here...</span>');
-    for (const map of maps) {
-      let $map = formatMapData(map);
-      $target.append($map);
-    }
+    return $.ajax({
+      method: 'get',
+      url: '/users/me/favorites',
+    })
+    .then((favs) => {
+      if ( !maps[0] ) return $target.append('<span>Nothing to see here...</span>');
+      let userFav = {};
+      for (const fav of favs) {
+        userFav[fav.map_id] = fav.favorited;
+      }
+      for (const map of maps) {
+        let $map = formatMapData(map, userFav);
+        $target.append($map);
+      }
+    });
   });
 }
 

@@ -29,7 +29,7 @@ const getUserMapInfo = (db, user_id) => {
  */
 const getUserMapFavorites = (db, user_id) => {
   const query = `
-  SELECT DISTINCT creator_id, creator_name, maps.id, maps.name, maps.latitude, maps.longitude, maps.created_at, maps.views, favorited
+  SELECT DISTINCT creator_id, creator_name, maps.id, maps.name, maps.latitude, maps.longitude, maps.created_at, maps.views
   FROM users
   JOIN favorites ON users.id=favorites.user_id
   JOIN maps ON favorites.map_id=maps.id
@@ -45,6 +45,19 @@ const getUserMapFavorites = (db, user_id) => {
     .then(res => res.rows);
 };
 
+const getUserFavorites = (db, user_id) => {
+  const query = `
+  SELECT DISTINCT map_id, favorited
+  FROM users
+  JOIN favorites ON users.id=favorites.user_id
+  WHERE users.id = $1
+  AND favorited
+  ORDER BY map_id;
+  `;
+  return db.query(query,[ user_id ])
+    .then(res => res.rows);
+};
+
 /** obtains the user's maps that they have contributed to via pin additions.
  * Maps that have been contributed to but have had those contributions deleted
  * will not be selected.
@@ -54,7 +67,7 @@ const getUserMapFavorites = (db, user_id) => {
  */
 const getUserPinnedMaps = (db, user_id) => {
   const query = `
-  SELECT DISTINCT creator_id, creator_name, maps.id, maps.name, maps.latitude, maps.longitude, maps.created_at, maps.views, favorited
+  SELECT DISTINCT creator_id, creator_name, maps.id, maps.name, maps.latitude, maps.longitude, maps.created_at, maps.views
   FROM users
   JOIN pins ON users.id=pins.user_id
   JOIN maps ON pins.map_id=maps.id
@@ -115,6 +128,7 @@ const updateFavorite = (db,user_id,map_id) => {
 module.exports = {
   getUserMapInfo,
   getUserMapFavorites,
+  getUserFavorites,
   getUserPinnedMaps,
   getUserOwnedMaps,
   updateFavorite,

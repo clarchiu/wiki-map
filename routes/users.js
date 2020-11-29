@@ -10,6 +10,7 @@ const router  = express.Router();
 const {
   getUserMapInfo,
   getUserMapFavorites,
+  getUserFavorites,
   getUserPinnedMaps,
   getUserOwnedMaps,
   updateFavorite,
@@ -34,6 +35,19 @@ module.exports = (db) => {
       return res.status(400).render('error.ejs', { status: 400, msg: 'please log in to see your profile' });
     }
     res.redirect(`/users/${req.session.user_id}`);
+  });
+
+  router.get("/me/favorites", (req, res) => {
+    if (!req.session.user_id) {
+      return res.json([{}]);
+    }
+    getUserFavorites(db, req.session.user_id)
+      .then(data => {
+        res.json(data);
+      })
+      .catch(err => {
+        res.json(err);
+      });
   });
 
   // GET /login/:id, used for logging into a user account. Purely for testing.
