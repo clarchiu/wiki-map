@@ -82,7 +82,7 @@ module.exports = (db) => {
     createNewMap(db, parseMapFormData(req)) //we don't know what is being passed to the form yet
       .then(map => {
         console.log(map);
-        res.redirect(`/${map.id}`);
+        res.redirect(`/maps/${map.id}`);
       })
       .catch(err => {
         res
