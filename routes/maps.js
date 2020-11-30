@@ -118,7 +118,6 @@ module.exports = (db) => {
   router.post("/:map_id/:pin_id", (req, res) => {
     // check user authenticated on client side script
     // check user owns pin with session cookie on client
-    // plus some ajax request to query pin owner from db
     if (!checkUserAuthenticated) {
       return res
         .status(401)
@@ -141,9 +140,7 @@ module.exports = (db) => {
   // remove pin
   router.post("/:map_id/:pin_id/delete", (req, res) => {
     // check user authenticated on client side script
-    // because it'll probably be handled by leaflet
     // check user owns pin with session cookie on client
-    // plus some ajax request to query pin owner from db
     if (!checkUserAuthenticated) {
       return res
         .status(401)
