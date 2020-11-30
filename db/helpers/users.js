@@ -1,27 +1,3 @@
-/** obtains all of the information about a user's favorited maps or maps they have contributed to.
- *
- * @param {*} db postgres database object
- * @param {*} user_id id of the user
- */
-const getUserMapInfo = (db, user_id) => {
-  const query = `
-  SELECT DISTINCT owners.id, owner, maps.name AS map_name, maps.lat, maps.long, maps.created_at, maps.views
-  FROM users
-  LEFT OUTER JOIN favorites ON users.id=favorites.user_id
-  LEFT OUTER JOIN pins ON users.id=pins.user_id
-  LEFT OUTER JOIN maps ON (favorites.map_id=maps.id OR pins.map_id=maps.id)
-  JOIN (
-    SELECT users.id AS id, users.name AS owner FROM
-    users JOIN maps ON users.id=maps.owner_id
-  ) AS owners ON maps.owner_id=owners.id
-  WHERE users.id = $1
-  AND (favorites.favorited OR (pins.id IS NOT NULL AND favorites.favorited IS NULL))
-  ORDER BY maps.views DESC;
-  `;
-  return db.query(query,[ user_id ])
-    .then(res => res.rows);
-};
-
 /** obtains all of the user's favorited maps
  *
  * @param {*} db postgres database object
@@ -29,17 +5,38 @@ const getUserMapInfo = (db, user_id) => {
  */
 const getUserMapFavorites = (db, user_id) => {
   const query = `
-  SELECT DISTINCT creator_id, creator_name, maps.id, maps.name, maps.lat, maps.long, maps.created_at, maps.views, favorited
-  FROM users
-  JOIN favorites ON users.id=favorites.user_id
+  SELECT DISTINCT creator_id, creator_name, maps.id, maps.name, maps.lat, maps.long, maps.created_at, maps.views
+  FROM favorites
   JOIN maps ON favorites.map_id=maps.id
   JOIN (
     SELECT users.id AS creator_id, users.name AS creator_name FROM
     users JOIN maps ON users.id=maps.owner_id
   ) AS creators ON maps.owner_id=creator_id
-  WHERE users.id = $1
+  WHERE favorites.user_id = $1
   AND favorited
   ORDER BY maps.views DESC;
+  `;
+  return db.query(query,[ user_id ])
+    .then(res => res.rows);
+};
+
+const getExistingUser = (db, user_id) => {
+  const query = `
+  SELECT id, name, email, authenticated
+  FROM users
+  WHERE users.id = $1;
+  `;
+  return db.query(query,[ user_id ])
+    .then(res => res.rows[0]);
+};
+
+const getUserFavorites = (db, user_id) => {
+  const query = `
+  SELECT DISTINCT map_id, favorited
+  FROM favorites
+  WHERE favorites.user_id = $1
+  AND favorited
+  ORDER BY map_id;
   `;
   return db.query(query,[ user_id ])
     .then(res => res.rows);
@@ -54,16 +51,15 @@ const getUserMapFavorites = (db, user_id) => {
  */
 const getUserPinnedMaps = (db, user_id) => {
   const query = `
-  SELECT DISTINCT creator_id, creator_name, maps.id, maps.name, maps.lat, maps.long, maps.created_at, maps.views, favorited
-  FROM users
-  JOIN pins ON users.id=pins.user_id
+  SELECT DISTINCT creator_id, creator_name, maps.id, maps.name, maps.lat, maps.long, maps.created_at, maps.views
+  FROM pins
   JOIN maps ON pins.map_id=maps.id
   LEFT OUTER JOIN favorites ON maps.id=favorites.map_id AND pins.user_id=favorites.user_id
   JOIN (
     SELECT users.id AS creator_id, users.name AS creator_name FROM
     users JOIN maps ON users.id=maps.owner_id
   ) AS creators ON maps.owner_id=creator_id
-  WHERE users.id = $1
+  WHERE pins.user_id = $1
   ORDER BY maps.views DESC;
   `;
   return db.query(query,[ user_id ])
@@ -95,7 +91,7 @@ const getUserOwnedMaps = (db, user_id) => {
  * @param {*} map_id id of the map
  */
 const updateFavorite = (db,user_id,map_id) => {
-  const query = `
+  let query = `
   UPDATE favorites SET favorited = NOT favorited
   WHERE favorites.user_id = $1
   AND favorites.map_id = $2
@@ -104,7 +100,7 @@ const updateFavorite = (db,user_id,map_id) => {
   return db.query(query,[user_id, map_id])
     .then(res => {
       if (!res.rows[0]) {
-        query = `INSERT INTO favorites (user_id, map_id) VALUES ($1, $2)
+        query = `INSERT INTO favorites (user_id, map_id, favorited) VALUES ($1, $2, true)
         RETURNING favorited;`;
         return db.query(query,[user_id, map_id]).then(res => res.rows[0]);
       }
@@ -113,8 +109,9 @@ const updateFavorite = (db,user_id,map_id) => {
 };
 
 module.exports = {
-  getUserMapInfo,
+  getExistingUser,
   getUserMapFavorites,
+  getUserFavorites,
   getUserPinnedMaps,
   getUserOwnedMaps,
   updateFavorite,

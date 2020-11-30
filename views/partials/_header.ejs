@@ -1,0 +1,15 @@
+<header>
+  <nav id="top-nav">
+    <div>
+      <span><i class="fas fa-map-marked-alt"></i></span>
+      <span>Wiki Maps</span>
+      <a href="/">Maps</a>
+    </div>
+    <% if (locals["username"]) { %>
+      <div>
+        <span>Welcome <%= username%>!</span>
+        <a href="/users/me">Profile</a>
+      </div>
+    <% } %>
+  </nav>
+</header>
