@@ -22,9 +22,9 @@ const getMapViewState = function(map) {
 }
 
 const updateMapCenter = function (map, lat, lng) {
-  const { oldLat, oldLng } = getMapViewState(map)
-  const newLat = lat || oldLat;
-  const newLng = lng || oldLng;
+  const mapState = getMapViewState(map);
+  const newLat = lat || mapState.lat;
+  const newLng = lng || mapState.lng;
   map.panTo([newLat, newLng]);
 }
 
