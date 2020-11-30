@@ -24,7 +24,7 @@ const formatMapData = function(mapData, userFav) {
   <tr>
     <td>${mapData.creator_name}</td>
     <td><a href="/maps/${mapData.id}">${mapData.name}</a></td>
-    <td>${mapData.latitude}, ${mapData.longitude}</td>
+    <td>${mapData.lat}, ${mapData.long}</td>
     <td>${mapData.created_at}</td>
     <td>${mapData.views}</td>
     <td><form class="${userFav[mapData.id] ? "favorited" : "unfavorited"}" action="/users/${mapData.id}/favorite">

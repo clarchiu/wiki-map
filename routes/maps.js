@@ -71,7 +71,7 @@ module.exports = (db) => {
       });
   });
 
-  // to test: curl -d name='Van' -d latitude='50' -d longitude='50' http://localhost:8080/maps
+  // to test: curl -d name='Van' -d lat='50' -d long='50' http://localhost:8080/maps
   // create map
   router.post("/", (req, res) => {
     if (!checkUserAuthenticated) {

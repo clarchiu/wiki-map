@@ -56,15 +56,15 @@ const editPin = (db, userId, pinId, pinData) => {
 
 const deletePin = (db, userId, pinId) => {
   return _checkUserOwnsPin(db, userId, pinId)
-  .then(id => {
-    return db.query(`
-    DELETE FROM pins
-    WHERE id = $1
-    RETURNING *
-    `, [pinId])
-      .catch(() => { msg: "Could not delete pin from database" });
-  })
-  .then(res => res.rows[0]);
+    .then(id => {
+      return db.query(`
+      DELETE FROM pins
+      WHERE id = $1
+      RETURNING *
+      `, [pinId])
+        .catch(() => { msg: "Could not delete pin from database" });
+    })
+    .then(res => res.rows[0]);
 }
 
 module.exports = {

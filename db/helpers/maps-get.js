@@ -4,8 +4,9 @@
  */
 const getAllMaps = (db, uid) => {
   return db.query(`
-  SELECT maps.*, favorited
+  SELECT users.name as creator_name, maps.*, favorited
   FROM maps
+  JOIN users ON owner_id = users.id
   LEFT JOIN (
     SELECT *
     FROM favorites
