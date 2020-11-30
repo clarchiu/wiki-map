@@ -17,7 +17,7 @@ const createError = function(msg) {
     });
   });
   return $err;
-}
+};
 
 const formatMapData = function(mapData, userFav) {
   const $map = $(`
@@ -33,7 +33,7 @@ const formatMapData = function(mapData, userFav) {
   </tr>
   `);
   return $map;
-}
+};
 
 const renderRequest = function($target, promise) {
   return promise.then(maps => {
@@ -53,7 +53,7 @@ const renderRequest = function($target, promise) {
       }
     });
   });
-}
+};
 
 const loadMapData = function($target, url) {
   renderRequest($target, $.ajax({
@@ -63,4 +63,4 @@ const loadMapData = function($target, url) {
     .catch(err => {
       $target.append(createError(err.message));
     });
-}
+};
