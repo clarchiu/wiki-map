@@ -19,7 +19,7 @@ $( function() {
 
   const addPins = function(map, pins) {
     for (const pin of pins) {
-      let marker = L.marker([pin.latitude, pin.longitude]).addTo(map);
+      let marker = L.marker([pin.lat, pin.long]).addTo(map);
       marker.bindPopup(`<div>
       ${escape(pin.title)}<br>${escape(pin.description)}<br>
       <img src="${escape(pin.img_url)}" placeholder="img-not-found"/>
@@ -28,7 +28,7 @@ $( function() {
   }
 
   const addPinnedMap = function(data) {
-    const map = L.map('mapid').setView([data.latitude,data.longitude],10);
+    const map = L.map('mapid').setView([data.lat,data.long],10);
     L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
       attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
       maxZoom: 18,
