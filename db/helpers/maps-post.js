@@ -1,10 +1,10 @@
 const createNewMap = (db, mapData) => {
-  const { ownerId, name, lat, long } = mapData;
+  const { ownerId, name, lat, long, zoom } = mapData;
   return db.query(`
-  INSERT INTO maps (owner_id, name, lat, long) VALUES
-  ($1, $2, $3, $4)
+  INSERT INTO maps (owner_id, name, lat, long, zoom) VALUES
+  ($1, $2, $3, $4, $5)
   RETURNING *
-  `, [ownerId || 1, name, lat || 49.26, long || -123.1207]) //default for testing
+  `, [ownerId || 1, name, lat || 49.26, long || -123.1207, zoom || 10]) //default for testing
     .then(res => res.rows[0])
     .catch(() => { msg: "Could not insert map into database" });
 };
