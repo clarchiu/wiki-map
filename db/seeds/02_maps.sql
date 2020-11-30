@@ -1,4 +1,4 @@
-INSERT INTO maps (owner_id, name, latitude, longitude) VALUES
+INSERT INTO maps (owner_id, name, lat, long) VALUES
   (1, 'Awesome sushi restaurants in Vancouver',49.282730,-123.120735),
   (2, 'Pyramids',26.820553,30.802498),
   (3, 'Fish',-8.783195,-124.508522),

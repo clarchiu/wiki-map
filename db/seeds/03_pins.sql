@@ -1,4 +1,4 @@
-INSERT INTO pins (map_id, user_id, title, description, img_url, latitude, longitude) VALUES
+INSERT INTO pins (map_id, user_id, title, description, img_url, lat, long) VALUES
   (1,1,'sushi','sure hope this is a sushi place','https://friendlystock.com/wp-content/uploads/2019/06/9-sushi-character-winking-cartoon-clipart.jpg',49.282734,-123.120739),
   (2,2,'Pyramid Scheme','Scheme for a pyramid here', 'https://upload.wikimedia.org/wikipedia/commons/4/4c/Pyramid_scheme.svg',26.820560,30.802490),
   (2,3, 'Nothing', 'Just water', 'https://images.pexels.com/photos/734973/pexels-photo-734973.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',-8.783190,-124.508520),

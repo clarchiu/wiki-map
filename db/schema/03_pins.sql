@@ -7,7 +7,7 @@ CREATE TABLE pins (
   title VARCHAR(255) NOT NULL,
   description TEXT,
   img_url VARCHAR(255),
-  latitude FLOAT NOT NULL,
-  longitude FLOAT NOT NULL,
+  lat FLOAT NOT NULL,
+  long FLOAT NOT NULL,
   created_at TIMESTAMP NOT NULL DEFAULT NOW()
 );

@@ -9,9 +9,22 @@ const express = require('express');
 const router  = express.Router();
 
 const { getAllMaps, getMapById } = require('../db/helpers/maps-get.js');
+const { createNewMap, createNewPin, editPin, deletePin } = require('../db/helpers/maps-post.js');
 
-const checkUserAuthenticated = (req, onFalse, onTrue) => {
+const checkUserAuthenticated = (req) => {
   return req.session.isAuthenticated;
+}
+
+const parseMapFormData = (req) => {
+  const { name, long, lat } = req.body;
+  const ownerId = req.session.user_id;
+  return { ownerId, name, long, lat }
+}
+
+const parsePinFormData = (req) => {
+  const mapId = req.params.map_id;
+  const { title, description, imgUrl, lat, long } = req.body;
+  return { mapId, title, description, imgUrl, lat, long };
 }
 
 module.exports = (db) => {
@@ -21,13 +34,13 @@ module.exports = (db) => {
     //render index.html
     getAllMaps(db, req.session.user_id)
       .then (maps => {
-        res.send(maps);
+        res.json(maps);
         //res.render("maps_index", { maps });
       })
       .catch (err => {
         res
-          .status(400)
-          .render("error", { status: 400, msg: err.msg });
+          .status(500)
+          .render("error", { status: 500, msg: err.msg });
       });
   });
 
@@ -36,7 +49,7 @@ module.exports = (db) => {
     if (!checkUserAuthenticated) {
       return res
         .status(401)
-        .render("err", { status: 401, msg: "No access"});
+        .render("error", { status: 401, msg: "No access"});
     }
     const templateVars = {};
     res.render("maps_new", templateVars);
@@ -48,86 +61,106 @@ module.exports = (db) => {
     // including all pins and data
     getMapById(db, req.params.map_id)
       .then(map => {
-        res.send(map);
-        //res.render("map_show", map);
+        res.json(map);
+        res.render("map_show", map);
       })
       .catch(err => {
         res
-          .status(400)
-          .error({ status: 400, msg: err.msg })
-          //.render("error", { status: 400, msg: err.msg });
+          .status(500)
+          .render("error", { status: 400, msg: err.msg });
       });
   });
 
+  // to test: curl -d name='Van' -d latitude='50' -d longitude='50' http://localhost:8080/maps
   // create map
   router.post("/", (req, res) => {
     if (!checkUserAuthenticated) {
       return res
         .status(401)
-        .render("err", { status: 401, msg: "No access"});
+        .render("error", { status: 401, msg: "No access"});
     }
-    createNewMap(db, req) //we don't know what is being passed to the form yet
+    createNewMap(db, parseMapFormData(req)) //we don't know what is being passed to the form yet
       .then(map => {
+        console.log(map);
         res.redirect(`/${map.id}`);
       })
       .catch(err => {
         res
-        .status(400)
-        .render("error", { status: 400, msg: err.msg });
+        .status(500)
+        .render("error", {status: 500, msg: err.msg });
       });
   });
 
+  // to test: curl -d title='test' -d description='test' -d imgUrl='test' -d lat='50' -d long='50' http://localhost:8080/maps/1
   // create pin
-  router.post("/maps/:map_id", (req, res) => {
-    // check user authenticated on client side script
-    // because it'll probably be handled by leaflet
-    createNewPin(db, req) // we don't know what leaflet will pass us yet
-      .then(map => {
+  router.post("/:map_id", (req, res) => {
+    // check user authenticated on client side script also
+    if (!checkUserAuthenticated) {
+      return res
+        .status(401)
+        .render("error", { status: 401, msg: "No access"});
+    }
+    createNewPin(db, req.session.user_id, parsePinFormData(req))
+      .then(pin => {
         // leaflet will add pin to the map
-        console.log(map); // just console log for now
+        console.log(pin); // just console log for now
+        res.send(pin);
       })
       .catch(err => {
         // need some client side javascript to show error msg
         // instead of rendering out a whole new page
+        res.status(500).send(err.msg)
       });
   });
 
+  // to test: curl -d title='changed' -d description='test' -d imgUrl='test' http://localhost:8080/maps/1/9
   // edit pin
-  router.post("/maps/:map_id/:pin_id", (req, res) => {
+  router.post("/:map_id/:pin_id", (req, res) => {
     // check user authenticated on client side script
-    // because it'll probably be handled by leaflet
     // check user owns pin with session cookie on client
     // plus some ajax request to query pin owner from db
-
-    editPin(db, req) // we don't know what leaflet will pass us yet
-      .then(map => {
+    if (!checkUserAuthenticated) {
+      return res
+        .status(401)
+        .render("error", { status: 401, msg: "No access"});
+    }
+    editPin(db, req.session.user_id, req.params.pin_id, parsePinFormData(req)) // we don't know what leaflet will pass us yet
+      .then(pin => {
         // leaflet will edit pin
-        console.log(map); // just console log for now
+        console.log(pin); // just console log for now
+        res.json(pin);
       })
       .catch(err => {
         // need some client side javascript to show error msg
         // instead of rendering out a whole new page
+        res.status(500).send(err.msg)
       });
   });
 
+  // to test: curl -X POST http://localhost:8080/maps/1/9/delete
   // remove pin
-  router.post("/maps/:map_id/:pin_id/delete", (req, res) => {
+  router.post("/:map_id/:pin_id/delete", (req, res) => {
     // check user authenticated on client side script
     // because it'll probably be handled by leaflet
     // check user owns pin with session cookie on client
     // plus some ajax request to query pin owner from db
-
-    deletePin(db, req) // we don't know what leaflet will pass us yet
-      .then(map => {
+    if (!checkUserAuthenticated) {
+      return res
+        .status(401)
+        .render("error", { status: 401, msg: "No access"});
+    }
+    deletePin(db, req.session.user_id, req.params.pin_id) // we don't know what leaflet will pass us yet
+      .then(pin => {
         // leaflet will delete pin
-        console.log(map); // just console log for now
+        console.log(pin); // just console log for now
+        res.json(pin);
       })
       .catch(err => {
         // need some client side javascript to show error msg
         // instead of rendering out a whole new page
+        res.status(500).send(err.msg)
       });
   });
-
 
   return router;
 };
