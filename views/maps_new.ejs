@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>New Map - Wiki-Maps</title>
+  </head>
+
+  <body>
+    <%- include('partials/_header') %>
+
+    <main style="margin: 1em;">
+      <h3>Create a new map</h3>
+      <form  action="/maps" method="POST">
+        <div>
+          <label for="name">Name:</label>
+          <input type="text" name="name" style="width: 300px; margin: 1em">
+          <label for="lat">Latitude:</label>
+          <input type="text" name="lat" style="width: 300px; margin: 1em">
+          <label for="long">Longitude:</label>
+          <input type="text" name="long" style="width: 300px; margin: 1em">
+          <button type="submit">Submit</button>
+        </div>
+      </form>
+    </main>
+  </body>
+</html>

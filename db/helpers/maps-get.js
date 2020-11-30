@@ -26,17 +26,18 @@ const getAllMaps = (db, uid) => {
  * @param {*} db
  * @param {*} map
  */
-const _getPinsByMap = (db, map) => {
+const _getPinsOnMap = (db, map) => {
   return db.query(`SELECT * FROM pins WHERE map_id = $1`, [map.id])
     .then(res => {
       map.pins = res.rows;
       return map;
-    });
+    })
+    .catch(() => { msg: "Could not load pins" });
 }
 
 /**
  * Given a map id, query the db for its data
- * Then chain together with _getPinsByMap to add pins data as an array in the object
+ * Then chain together with _getPinsOnMap to add pins data as an array in the object
  * Return as Promise
  * @param {*} db
  * @param {*} id
@@ -44,8 +45,8 @@ const _getPinsByMap = (db, map) => {
 const getMapById = (db, id) => {
   return db.query(`SELECT * FROM maps WHERE id = $1`, [id])
     .then(res => res.rows[0])
-    .then(map => _getPinsByMap(db, map))
-    .catch(() => { msg: `Could not get map with id: ${id} from database` });
+    .then(map => _getPinsOnMap(db, map))
+    .catch(err => err || { msg: `Could not get map with id: ${id} from database` });
 };
 
 module.exports = {
