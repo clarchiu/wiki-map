@@ -47,7 +47,7 @@ module.exports = (db) => {
 
   // show create new map form
   router.get("/new", (req, res) => {
-    if (!checkUserAuthenticated) {
+    if (!checkUserAuthenticated(req)) {
       return res
         .status(401)
         .render("error", { status: 401, msg: "No access"});
@@ -78,7 +78,7 @@ module.exports = (db) => {
   // to test: curl -d name='Van' -d lat='50' -d long='50' http://localhost:8080/maps
   // create map
   router.post("/", (req, res) => {
-    if (!checkUserAuthenticated) {
+    if (!checkUserAuthenticated(req)) {
       return res
         .status(401)
         .render("error", { status: 401, msg: "No access"});
@@ -98,7 +98,7 @@ module.exports = (db) => {
   // create pin
   router.post("/:map_id", (req, res) => {
     // check user authenticated on client side script also
-    if (!checkUserAuthenticated) {
+    if (!checkUserAuthenticated(req)) {
       return res
         .status(401)
         .render("error", { status: 401, msg: "No access"});
@@ -121,7 +121,7 @@ module.exports = (db) => {
   router.post("/:map_id/:pin_id", (req, res) => {
     // check user authenticated on client side script
     // check user owns pin with session cookie on client
-    if (!checkUserAuthenticated) {
+    if (!checkUserAuthenticated(req)) {
       return res
         .status(401)
         .render("error", { status: 401, msg: "No access"});
@@ -144,7 +144,7 @@ module.exports = (db) => {
   router.post("/:map_id/:pin_id/delete", (req, res) => {
     // check user authenticated on client side script
     // check user owns pin with session cookie on client
-    if (!checkUserAuthenticated) {
+    if (!checkUserAuthenticated(req)) {
       return res
         .status(401)
         .render("error", { status: 401, msg: "No access"});
