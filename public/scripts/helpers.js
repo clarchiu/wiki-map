@@ -12,7 +12,7 @@ const createError = function(msg) {
   </div>
   `);
   $err.on('click', () => {
-    $err.slideDown(200,function() {
+    $err.slideUp(500,function() {
       $err.remove();
     });
   });
