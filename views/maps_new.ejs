@@ -3,14 +3,36 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
     <title>New Map - Wiki-Maps</title>
+
+    <!-- EXTERNAL CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+    crossorigin=""/>
+
+    <!-- INTERNAL CSS -->
+    <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" type="text/css" />
+    <link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
+    <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
+
+    <!-- EXTERNAL SCRIPTS -->
+    <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+    integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+    crossorigin=""></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js" integrity="sha512-90vH1Z83AJY9DmlWa8WkjkV79yfS2n2Oxhsi2dZbIv0nC4E6m5AbH8Nh156kkM7JePmqD6tcZsfad1ueoaovww==" crossorigin="anonymous"></script>
+
+    <!-- INTERNAL SCRIPTS -->
+    <script type="text/javascript" src="/scripts/map-helpers.js"></script>
+    <script type="text/javascript" src="/scripts/new-map.js"></script>
+
   </head>
 
   <body>
     <%- include('partials/_header') %>
 
     <main style="margin: 1em;">
+      <div id="mapid" style="height: 500px; background-color: #dff2f2;"></div>
       <h3>Create a new map</h3>
       <form  action="/maps" method="POST">
         <div>
