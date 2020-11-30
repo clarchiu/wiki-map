@@ -62,7 +62,7 @@ module.exports = (db) => {
     getMapById(db, req.params.map_id)
       .then(map => {
         res.json(map);
-        //res.render("map_show", map);
+        res.render("map_show", map);
       })
       .catch(err => {
         res
