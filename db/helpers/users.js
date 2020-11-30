@@ -20,6 +20,16 @@ const getUserMapFavorites = (db, user_id) => {
     .then(res => res.rows);
 };
 
+const getExistingUser = (db, user_id) => {
+  const query = `
+  SELECT id, name, email, authenticated
+  FROM users
+  WHERE users.id = $1;
+  `;
+  return db.query(query,[ user_id ])
+    .then(res => res.rows[0]);
+};
+
 const getUserFavorites = (db, user_id) => {
   const query = `
   SELECT DISTINCT map_id, favorited
@@ -99,6 +109,7 @@ const updateFavorite = (db,user_id,map_id) => {
 };
 
 module.exports = {
+  getExistingUser,
   getUserMapFavorites,
   getUserFavorites,
   getUserPinnedMaps,
