@@ -8,6 +8,7 @@
 const express = require('express');
 const router  = express.Router();
 const {
+  getExistingUser,
   getUserMapFavorites,
   getUserFavorites,
   getUserPinnedMaps,
@@ -51,8 +52,18 @@ module.exports = (db) => {
 
   // GET /login/:id, used for logging into a user account. Purely for testing.
   router.get("/login/:id", (req, res) => {
-    req.session.user_id = req.params.id;
-    res.redirect('/');
+    getExistingUser(db, req.params.id)
+      .then(data => {
+        if (!data) return res.status(401).render('error.ejs', {status: 401, msg: 'unauthorized'});
+        req.session.user_id = data.id;
+        req.session.name = data.name;
+        req.session.email = data.email;
+        req.session.isAuthenticated = data.authenticated;
+        res.redirect('/');
+      })
+      .catch(err => {
+        res.status(500).render('error.ejs', err);
+      })
   });
 
   router.get("/logout", (req, res) => {
@@ -62,7 +73,14 @@ module.exports = (db) => {
 
   // GET /:id, used for getting a user's profile
   router.get("/:id", (req, res) => {
-    res.render('user.ejs');
+    getExistingUser(db, req.params.id)
+      .then(data => {
+        if (!data) return res.status(404).render('error.ejs', {status: 404, msg: 'not found'});
+        res.render('user.ejs', {...data});
+      })
+      .catch(err => {
+        res.status(500).render('error.ejs', err);
+      });
   });
 
   router.get("/:id/favorites", (req, res) => {
