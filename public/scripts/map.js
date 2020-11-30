@@ -10,7 +10,7 @@ $( function() {
     let $map = `
     <div class="pinned-map">
     <header>${escape(data.name)}</header>
-    <div id="mapid"></div>
+    <div id="mapid" style="height: 500px"></div>
     <footer><span>${data.created_at}</span><span>${data.views}</span></footer>
     </div>
     `;
@@ -19,6 +19,7 @@ $( function() {
 
   const addPins = function(map, pins) {
     for (const pin of pins) {
+      console.log(pin.title);
       let marker = L.marker([pin.lat, pin.long]).addTo(map);
       marker.bindPopup(`<div>
       ${escape(pin.title)}<br>${escape(pin.description)}<br>
@@ -39,8 +40,8 @@ $( function() {
     }).addTo(map);
     addPins(map,data.pins);
     map.on('click', function(event) {
-      let marker = L.marker(event.latlng).addTo(map);
-      marker.bindPopup(``).openPopup();
+      // let marker = L.marker(event.latlng).addTo(map);
+      // marker.bindPopup(``).openPopup();
     });
   };
 
@@ -62,6 +63,6 @@ $( function() {
       });
   };
 
-  loadPinnedMap($('#map'),window.location.pathname);
+  loadPinnedMap($('#map'),window.location.pathname + "/json");
 
 });

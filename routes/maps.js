@@ -57,12 +57,15 @@ module.exports = (db) => {
 
   // show map with map_id
   router.get("/:map_id", (req, res) => {
+    res.render("map_show");
+  });
+
+  router.get("/:map_id/json", (req, res) => {
     // query database to get details about map,
     // including all pins and data
     getMapById(db, req.params.map_id)
       .then(map => {
         res.json(map);
-        res.render("map_show", map);
       })
       .catch(err => {
         res
