@@ -30,12 +30,13 @@ const parsePinFormData = (req) => {
 module.exports = (db) => {
   // show index with all maps
   router.get("/", (req, res) => {
-    //query database to show all maps
-    //render index.html
+    res.render("index");
+  });
+
+  router.get("/json", (req, res) => {
     getAllMaps(db, req.session.user_id)
       .then (maps => {
         res.json(maps);
-        //res.render("maps_index", { maps });
       })
       .catch (err => {
         res

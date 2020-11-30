@@ -1,3 +1,3 @@
 $( function() {
-  loadMapData($('#all-maps'),'/maps');
+  loadMapData($('#all-maps'),'/maps/json');
 });
