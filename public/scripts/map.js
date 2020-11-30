@@ -17,19 +17,51 @@ $( function() {
     return $map;
   };
 
-  const addPins = function(map, pins) {
+  const formatPin = function() {
+
+  };
+
+  const bindPins = function(map, pins) {
     for (const pin of pins) {
       console.log(pin.title);
       let marker = L.marker([pin.lat, pin.long]).addTo(map);
-      marker.bindPopup(`<div>
-      ${escape(pin.title)}<br>${escape(pin.description)}<br>
-      <img src="${escape(pin.img_url)}" placeholder="img-not-found"/>
-      </div>`);
+      marker.bindPopup(`
+        <div class="pin">
+        <header>${escape(pin.title)}</header>
+        <div>${escape(pin.description)}</div>
+        <img src="${escape(pin.img_url)}" placeholder="img-not-found"/>
+        </div>
+      `);
     }
+  };
+
+  const addPin = function(event) {
+    let marker = L.marker(event.latlng).addTo(map);
+    marker.bindPopup(`
+    <div class="pin">
+    <header>${escape(pin.title)}</header>
+    <div>${escape(pin.description)}</div>
+    <img src="${escape(pin.img_url)}" placeholder="img-not-found"/>
+    </div>`
+    ).openPopup();
   }
 
+  const editPin = function(marker) {
+    marker.setPopupContent(`test`);
+  }
+
+  const deletePin = function(map, marker) {
+    map.removeLayer(marker);
+  };
+
   const addPinnedMap = function(data) {
-    const map = L.map('mapid').setView([data.lat,data.long],10);
+    const map = L.map('mapid',{
+      minZoom: 10,
+    }).setView([data.lat,data.long],10);
+
+    const bounds = map.getBounds().pad(0.1);
+    map.setMaxBounds([bounds.getSouthWest(),bounds.getNorthEast()]);
+
     L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
       attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
       maxZoom: 18,
@@ -38,11 +70,12 @@ $( function() {
       zoomOffset: -1,
       accessToken: 'pk.eyJ1IjoiYmVuamFtaW5qc2xlZSIsImEiOiJja2kzdnMwbDIwdTh1MnJsbDEydXRmbmlnIn0.a9_MKoOCA9hD9eWAirPiJw'
     }).addTo(map);
-    addPins(map,data.pins);
-    map.on('click', function(event) {
-      // let marker = L.marker(event.latlng).addTo(map);
-      // marker.bindPopup(``).openPopup();
-    });
+
+    bindPins(map,data.pins);
+
+    map.on('click', addPin);
+    map.off('click', addPin);
+    return map;
   };
 
   const renderPinnedMap = function($target, promise) {
