@@ -107,7 +107,7 @@ module.exports = (db) => {
       .then(pin => {
         // leaflet will add pin to the map
         console.log(pin); // just console log for now
-        res.send(pin);
+        res.json(pin);
       })
       .catch(err => {
         // need some client side javascript to show error msg
