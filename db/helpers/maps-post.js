@@ -30,8 +30,8 @@ const _getPinOwnerId = (db, pinId) => {
 const _checkUserOwnsPin = (db, userId, pinId) => {
   return _getPinOwnerId(db, pinId)
     .then(id => {
-      if (userId === id) {
-        return Promise.resolve(id);
+      if (userId === id.owner_id) {
+        return Promise.resolve(id.owner_id);
       }
       return Promise.reject({ msg: "User does not own pin" });
     })

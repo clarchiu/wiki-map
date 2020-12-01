@@ -75,49 +75,53 @@ $( function() {
     return pinList;
   };
 
-  const submitPinHandler = function(marker, pinList, latlng, map_id) {
-    $('form.pin-submit').on('submit', function(event) {
+  const submitPinHandler = function(marker, pinList, mapData, index, coord = null) {
+  $('form.pin-submit').on('submit', function(event) {
       event.preventDefault();
       event.stopPropagation();
-      let data = $(event.target).serialize();
-      data = `${data}&lat=${latlng.lat}&long=${latlng.lng}`;
+      const sData = `${$(event.target).serialize()}${coord ? `&lat=${coord.lat}&long=${coord.long}` : ""}`;
       $.ajax({
         method: 'post',
-        data: data,
-        url: `/maps/${map_id}`,
+        data: sData,
+        url: `/maps/${mapData.id}${ index < 0 ? "" : `/${mapData.pins[index].id}` }`,
       })
-      .then( pin => {
-        if (!pinList[pin.id]) pinList[pin.id] = marker;
+      .then( newPin => {
+        if (!pinList[newPin.id]) pinList[newPin.id] = marker;
+        if ( index >= 0 ) mapData.pins[index] = newPin;
+        else mapData.pins.push(newPin);
         marker.getPopup().off('remove');
-        marker.setPopupContent(formatPin(pin.user_id, pin)).openPopup();
+        marker.setPopupContent(formatPin(newPin.user_id, newPin)).openPopup();
       })
       .catch( err => {
-        $('#map').append(createError(err.message));
+        $('#map').append(createError(err.statusText));
       });
     });
   };
 
-  const addPin = function(map, pinList, map_id) {
+  const addPin = function(map, pinList, mapData) {
     map.on('click', function(event) {
-      const marker = L.marker([event.latlng.lat, event.latlng.lng])
-      .addTo(map)
-      .bindPopup(formatPin(null, {lat: event.latlng.lat, long: event.latlng.lng},true)).openPopup();
+      const lat = event.latlng.lat;
+      const long = event.latlng.lng;
+      const marker = L.marker([lat, long])
+        .addTo(map)
+        .bindPopup(formatPin(null, {lat, long},true)).openPopup();
       marker.getPopup().on('remove', function() {
         map.removeLayer(marker);
       });
 
-      submitPinHandler(marker, pinList, event.latlng, map_id)
+      submitPinHandler(marker, pinList, mapData, -1, { lat, long })
     });
 
   };
 
-  const editPin = function(map, marker, pinList, pin) {
+  const editPin = function(marker, pinList, mapData, index) {
+    const pin = mapData.pins[index];
     marker.setPopupContent(formatPin(pin.user_id, pin, true));
     marker.getPopup().on('remove', function() {
       marker.setPopupContent(formatPin(pin.user_id, pin));
       marker.getPopup().off('remove');
     });
-    //submitPinHandler(marker, pinList, pin.map_id);
+    submitPinHandler(marker, pinList, mapData, index);
   };
 
   const deletePin = function(map, marker) {
@@ -153,7 +157,7 @@ $( function() {
         map.off('click');
         $button.removeClass('adding').text('add a pin');
       } else {
-        addPin(map, pinList, data.id);
+        addPin(map, pinList, data);
         $button.addClass('adding').text('stop adding');
       }
     });
@@ -163,9 +167,12 @@ $( function() {
       const $form = $(event.target);
       const pin_id = Number($form.attr('name'));
       if (!pin_id) return;
+      let i;
+      for (i = 0; i < data.pins.length; i++) {
+        if (data.pins[i].id === pin_id) break;
+      }
       const marker = pinList[pin_id];
-      const pin = data.pins.filter(pin => pin.id === pin_id)[0];
-      editPin(map, marker, pinList, pin);
+      editPin(marker, pinList, data, i);
     });
 
     $('.reset-view').on('click', function() {
