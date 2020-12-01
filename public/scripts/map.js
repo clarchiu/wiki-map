@@ -114,18 +114,23 @@ $( function() {
 
   };
 
-  const editPin = function(marker, pinList, mapData, index) {
+  const editPin = function(map, marker, pinList, mapData, index) {
     const pin = mapData.pins[index];
     marker.setPopupContent(formatPin(pin.user_id, pin, true));
     marker.getPopup().on('remove', function() {
       marker.setPopupContent(formatPin(pin.user_id, pin));
       marker.getPopup().off('remove');
     });
+    onDeletePin(map, marker, pinList, mapData, index);
     submitPinHandler(marker, pinList, mapData, index);
   };
 
-  const deletePin = function(map, marker) {
-    map.removeLayer(marker);
+  const onDeletePin = function(map, marker, pinList, mapData, index) {
+    $('form.pin-delete').on("submit", function(event) {
+      event.preventDefault();
+      event.stopPropagation();
+      map.removeLayer(marker);
+    });
   };
 
   const addMap = function(data) {
@@ -172,7 +177,7 @@ $( function() {
         if (data.pins[i].id === pin_id) break;
       }
       const marker = pinList[pin_id];
-      editPin(marker, pinList, data, i);
+      editPin(map, marker, pinList, data, i);
     });
 
     $('.reset-view').on('click', function() {
