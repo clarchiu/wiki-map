@@ -70,7 +70,7 @@ $( function() {
   const addPin = function(event) {
     const map = this;
     const lat = event.latlng.lat;
-    const long = event.latlng.long;
+    const long = event.latlng.lng;
     const marker = formatPin(map, {lat, long},true).openPopup();
     const form = marker.getPopup();
 
@@ -81,8 +81,7 @@ $( function() {
     $('form.pin-submit').on('submit', function(event) {
       event.preventDefault();
       event.stopPropagation();
-      console.log(event.target);
-      const data = $(event.target).serialize();
+      let data = $(event.target).serialize();
       data = `${data}&lat=${lat}&long=${long}`;
       $.ajax({
         method: 'post',
