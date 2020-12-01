@@ -1,7 +1,9 @@
 const updateFormLatLng = function(mapState) {
   const { lat, lng } = mapState;
-  $("input[name='lat']").attr('placeholder', lat);
-  $("input[name='long']").attr('placeholder', lng);
+  $("input[name='lat']").val(lat);
+  $("input[name='long']").val(lng);
+  // $("input[name='lat']").attr('placeholder', lat);
+  // $("input[name='long']").attr('placeholder', lng);
 }
 
 // http://stackoverflow.com/questions/5524045/jquery-non-ajax-post
@@ -14,15 +16,15 @@ const updateFormLatLng = function(mapState) {
  */
 function submit(action, method, values) {
   const form = $('<form/>', {
-      action: action,
-      method: method
+    action: action,
+    method: method
   });
   $.each(values, function() {
-      form.append($('<input/>', {
-          type: 'hidden',
-          name: this.name,
-          value: this.value
-      }));
+    form.append($('<input/>', {
+      type: 'hidden',
+      name: this.name,
+      value: this.value
+    }));
   });
   form.appendTo('body').submit(); //need to append to body to submit
 }
@@ -33,16 +35,24 @@ $(function() {
 
   updateFormLatLng(getMapViewState($map));
 
+  $map.on('movestart', function() {
+    showErrMsg(false, 200);
+    updateFormLatLng(getMapViewState($map));
+  });
+
   $map.on('moveend', function() {
     updateFormLatLng(getMapViewState($map));
   });
 
-  $("input[name='lat']").on('input', _.debounce(function() {
-    updateMapCenter($map, $(this).val());
-  }, 500));
-
-  $("input[name='long']").on('input', _.debounce(function() {
-    updateMapCenter($map, $(this).val());
+  $("input.coord").on('input', _.debounce(function() {
+    const $this = $(this);
+    const input = $this.val();
+    if (!$.isNumeric(input)) {
+      showErrMsg(true, 1, $(`label[for=${$this.attr('name')}]`).text() + ' must be a number!');
+      return;
+    }
+    showErrMsg(false, 200);
+    updateMapCenter($map, input);
   }, 500));
 
   // TODO: add client side input verification
