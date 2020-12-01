@@ -31,17 +31,18 @@ function submit(action, method, values) {
 
 $(function() {
   const DEFAULT = [49.2600, -123.1207];
-  const $map = createMapPreview(DEFAULT);
+  const MAP_ID = 'mapid';
+  const mapView = createMapPreview(MAP_ID, DEFAULT);
 
-  updateFormLatLng(getMapViewState($map));
+  updateFormLatLng(getMapState(mapView));
 
-  $map.on('movestart', function() {
+  mapView.on('movestart', function() {
     showErrMsg(false, 200);
-    updateFormLatLng(getMapViewState($map));
+    updateFormLatLng(getMapState(mapView));
   });
 
-  $map.on('moveend', function() {
-    updateFormLatLng(getMapViewState($map));
+  mapView.on('moveend', function() {
+    updateFormLatLng(getMapState(mapView));
   });
 
   $("input.coord").on('input', _.debounce(function() {
@@ -52,7 +53,7 @@ $(function() {
       return;
     }
     showErrMsg(false, 200);
-    updateMapCenter($map, input);
+    updateMapCenter(mapView, input);
   }, 500));
 
   // TODO: add client side input verification
@@ -60,7 +61,8 @@ $(function() {
     event.preventDefault();
 
     const PATH = '/maps';
-    const mapState = getMapViewState($map);
+    const mapState = getMapState(mapView);
+    updateFormLatLng(mapState);
 
     submit(PATH, 'POST', [
       { name: 'name', value: $("input[name='name']").val() },
