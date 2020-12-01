@@ -17,42 +17,61 @@ $( function() {
     return map;
   };
 
-  const formatPin = function(pin, edit = false) {
-    return edit ?
+  const formatPin = function(map, pin, form = false) {
+    return L.marker([pin.lat, pin.long]).addTo(map).bindPopup(form ?
     `
       <div class="pin">
-      <form action="${window.location.pathname + "/" +  pin.id}" >
-      <header><input value="${escape(pin.title)}"/></header>
-      <div><input value="${escape(pin.description)}"/></div>
-      <div><input value="${escape(pin.img_url)}"/></div>
-      <button><span>submit</span><i class="fas fa-check-square"></i></button>
-      <button><span>delete</span><i class="fas fa-trash-alt"></i></button>
+      <form class="pin-submit" action="${window.location.pathname}${ pin.id ? "/" +  pin.id : ``}" >
+      <header>
+        <input name="title" value="${escape(pin.title || "")}" placeholder="title"/>
+      </header>
+      <div>
+        <input name="description" value="${escape(pin.description || "")}" placeholder="description"/>
+      </div>
+      <div>
+        <input name="imgUrl" value="${escape(pin.img_url || "")}" placeholder="image url"/>
+      </div>
+      <button type="submit">
+        <span>submit</span>
+        <i class="fas fa-check-square"></i>
+      </button>
       </form>
+      ${ pin.id ? `
+      <form class="pin-delete" action="${window.location.pathname + "/" +  pin.id + "/delete"}">
+        <button type="submit">
+          <span>delete</span>
+          <i class="fas fa-trash-alt"></i>
+        </button>
+      </form>` : ``
+      }
       </div>
     ` :
     `
       <div class="pin">
-      <header>${escape(pin.title)}</header>
-      <div>${escape(pin.description)}</div>
-      <img src="${escape(pin.img_url)}" placeholder="img-not-found"/>
-      <form action="${window.location.pathname + "/" +  pin.id}" >
-      <button><span>edit</span><i class="fas fa-edit"></i></button>
-      </form>
+        <header>${escape(pin.title)}</header>
+        <div>${escape(pin.description)}</div>
+        <img src="${escape(pin.img_url)}" placeholder="img-not-found"/>
+        <form action="${window.location.pathname + "/" +  pin.id}" >
+          <button>
+            <span>edit</span>
+            <i class="fas fa-edit"></i>
+          </button>
+        </form>
       </div>
-    `;
+    `);
   };
 
   const bindPins = function(map, pins) {
     for (const pin of pins) {
-      let marker = L.marker([pin.lat, pin.long]).addTo(map);
-      marker.bindPopup(formatPin(pin));
+      formatPin(map, pin);
     }
   };
 
   const addPin = function(event) {
     const map = this;
-    const marker = L.marker(event.latlng).addTo(map);
-    marker.bindPopup(formatPin()).openPopup();
+    const lat = event.latlng.lat;
+    const long = event.latlng.long;
+    const marker = formatPin(map, {lat, long},true).openPopup();
     const form = marker.getPopup();
 
     form.on('remove', function() {
@@ -62,7 +81,9 @@ $( function() {
     $('form.pin-submit').on('submit', function(event) {
       event.preventDefault();
       event.stopPropagation();
-      const data = $(this).serialize();
+      console.log(event.target);
+      const data = $(event.target).serialize();
+      data = `${data}&lat=${lat}&long=${long}`;
       $.ajax({
         method: 'post',
         data: data,
@@ -70,6 +91,8 @@ $( function() {
       })
       .then( pin => {
         form.off('remove');
+        map.removeLayer(marker);
+        formatPin(map, pin).openPopup();
       })
       .catch( err => {
         $('#map').append(createError(err.message));
