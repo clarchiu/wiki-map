@@ -23,18 +23,18 @@ const createNewPin = (db, userId, pinData) => {
 // in the future save this in memory somehow
 const _getPinOwnerId = (db, pinId) => {
   return db.query(`SELECT user_id as owner_id FROM pins WHERE id = $1`,[pinId])
-    .then(res => res.rows[0])
+    .then(res => res.rows[0].owner_id)
     .catch(() => { msg: "Could not get pin owner_id from database" });
 }
 
 const _checkUserOwnsPin = (db, userId, pinId) => {
   return _getPinOwnerId(db, pinId)
-    .then(id => {
-      if (userId === id.owner_id) {
-        return Promise.resolve(id.owner_id);
+    .then(ownerId => {
+      if (userId === ownerId) {
+        return Promise.resolve(ownerId);
       }
       return Promise.reject({ msg: "User does not own pin" });
-    })
+    });
 }
 
 const editPin = (db, userId, pinId, pinData) => {

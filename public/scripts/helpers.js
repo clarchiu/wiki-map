@@ -38,7 +38,7 @@ const formatMapData = function(mapData, userFav) {
       <a href="/maps/${id}">
       <img
       src="https://api.mapbox.com/styles/v1/mapbox/light-v10/static/${long},${lat},${zoom}/300x300?access_token=pk.eyJ1IjoiZm9ybXNob290ZXIiLCJhIjoiY2tpNDdhd3I1MjB6czMzbzJuOTlhcm14ayJ9.HpP-a7lmU22QbOqwifry1A"
-      alt="Preview of ${name} created by ${creator_name}.">
+      alt="Preview of a map of ${name} created by ${creator_name}.">
       </a>
       </td>
   </tr>
