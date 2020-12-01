@@ -12,16 +12,18 @@ $( function() {
     <header>${escape(data.name)}</header>
     <div id="mapid" style="height: 500px"></div>
     <footer><span>${data.created_at}</span><span>${data.views}</span></footer>
+    ${ data.isAuth ? `<button class="add-pin">add pin</button>` : ``}
+    <button class="reset-view">reset view</button>
     </div>
     `;
     return map;
   };
 
-  const formatPin = function(map, pin, form = false) {
-    return L.marker([pin.lat, pin.long]).addTo(map).bindPopup(form ?
+  const formatPin = function(user_id, pin, form = false) {
+    return form ?
     `
       <div class="pin">
-      <form class="pin-submit" action="${window.location.pathname}${ pin.id ? "/" +  pin.id : ``}" >
+      <form class="pin-submit" action="${"/maps/" + pin.map_id}${ pin.id ? "/" +  pin.id : ``}" >
       <header>
         <input name="title" value="${escape(pin.title || "")}" placeholder="title"/>
       </header>
@@ -37,7 +39,7 @@ $( function() {
       </button>
       </form>
       ${ pin.id ? `
-      <form class="pin-delete" action="${window.location.pathname + "/" +  pin.id + "/delete"}">
+      <form class="pin-delete" action="${ "/maps/" + pin.map_id + "/" +  pin.id + "/delete"}">
         <button type="submit">
           <span>delete</span>
           <i class="fas fa-trash-alt"></i>
@@ -51,63 +53,100 @@ $( function() {
         <header>${escape(pin.title)}</header>
         <div>${escape(pin.description)}</div>
         <img src="${escape(pin.img_url)}" placeholder="img-not-found"/>
-        <form action="${window.location.pathname + "/" +  pin.id}" >
-          <button>
+        ${ user_id === pin.user_id ? `
+        <form name=${pin.id}>
+          <button type="submit">
             <span>edit</span>
             <i class="fas fa-edit"></i>
           </button>
         </form>
+        ` : `` }
       </div>
-    `);
+    `;
   };
 
-  const bindPins = function(map, pins) {
-    for (const pin of pins) {
-      formatPin(map, pin);
+  const bindPins = function(map, data) {
+    const pinList = {};
+    for (const pin of data.pins) {
+      pinList[pin.id] = L.marker([pin.lat, pin.long])
+        .addTo(map)
+        .bindPopup(formatPin(data.user_id, pin));
     }
+    return pinList;
   };
 
-  const addPin = function(event) {
-    const map = this;
-    const lat = event.latlng.lat;
-    const long = event.latlng.lng;
-    const marker = formatPin(map, {lat, long},true).openPopup();
-    const form = marker.getPopup();
-
-    form.on('remove', function() {
-      map.removeLayer(marker);
-    });
-
-    $('form.pin-submit').on('submit', function(event) {
+  const submitPinHandler = function(marker, pinList, mapData, index, coord = null) {
+  $('form.pin-submit').on('submit', function(event) {
+      $('form.pin-delete').off("submit");
       event.preventDefault();
       event.stopPropagation();
-      let data = $(event.target).serialize();
-      data = `${data}&lat=${lat}&long=${long}`;
+      const sData = `${$(event.target).serialize()}${coord ? `&lat=${coord.lat}&long=${coord.long}` : ""}`;
       $.ajax({
         method: 'post',
-        data: data,
-        url: window.location.pathname,
+        data: sData,
+        url: `/maps/${mapData.id}${ index < 0 ? "" : `/${mapData.pins[index].id}` }`,
       })
-      .then( pin => {
-        form.off('remove');
-        map.removeLayer(marker);
-        formatPin(map, pin).openPopup();
+      .then( newPin => {
+        if (!pinList[newPin.id]) pinList[newPin.id] = marker;
+        if ( index >= 0 ) mapData.pins[index] = newPin;
+        else mapData.pins.push(newPin);
+        marker.getPopup().off('remove');
+        marker.setPopupContent(formatPin(newPin.user_id, newPin)).openPopup();
       })
       .catch( err => {
-        $('#map').append(createError(err.message));
+        $('#map').append(createError(err.statusText));
       });
     });
-  }
-
-  const editPin = function(marker) {
-    marker.setPopupContent(`test`);
-  }
-
-  const deletePin = function(map, marker) {
-    map.removeLayer(marker);
   };
 
-  const addPinnedMap = function(data) {
+  const addPin = function(map, pinList, mapData) {
+    map.on('click', function(event) {
+      const lat = event.latlng.lat;
+      const long = event.latlng.lng;
+      const marker = L.marker([lat, long])
+        .addTo(map)
+        .bindPopup(formatPin(null, {lat, long},true)).openPopup();
+      marker.getPopup().on('remove', function() {
+        map.removeLayer(marker);
+      });
+
+      submitPinHandler(marker, pinList, mapData, -1, { lat, long })
+    });
+
+  };
+
+  const onDeletePin = function(map, marker, pinList, mapData, index) {
+    $('form.pin-delete').on("submit", function(event) {
+      $('form.pin-submit').off('submit');
+      event.preventDefault();
+      event.stopPropagation();
+      $.ajax({
+        method: 'post',
+        url: `/maps/${mapData.id}/${mapData.pins[index].id}/delete`,
+      })
+      .then( deletedPin => {
+        delete pinList[deletedPin.id];
+        mapData.pins.splice(index,1);
+        map.removeLayer(marker);
+      })
+      .catch( err => {
+        $('#map').append(createError(err.statusText));
+      });
+    });
+  };
+
+  const editPin = function(map, marker, pinList, mapData, index) {
+    const pin = mapData.pins[index];
+    marker.setPopupContent(formatPin(pin.user_id, pin, true));
+    marker.getPopup().on('remove', function() {
+      marker.setPopupContent(formatPin(pin.user_id, pin));
+      marker.getPopup().off('remove');
+    });
+    onDeletePin(map, marker, pinList, mapData, index);
+    submitPinHandler(marker, pinList, mapData, index);
+  };
+
+  const addMap = function(data) {
     const map = L.map('mapid',{
       minZoom: 1,
     }).setView([data.lat,data.long],data.zoom);
@@ -124,18 +163,48 @@ $( function() {
       accessToken: 'pk.eyJ1IjoiYmVuamFtaW5qc2xlZSIsImEiOiJja2kzdnMwbDIwdTh1MnJsbDEydXRmbmlnIn0.a9_MKoOCA9hD9eWAirPiJw'
     }).addTo(map);
 
-    bindPins(map,data.pins);
-
-    map.on('click', addPin);
-    // map.off('click', addPin);
     return map;
+  };
+
+  const addMapEventListeners = function(map, pinList, data) {
+
+    $('.add-pin').on('click', function(event) {
+      event.preventDefault();
+      const $button = $(event.target);
+      if ($button.hasClass('adding')) {
+        map.off('click');
+        $button.removeClass('adding').text('add a pin');
+      } else {
+        addPin(map, pinList, data);
+        $button.addClass('adding').text('stop adding');
+      }
+    });
+
+    $('#mapid').on('submit', function(event) {
+      event.preventDefault();
+      const $form = $(event.target);
+      const pin_id = Number($form.attr('name'));
+      if (!pin_id) return;
+      let i;
+      for (i = 0; i < data.pins.length; i++) {
+        if (data.pins[i].id === pin_id) break;
+      }
+      const marker = pinList[pin_id];
+      editPin(map, marker, pinList, data, i);
+    });
+
+    $('.reset-view').on('click', function() {
+      map.flyTo([data.lat,data.long],data.zoom);
+    });
   };
 
   const renderPinnedMap = function($target, promise) {
     return promise.then((data) => {
-      let $map = formatBorder(data);
-      $target.append($map);
-      addPinnedMap(data);
+      let $border = formatBorder(data);
+      $target.append($border);
+      const map = addMap(data);
+      const pinList = bindPins(map,data);
+      addMapEventListeners(map, pinList, data);
     })
   };
 
@@ -143,6 +212,15 @@ $( function() {
     renderPinnedMap($target, $.ajax({
       method: 'get',
       url: url,
+    })
+    .then(data => {
+      return $.ajax({
+        method: 'get',
+        url: '/users/me/json',
+      })
+      .then(userData => {
+        return { ...userData, ...data };
+      });
     }))
       .catch(err => {
         $target.append(createError(err.message));
