@@ -16,9 +16,9 @@ const checkUserAuthenticated = (req) => {
 }
 
 const parseMapFormData = (req) => {
-  const { name, long, lat } = req.body;
+  const { name, long, lat, zoom } = req.body;
   const ownerId = req.session.user_id;
-  return { ownerId, name, long, lat }
+  return { ownerId, name, long, lat, zoom }
 }
 
 const parsePinFormData = (req) => {
@@ -83,7 +83,7 @@ module.exports = (db) => {
         .status(401)
         .render("error", { status: 401, msg: "No access"});
     }
-    createNewMap(db, parseMapFormData(req)) //we don't know what is being passed to the form yet
+    createNewMap(db, parseMapFormData(req))
       .then(map => {
         res.redirect(`/maps/${map.id}`);
       })

@@ -110,7 +110,7 @@ $( function() {
   const addPinnedMap = function(data) {
     const map = L.map('mapid',{
       minZoom: 10,
-    }).setView([data.lat,data.long],10);
+    }).setView([data.lat,data.long],data.zoom);
 
     const bounds = map.getBounds().pad(0.1);
     map.setMaxBounds([bounds.getSouthWest(),bounds.getNorthEast()]);
