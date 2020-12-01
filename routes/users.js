@@ -37,6 +37,13 @@ module.exports = (db) => {
     res.redirect(`/users/${req.session.user_id}`);
   });
 
+  router.get("/me/json", (req, res) => {
+    if (!req.session.user_id) {
+      return res.json({});
+    }
+    res.json({ user_id: req.session.user_id, isAuth: req.session.isAuthenticated });
+  });
+
   router.get("/me/favorites", (req, res) => {
     if (!req.session.user_id) {
       return res.json([{}]);

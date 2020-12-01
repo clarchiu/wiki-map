@@ -58,7 +58,7 @@ module.exports = (db) => {
 
   // show map with map_id
   router.get("/:map_id", (req, res) => {
-    res.render("map_show", { isAuthenticated: req.session.isAuthenticated });
+    res.render("map_show");
   });
 
   router.get("/:map_id/json", (req, res) => {

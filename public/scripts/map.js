@@ -12,12 +12,13 @@ $( function() {
     <header>${escape(data.name)}</header>
     <div id="mapid" style="height: 500px"></div>
     <footer><span>${data.created_at}</span><span>${data.views}</span></footer>
+    ${ data.isAuth ? `<button class="add-pin">add pin</button>` : ``}
     </div>
     `;
     return map;
   };
 
-  const formatPin = function(map, pin, form = false) {
+  const formatPin = function(map, user_id, pin, form = false) {
     return L.marker([pin.lat, pin.long]).addTo(map).bindPopup(form ?
     `
       <div class="pin">
@@ -51,19 +52,19 @@ $( function() {
         <header>${escape(pin.title)}</header>
         <div>${escape(pin.description)}</div>
         <img src="${escape(pin.img_url)}" placeholder="img-not-found"/>
-        <form action="${window.location.pathname + "/" +  pin.id}" >
+        ${ user_id === pin.user_id ? `<form action="${window.location.pathname + "/" +  pin.id}" >
           <button>
             <span>edit</span>
             <i class="fas fa-edit"></i>
           </button>
-        </form>
+        </form>` : `` }
       </div>
     `);
   };
 
-  const bindPins = function(map, pins) {
-    for (const pin of pins) {
-      formatPin(map, pin);
+  const bindPins = function(map, data) {
+    for (const pin of data.pins) {
+      formatPin(map, data.user_id, pin);
     }
   };
 
@@ -71,7 +72,7 @@ $( function() {
     const map = this;
     const lat = event.latlng.lat;
     const long = event.latlng.lng;
-    const marker = formatPin(map, {lat, long},true).openPopup();
+    const marker = formatPin(map, null, {lat, long},true).openPopup();
     const form = marker.getPopup();
 
     form.on('remove', function() {
@@ -91,7 +92,7 @@ $( function() {
       .then( pin => {
         form.off('remove');
         map.removeLayer(marker);
-        formatPin(map, pin).openPopup();
+        formatPin(map, pin.user_id, pin).openPopup();
       })
       .catch( err => {
         $('#map').append(createError(err.message));
@@ -124,7 +125,7 @@ $( function() {
       accessToken: 'pk.eyJ1IjoiYmVuamFtaW5qc2xlZSIsImEiOiJja2kzdnMwbDIwdTh1MnJsbDEydXRmbmlnIn0.a9_MKoOCA9hD9eWAirPiJw'
     }).addTo(map);
 
-    bindPins(map,data.pins);
+    bindPins(map,data);
 
     map.on('click', addPin);
     // map.off('click', addPin);
@@ -143,6 +144,15 @@ $( function() {
     renderPinnedMap($target, $.ajax({
       method: 'get',
       url: url,
+    })
+    .then(data => {
+      return $.ajax({
+        method: 'get',
+        url: '/users/me/json',
+      })
+      .then(userData => {
+        return { ...userData, ...data };
+      });
     }))
       .catch(err => {
         $target.append(createError(err.message));
