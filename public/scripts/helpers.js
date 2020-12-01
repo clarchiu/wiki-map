@@ -19,6 +19,7 @@ const createError = function(msg) {
   return $err;
 };
 
+// TODO: need to escape mapData
 const formatMapData = function(mapData, userFav) {
   const { creator_name, id, name, lat, long, created_at, views, zoom } = mapData;
   const $map = $(`
@@ -28,10 +29,18 @@ const formatMapData = function(mapData, userFav) {
     <td>${lat}, ${long}</td>
     <td>${created_at}</td>
     <td>${views}</td>
-    <td><form class="${userFav[id] ? "favorited" : "unfavorited"}" action="/users/${mapData.id}/favorite">
-          <button><i class="fas fa-heart"></i></button>
-    </form></td>
-    <td><img src="https://api.mapbox.com/styles/v1/mapbox/light-v10/static/${long},${lat},${zoom}/300x300?access_token=pk.eyJ1IjoiZm9ybXNob290ZXIiLCJhIjoiY2tpNDdhd3I1MjB6czMzbzJuOTlhcm14ayJ9.HpP-a7lmU22QbOqwifry1A" alt="Preview of ."></td>
+    <td>
+      <form class="${userFav[id] ? "favorited" : "unfavorited"}" action="/users/${mapData.id}/favorite">
+        <button><i class="fas fa-heart"></i></button>
+      </form>
+    </td>
+    <td>
+      <a href="/maps/${id}">
+      <img
+      src="https://api.mapbox.com/styles/v1/mapbox/light-v10/static/${long},${lat},${zoom}/300x300?access_token=pk.eyJ1IjoiZm9ybXNob290ZXIiLCJhIjoiY2tpNDdhd3I1MjB6czMzbzJuOTlhcm14ayJ9.HpP-a7lmU22QbOqwifry1A"
+      alt="Preview of ${name} created by ${creator_name}.">
+      </a>
+      </td>
   </tr>
   `);
   return $map;
