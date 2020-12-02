@@ -18,8 +18,7 @@ $( function() {
         return;
       }
       $target.removeClass('favorited').addClass('unfavorited');
-    })
-
+    });
   };
 
   $('#all-maps').on('click', 'span[data-action]', function(e) {
