@@ -82,6 +82,9 @@ const loadMapsData = function(url) {
 };
 
 const renderRequest = function($target, maps, isLoggedIn, userFav) {
+  if (!maps[0]) {
+    return $target.append('<span>Nothing to see here...</span>');
+  }
   for (const mapData of maps) {
     let $map = formatMapData(mapData, isLoggedIn, userFav);
     $target.append($map);
