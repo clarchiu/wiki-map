@@ -3,8 +3,10 @@
 button {
   border: none;
   border-radius: 10%;
+  background-color: vars.$tert-clr;
+  outline: none;
+  :focus {
+    border: 3px solid vars.$sec-clr;
+  }
 }
 
-button:focus {
-  border: 3px solid vars.$sec-clr;
-}

@@ -1,19 +1,23 @@
 <header>
-  <nav id="top-nav">
-    <button class="navbar-toggle"><i class="fas fa-bars"></i></button>
+  <nav class="navbar navbar-expand-md navbar-dark" id="top-nav">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
     <div>
-      <span class="logo"><i class="fas fa-map-marked-alt"></i></span>
+      <span class="logo-wrap"><i class="logo fas fa-map-marked-alt"></i></span>
       <span>Wiki Maps</span>
     </div>
-    <div class="dropdown">
-      <a href="/maps"><span>Maps</span></a>
-      <a href="/maps/new"><span>New Map</span></a>
-    <% if (locals["username"]) { %>
-      <div>
-        <span>Welcome <%= username%>!</span>
-        <a href="/users/me">Profile</a>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        <a class="nav-item nav-link" href="/maps">Maps</a>
+        <a class="nav-item nav-link" href="/maps/new">New Map</a>
+        <% if (locals["username"]) { %>
+          <div>
+            <span>Welcome <%= username%>!</span>
+            <a href="/users/me">Profile</a>
+          </div>
+        <% } %>
       </div>
-    <% } %>
     </div>
-  </nav>
+    </nav>
 </header>
