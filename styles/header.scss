@@ -1,11 +1,11 @@
 @use 'vars';
 
 main {
-  margin-top: 5em;
+  margin-top: 4em;
 }
 
 nav#top-nav {
-
+  z-index: 10000;
   position: fixed;
   top: 0;
   background-color: vars.$prim-clr;
@@ -14,6 +14,10 @@ nav#top-nav {
   div.logo-wrap {
     display: flex;
     align-items: center;
+    justify-self: center;
+    > * {
+      margin-left: 0.2em;
+    }
   }
 
 }
