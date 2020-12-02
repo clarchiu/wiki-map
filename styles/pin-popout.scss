@@ -42,8 +42,8 @@ div.leaflet-popup-content {
 
     img {
       display: block;
-      max-height: 35%;
-      max-width: vars.$map-w * 2 / 3;
+      height: 35%;
+      max-width: 100%;
     }
   }
 }
