@@ -1,15 +1,15 @@
 // See: https://sass-lang.com/
+@use 'vars';
+@use 'button';
+@use 'header';
 
-$prim-clr: #667292;
-$sec-clr: #8d9db6;
-$tert-clr: #bccad6;
-$back-clr: #f1e3dd;
+html {
+  box-sizing: border-box;
+}
 
-$prim-clr: #87bdd8;
-$sec-clr: #b7d7e8;
-$tert-clr: #cfe0e8;
-$back-clr: #daebe8;
-
+*, *:before, *:after {
+  box-sizing: inherit;
+}
 
 body {
   background-color: #EEE;
