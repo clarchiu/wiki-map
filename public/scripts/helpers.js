@@ -6,10 +6,10 @@
  */
 const createError = function(msg) {
   const $err = $(`
-  <div class="err">
-    <span><i class="fas fa-exclamation-circle"></i></span>
-    <span>${msg}</span>
-  </div>
+    <div class="err">
+      <span><i class="fas fa-exclamation-circle"></i></span>
+      <span>${msg}</span>
+    </div>
   `);
   $err.on('click', () => {
     $err.slideUp(500,function() {
@@ -21,7 +21,6 @@ const createError = function(msg) {
 
 // TODO: need to escape mapData
 const formatMapData = function(mapData, isLoggedIn, userFav) {
-  console.log(mapData);
   const { creator_name, id, name, lat, long, created_at, views, zoom } = mapData;
   const $map = $(`
     <div class="map-preview">
@@ -44,7 +43,7 @@ const formatMapData = function(mapData, isLoggedIn, userFav) {
       <span data-action="/users/${mapData.id}/favorite" class="${userFav[id] ? "favorited" : "unfavorited"}">
         <i class="fas fa-heart"></i>
       </span>
-    `)
+    `);
   }
   return $map;
 };

@@ -14,7 +14,6 @@ const createMapPreview = function(id, latlng) {
 
 const getMapState = function(mapView) {
   const center = mapView.getCenter();
-  console.log(center);
   return {
     zoom: mapView.getZoom(),
     lat: Math.round(center.lat * 10000) / 10000,
