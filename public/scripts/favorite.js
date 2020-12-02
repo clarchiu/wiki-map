@@ -15,33 +15,23 @@ $( function() {
     .then(res => {
       if (res.favorited) {
         $target.removeClass('unfavorited').addClass('favorited');
-      } else {
-        $target.removeClass('favorited').addClass('unfavorited');
+        return;
       }
+      $target.removeClass('favorited').addClass('unfavorited');
     })
-    .catch(err => {
-      return createError(err.responseJSON.msg);
-    });
+
   };
 
-  $('.maps').on('submit', (event) => {
-    event.preventDefault();
+  $('#all-maps').on('click', 'span[data-action]', function(e) {
+    const $span = $(this);
+    const url = $span.attr('data-action');
 
-    const $form = $(event.target);
-    const url = $form.attr('action');
+    if (!url) return $span.insertBefore(createError('url not found'));
 
-    if (!url) return $form.insertBefore(createError('url not found'));
+    $span.addClass('loading');
 
-    $form.addClass('loading');
-
-    favorite($form, url)
-      .then((err) => {
-        $form.removeClass('loading');
-        if (err) {
-          $('.err').remove();
-          $form.append(err);
-        }
-      });
+    favorite($span, url)
+      .then(() => $span.removeClass('loading'))
+      .catch(err => $span.after(createError(err.responseJSON.msg)));
   });
-
 });
