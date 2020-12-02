@@ -27,7 +27,12 @@ const getAllMaps = (db, uid) => {
  * @param {*} map
  */
 const _getPinsOnMap = (db, map) => {
-  return db.query(`SELECT * FROM pins WHERE map_id = $1`, [map.id])
+  return db.query(`
+  SELECT pins.*, users.name as owner_name
+  FROM pins
+  JOIN users ON pins.user_id = users.id
+  WHERE map_id = $1
+  `, [map.id])
     .then(res => {
       map.pins = res.rows;
       return map;
