@@ -11,6 +11,10 @@ nav#top-nav {
   background-color: vars.$prim-clr;
   width: 100%;
 
+  > button {
+    background-color: vars.$prim-clr;
+  }
+
   div.logo-wrap {
     display: flex;
     margin: auto;
