@@ -1,0 +1,83 @@
+@use 'vars';
+
+main {
+  margin-top: 5em;
+}
+
+nav#top-nav {
+
+  position: fixed;
+  top: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
+  background-color: vars.$prim-clr;
+  height: 5em;
+  width: 100%;
+
+  a {
+    color: black;
+    text-decoration: none;
+  }
+
+  > {
+    :first-child {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      > * {
+        margin: 0.25em;
+      }
+    }
+    * {
+      margin-left: 0.5em;
+    }
+  }
+
+  button.navbar-toggle {
+    display: flex;
+    font-size: 2em;
+    width: 1.5em;
+    height: 1.5em;
+    justify-content: center;
+    align-items: center;
+    background-color: vars.$tert-clr;
+    outline: none;
+  }
+
+  button.navbar-toggle:focus ~ div.dropdown {
+    display: flex;
+  }
+
+  div.dropdown:hover {
+    display: flex;
+    >:hover {
+      background-color: vars.$tert-clr;
+    }
+  }
+
+  div.dropdown {
+    display: none;
+    margin: 0;
+    flex-direction: column;
+    position: fixed;
+    top: 5em;
+    width: 100%;
+    background-color: vars.$sec-clr;
+    > * {
+      display: flex;
+      align-items: center;
+      border-bottom: 0.2em solid vars.$prim-clr;
+      height: 2em;
+      > * {
+        margin-left: 1em;
+      }
+    }
+  }
+
+}
+
+.logo {
+  font-size: 2em;
+}

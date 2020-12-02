@@ -1,0 +1,10 @@
+@use 'vars';
+
+button {
+  border: none;
+  border-radius: 10%;
+}
+
+button:focus {
+  border: 3px solid vars.$sec-clr;
+}
