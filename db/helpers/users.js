@@ -3,9 +3,9 @@
  * @param {*} db postgres database object
  * @param {*} user_id id of user
  */
-const getUserMapFavorites = (db, user_id) => {
+const getUserMapFavorites = (db, user_id) => { // TODO: third join is redundant
   const query = `
-  SELECT DISTINCT creator_id, creator_name, maps.id, maps.name, maps.lat, maps.long, maps.created_at, maps.views
+  SELECT DISTINCT creator_id, creator_name, maps.*
   FROM favorites
   JOIN maps ON favorites.map_id=maps.id
   JOIN (
@@ -49,9 +49,9 @@ const getUserFavorites = (db, user_id) => {
  * @param {*} db postgres database object
  * @param {*} user_id id of the user
  */
-const getUserPinnedMaps = (db, user_id) => {
+const getUserPinnedMaps = (db, user_id) => { // TODO: third join is redundant
   const query = `
-  SELECT DISTINCT creator_id, creator_name, maps.id, maps.name, maps.lat, maps.long, maps.created_at, maps.views
+  SELECT DISTINCT creator_id, creator_name, maps.*
   FROM pins
   JOIN maps ON pins.map_id=maps.id
   LEFT OUTER JOIN favorites ON maps.id=favorites.map_id AND pins.user_id=favorites.user_id
@@ -73,7 +73,7 @@ const getUserPinnedMaps = (db, user_id) => {
  */
 const getUserOwnedMaps = (db, user_id) => {
   const query = `
-  SELECT users.id AS creator_id, users.name AS creator, maps.name, maps.lat, maps.long, maps.created_at, maps.views
+  SELECT users.id AS creator_id, users.name AS creator, maps.*
   FROM users
   JOIN maps ON users.id=maps.owner_id
   WHERE users.id = $1
