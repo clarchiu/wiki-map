@@ -25,21 +25,23 @@ const formatMapData = function(mapData, isLoggedIn, userFav) {
   const $map = $(`
     <div class="map-preview">
       <h4>${name}</h4>
-      <a href="/maps/${id}">
-        <img
-        src="https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/${long},${lat},${zoom}/660x440?access_token=pk.eyJ1IjoiZm9ybXNob290ZXIiLCJhIjoiY2tpNDdhd3I1MjB6czMzbzJuOTlhcm14ayJ9.HpP-a7lmU22QbOqwifry1A"
-        alt="Preview of a map of ${name} created by ${creator_name}.">
-      </a>
-      <footer>
-        <span>Created by <a href="/users/${creator_id}">${creator_name}</a> on ${created_at.slice(0,10)}</span>
-        <span>${lat}, ${long}</span>
-        <span>${views}</span>
-      </footer>
+      <div class="wrapper">
+        <a href="/maps/${id}">
+          <img
+          src="https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/${long},${lat},${zoom}/660x440?access_token=pk.eyJ1IjoiZm9ybXNob290ZXIiLCJhIjoiY2tpNDdhd3I1MjB6czMzbzJuOTlhcm14ayJ9.HpP-a7lmU22QbOqwifry1A"
+          alt="Preview of a map of ${name} created by ${creator_name}.">
+        </a>
+        <header>
+          <span>Created by <a href="/users/${creator_id}">${creator_name}</a> on ${created_at.slice(0,10)}</span>
+          <span>${round(lat, 4)}, ${round(long, 4)}</span>
+          <span><i class="fas fa-eye"></i> ${views}</span>
+        </header>
+      </div>
     </div>
   `);
 
   if (isLoggedIn) {
-    $map.find('footer').append(`
+    $map.find('.wrapper').append(`
       <span data-action="/users/${mapData.id}/favorite" class="${userFav[id] ? "favorited" : "unfavorited"}">
         <i class="fas fa-heart"></i>
       </span>

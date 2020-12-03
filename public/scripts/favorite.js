@@ -21,7 +21,7 @@ $( function() {
     });
   };
 
-  $('#all-maps').on('click', 'span[data-action]', function(e) {
+  $('#all-maps').on('click', '[data-action]', function(e) {
     const $span = $(this);
     const url = $span.attr('data-action');
 
