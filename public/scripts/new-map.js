@@ -65,7 +65,7 @@ $(function() {
     ]);
   });
 
-  $('.err').on('click', function(event) {
+  $('#err').on('click', function(event) {
     showErrMsg(false, 1);
   })
 });

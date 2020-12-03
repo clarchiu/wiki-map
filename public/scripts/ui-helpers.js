@@ -14,7 +14,7 @@ const showElement = (show, $element, done, speed) => {
  * @param {String} err error message to display
  */
 const showErrMsg = (show, speed, err = "") => {
-  const $errMsg = $('.err');
+  const $errMsg = $('#err');
   showElement(show, $errMsg, () => {
     $errMsg.find('.errMsg').text(err);
   }, speed);
