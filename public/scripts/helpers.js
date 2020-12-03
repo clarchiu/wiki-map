@@ -33,7 +33,6 @@ const formatMapData = function(mapData, isLoggedIn, userFav) {
         </a>
         <header>
           <span>Created by <a href="/users/${creator_id}">${creator_name}</a> on ${created_at.slice(0,10)}</span>
-          <span>${round(lat, 4)}, ${round(long, 4)}</span>
           <span><i class="fas fa-eye"></i> ${views}</span>
         </header>
       </div>
