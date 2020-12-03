@@ -60,7 +60,7 @@ module.exports = (db) => {
   router.get("/:map_id", (req, res) => {
     incrementViews(db, req.params.map_id)
       .then((data) => {
-        if (!data.id) return res.status(404).render('error', { status: 404, msg: 'map not found' });
+        if (!data || !data.id) return res.status(404).render('error', { status: 404, msg: 'map not found' });
         res.render("map_show");
       });
   });

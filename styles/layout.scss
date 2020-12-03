@@ -1,6 +1,7 @@
 // See: https://sass-lang.com/
 
 @import 'vars';
+@import 'error';
 @import 'map-preview';
 @import 'button';
 @import 'header';
@@ -8,6 +9,7 @@
 @import 'pin-popout';
 
 html {
+  height: 90%;
   box-sizing: border-box;
 }
 
@@ -16,6 +18,7 @@ html {
 }
 
 body {
+  height: 100%;
   background-color: $back-clr;
 
   h1 {
