@@ -28,12 +28,15 @@ $img-asp-ratio: 66.667%;
       bottom: 0;
       width: 100%;
       max-width: $max-width;
+      padding: 0 10px 0 10px;
 
       display: none;
       justify-content: space-between;
       background-color: $prim-clr-trnslcnt;
       color: #EEE;
-      font-family: $prim-font;
+      font-family: $sec-font;
+      font-size: 15px;
+      opacity: 70%;
 
       span {
         padding: 5px;
