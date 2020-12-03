@@ -1,5 +1,6 @@
 #new-map {
   padding: 25px 50px 0 50px;
+  width: 100%;
 
   h3 {
     font-family: $prim-font;
@@ -60,7 +61,8 @@
   min-width: 440px;
 
   #mapid {
-    height: 440px;
+    height: auto;
+    min-height: 440px;
   }
 
   #coordinates {
@@ -92,6 +94,7 @@
 
 #submit-form {
   padding: 30px 0 30px 50px;
+  width: 100%;
 
 
   button[form="new-map-form"] {
@@ -103,7 +106,7 @@
     color: #EEE;
   }
 
-  .err {
+  #err {
     display: none;
     color: red;
   }

@@ -1,0 +1,54 @@
+@media (min-width: 769px) {
+  #new-map {
+    float: left;
+    width: 35%;
+    min-width: 270px;
+    max-width: 320px;
+    padding-right: 0;
+
+    form {
+
+      .input-wrapper {
+
+        label {
+          width: 100%;
+        }
+
+      }
+    }
+  }
+
+  #submit-form {
+    float: left;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 35%;
+    min-width: 270px;
+    max-width: 320px;
+    //margin-left: auto;
+
+    button[form="new-map-form"] {
+      margin: 50px 0 10px 30px;
+    }
+  }
+
+  #new-map-wrapper {
+    float: right;
+    width: 55%;
+    min-width: 400px;
+
+    #mapid {
+      height: auto;
+    }
+  }
+}
+
+@media (min-width: 992px) {
+  .form-container {
+    width: 992px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+}
