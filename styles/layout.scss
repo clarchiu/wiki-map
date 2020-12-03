@@ -7,6 +7,7 @@
 @import 'pin-popout';
 @import 'map-preview';
 @import 'maps-new';
+@import 'maps-new-wide';
 @import 'map-show';
 
 html {
@@ -20,7 +21,7 @@ html {
 
 body {
   height: 100%;
-  background-color: $back-clr;
+  background-color: #EEE;
 
   h1 {
     color: #244751;
