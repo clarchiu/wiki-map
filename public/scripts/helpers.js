@@ -19,6 +19,12 @@ const createError = function(msg) {
   return $err;
 };
 
+const escape = function (str) {
+  let div = document.createElement('div');
+  div.appendChild(document.createTextNode(str));
+  return div.innerHTML;
+}
+
 // TODO: need to escape mapData
 const formatMapData = function(mapData, isLoggedIn, userFav) {
   const { creator_name, creator_id, id, name, lat, long, created_at, views, zoom } = mapData;
