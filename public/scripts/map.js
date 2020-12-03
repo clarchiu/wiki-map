@@ -93,8 +93,8 @@ $( function() {
   };
 
   const submitPinHandler = function(marker, pinList, mapData, index, coord = null) {
-  $('form.pin-submit').on('submit', function(event) {
-      $('form.pin-delete').off("submit");
+  $('button.delete').on('submit', function(event) {
+      $('form.pin-delete').off("click");
       event.preventDefault();
       event.stopPropagation();
       const sData = `${$(event.target).serialize()}${coord ? `&lat=${coord.lat}&long=${coord.long}` : ""}`;
