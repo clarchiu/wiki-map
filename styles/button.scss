@@ -19,6 +19,18 @@ button {
     background-color: rgb(255, 87, 87);
     border-color: $prim-clr;
   }
+  &.edit {
+    color: $tert-clr;
+    background-color: $prim-clr;
+  }
+  &.submit {
+    color: white;
+    background-color:  rgb(0, 180, 0);
+  }
+  &.delete {
+    color: white;
+    background-color: rgb(180, 0, 0);
+  }
   cursor: pointer;
 }
 

@@ -24,29 +24,29 @@ $( function() {
     `
       <div class="pin">
       <form class="pin-submit" action="${"/maps/" + pin.map_id}${ pin.id ? "/" +  pin.id : ``}" >
-      <header>
+      <div class="input-form">
         <span class="label">Title</span>
-        <input class="label" name="title" value="${escape(pin.title || "")}" placeholder="title"/>
-      </header>
+        <input name="title" value="${escape(pin.title || "")}" placeholder="title"/>
+      </div>
       <hr/>
-      <div>
+      <div class="text-form">
         <span class="label">Description</span>
         <textarea name="description" placeholder="description"/>${escape(pin.description || "")}</textarea>
       </div>
       <hr/>
-      <div>
+      <div class="input-form">
         <span class="label">Image URL</span>
         <input name="imgUrl" value="${escape(pin.img_url || "")}" placeholder="image url"/>
       </div>
       <hr/>
       <div class="buttons">
-        <button type="submit">
+        <button class="submit" type="submit">
           <span>submit</span>
           <i class="fas fa-check-square"></i>
         </button>
         ${ pin.id ? `
         <form class="pin-delete" action="${ "/maps/" + pin.map_id + "/" +  pin.id + "/delete"}">
-          <button type="submit">
+          <button class="delete" type="submit">
             <span>delete</span>
             <i class="fas fa-trash-alt"></i>
           </button>
@@ -64,7 +64,7 @@ $( function() {
         ${ user_id === pin.user_id ? `
         <form name=${pin.id}>
           <div class="buttons">
-            <button type="submit">
+            <button class="edit" type="submit">
               <span>edit</span>
               <i class="fas fa-edit"></i>
             </button>
