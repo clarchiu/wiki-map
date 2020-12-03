@@ -55,7 +55,19 @@ const getMapById = (db, id) => {
     .catch(err => err || { msg: `Could not get map with id: ${id} from database` });
 };
 
+const incrementViews = (db, map_id) => {
+  let query = `
+  UPDATE maps SET views = views + 1
+  WHERE id = $1
+  RETURNING id;
+  `;
+  return db.query(query, [map_id])
+    .then(res => res.rows[0])
+    .catch(err => err || { msg: `Could not get map with id: ${map_id} from database` });
+};
+
 module.exports = {
   getAllMaps,
-  getMapById
+  getMapById,
+  incrementViews,
 }
