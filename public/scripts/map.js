@@ -25,40 +25,50 @@ $( function() {
       <div class="pin">
       <form class="pin-submit" action="${"/maps/" + pin.map_id}${ pin.id ? "/" +  pin.id : ``}" >
       <header>
+        <span>Title</span>
         <input name="title" value="${escape(pin.title || "")}" placeholder="title"/>
       </header>
-      <div>
-        <input name="description" value="${escape(pin.description || "")}" placeholder="description"/>
+      <hr/>
+      <div class="body">
+        <span>Description</span>
+        <textarea name="description" placeholder="description"/>${escape(pin.description || "")}</textarea>
       </div>
+      <hr/>
       <div>
+        <span>Image URL</span>
         <input name="imgUrl" value="${escape(pin.img_url || "")}" placeholder="image url"/>
       </div>
-      <button type="submit">
-        <span>submit</span>
-        <i class="fas fa-check-square"></i>
-      </button>
-      </form>
-      ${ pin.id ? `
-      <form class="pin-delete" action="${ "/maps/" + pin.map_id + "/" +  pin.id + "/delete"}">
+      <hr/>
+      <div class="buttons">
         <button type="submit">
-          <span>delete</span>
-          <i class="fas fa-trash-alt"></i>
+          <span>submit</span>
+          <i class="fas fa-check-square"></i>
         </button>
-      </form>` : ``
-      }
+        ${ pin.id ? `
+        <form class="pin-delete" action="${ "/maps/" + pin.map_id + "/" +  pin.id + "/delete"}">
+          <button type="submit">
+            <span>delete</span>
+            <i class="fas fa-trash-alt"></i>
+          </button>
+        </form>` : ``
+        }
+      </div>
+      </form>
       </div>
     ` :
     `
       <div class="pin">
         <header>${escape(pin.title)}</header>
-        <div>${escape(pin.description)}</div>
+        <div class="body">${escape(pin.description)}</div>
         <img src="${escape(pin.img_url)}" placeholder="img-not-found"/>
         ${ user_id === pin.user_id ? `
         <form name=${pin.id}>
-          <button type="submit">
-            <span>edit</span>
-            <i class="fas fa-edit"></i>
-          </button>
+          <div class="buttons">
+            <button type="submit">
+              <span>edit</span>
+              <i class="fas fa-edit"></i>
+            </button>
+          </div>
         </form>
         ` : `` }
       </div>

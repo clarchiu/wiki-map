@@ -9,10 +9,14 @@ nav#top-nav {
   background-color: $prim-clr;
   width: 100%;
 
+  > button {
+    background-color: vars.$prim-clr;
+  }
+
   div.logo-wrap {
     display: flex;
+    margin: auto;
     align-items: center;
-    justify-self: center;
     > * {
       margin-left: 0.2em;
     }
