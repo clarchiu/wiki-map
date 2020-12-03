@@ -30,8 +30,8 @@ function submit(action, method, values) {
 $(function() {
   const DEFAULT = [49.2600, -123.1207];
   const MAP_ID = 'mapid';
-  const $lat = $("#new-map input[name='lat']");
-  const $long = $("#new-map input[name='long']");
+  const $lat = $("#new-map-form input[name='lat']");
+  const $long = $("#new-map-form input[name='long']");
 
   const mapView = createMapPreview(MAP_ID, DEFAULT);
   updateFormLatLng($lat, $long, getMapState(mapView));
@@ -45,12 +45,12 @@ $(function() {
     updateFormLatLng($lat, $long, getMapState(mapView));
   });
 
-  $("#new-map input.coord").on('input', _.debounce(function() {
+  $("#new-map-form input.coord").on('input', _.debounce(function() {
     const $this = $(this);
     const input = $this.val();
 
     if (!$.isNumeric(input)) {
-      showErrMsg(true, 1, $(`#new-map label[for=${$this.attr('name')}]`).text() + ' must be a number!');
+      showErrMsg(true, 1, $(`#new-map-form label[for=${$this.attr('name')}]`).text() + ' must be a number!');
       return;
     }
     showErrMsg(false, 200);
@@ -60,7 +60,7 @@ $(function() {
   // TODO: add client side input verification
   $('form').on('submit', function(event) {
     event.preventDefault();
-    const $name = $("#new-map input[name='name']");
+    const $name = $("#new-map-form input[name='name']");
 
     if (!$name.val()) {
       showErrMsg(true, 1, 'Name cannot be empty!');
@@ -77,4 +77,8 @@ $(function() {
       { name: 'zoom', value: mapState.zoom }
     ]);
   });
+
+  $('.err').on('click', function(event) {
+    showErrMsg(false, 1);
+  })
 });
