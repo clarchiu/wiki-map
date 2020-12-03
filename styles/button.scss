@@ -4,8 +4,8 @@ button {
   display: inline-block;
   border: none;
 
-  border-radius: 0.2em;
-  margin: 0.1em;
+  border-radius: 0.2rem;
+  margin: 0.15rem;
   background-color: $tert-clr;
   &:hover {
     filter: brightness(115%);
