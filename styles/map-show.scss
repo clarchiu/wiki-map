@@ -1,0 +1,57 @@
+div.pinned-map {
+  > header {
+    display: block;
+    text-align: center;
+    font-size: 1.5em;
+    font-weight: bold;
+    margin: auto;
+
+    div {
+      display: flex;
+      justify-content: flex-end;
+      span.date {
+        font-size: 1em;
+        margin-right: 0.2em;
+      }
+
+      span.views {
+        font-size: 1em;
+        > *{
+          margin-right: 0.2em;
+        }
+      }
+    }
+  }
+}
+
+#map {
+  width: 100%;
+  height: 100%;
+  margin: auto;
+}
+
+#mapid {
+  width: $map-w;
+  height: $map-h;
+  border: 0.2rem solid $prim-clr;
+}
+
+footer {
+  display: block;
+  .buttons {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+    justify-content: stretch;
+    > * {
+      font-size: 1em;
+      display: block;
+      span {
+        margin-left: 0.5em;
+        margin-right: 0.5em;
+      }
+      flex: 1 1 0;
+    }
+  }
+}
