@@ -3,7 +3,11 @@ $max-width: 660px;
 $img-asp-ratio: 66.667%;
 
 .map-preview {
-  padding: 25px 50px 25px 50px;
+  padding: 25px 30px 25px 30px;
+
+  h4 {
+    padding-left: 20px;
+  }
 
   div.preview-wrapper {
     position: relative;
@@ -28,7 +32,7 @@ $img-asp-ratio: 66.667%;
       display: none;
       justify-content: space-between;
       background-color: $prim-clr-trnslcnt;
-      color: $back-clr;
+      color: #EEE;
       font-family: $prim-font;
 
       span {
