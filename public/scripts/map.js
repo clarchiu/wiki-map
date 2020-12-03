@@ -105,6 +105,7 @@ $( function() {
         }
       }
       $('button.delete').off("click");
+      $('form.pin-submit').off('submit');
       event.preventDefault();
       event.stopPropagation();
       const sData = `${$(event.target).serialize()}${coord ? `&lat=${coord.lat}&long=${coord.long}` : ""}`;
@@ -121,6 +122,7 @@ $( function() {
         marker.setPopupContent(formatPin(newPin.user_id, newPin)).openPopup();
       })
       .catch( err => {
+        submitPinHandler(marker, pinList, mapData, index, coord);
         $('#map').append(createError(err.statusText));
       });
     });
@@ -146,6 +148,7 @@ $( function() {
     $('button.delete').on("click", function(event) {
       if (!$(this).attr('formaction')) return;
       $('form.pin-submit').off('submit');
+      $('button.delete').off('click');
       event.preventDefault();
       event.stopPropagation();
       $.ajax({
@@ -158,6 +161,7 @@ $( function() {
         map.removeLayer(marker);
       })
       .catch( err => {
+        onDeletePin(map, marker, pinList, mapData, index);
         $('#map').append(createError(err.statusText));
       });
     });
@@ -199,9 +203,11 @@ $( function() {
       const $button = $(event.target);
       if ($button.hasClass('adding')) {
         map.off('click');
+        $('#mapid').removeClass('pinpoint');
         $button.removeClass('adding').text('add a pin');
       } else {
         addPin(map, pinList, data);
+        $('#mapid').addClass('pinpoint');
         $button.addClass('adding').text('stop adding');
       }
     });

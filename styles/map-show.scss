@@ -35,6 +35,9 @@ div.pinned-map {
     height: $map-h;
     border: 0.2rem solid $prim-clr;
     border-radius: 0.5rem;
+    &.pinpoint {
+      cursor: crosshair;
+    }
   }
 }
 
