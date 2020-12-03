@@ -7,6 +7,8 @@ $img-asp-ratio: 66.667%;
 
   h4 {
     padding-left: 20px;
+    color: $prim-clr;
+    font-family: $prim-font;
   }
 
   div.preview-wrapper {
@@ -23,7 +25,7 @@ $img-asp-ratio: 66.667%;
       transition: .5s ease;
     }
 
-    header {
+    div {
       position: absolute;
       bottom: 0;
       width: 100%;
@@ -71,7 +73,7 @@ $img-asp-ratio: 66.667%;
       opacity: 0.5;
     }
 
-    header {
+    div {
       display: flex;
     }
   }
