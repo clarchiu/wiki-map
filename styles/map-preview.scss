@@ -51,8 +51,14 @@ $img-asp-ratio: 66.667%;
     }
   }
 
-  div.wrapper:hover header {
-    display: flex;
+  div.wrapper:hover {
+    img {
+      opacity: 0.7;
+    }
+
+    header {
+      display: flex;
+    }
   }
 }
 
