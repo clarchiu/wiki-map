@@ -3,18 +3,24 @@ $max-width: 660px;
 $img-asp-ratio: 66.667%;
 
 .map-preview {
-  padding: 25px 50px 25px 50px;
+  padding: 25px 30px 25px 30px;
 
-  div.wrapper {
+  h4 {
+    padding-left: 20px;
+  }
+
+  div.preview-wrapper {
     position: relative;
     padding-top: $img-asp-ratio;
     max-height: $max-height;
+    max-width: $max-width;
 
     img {
       width: 100%;
       max-width: $max-width;
       position: absolute;
       top: 0;
+      transition: .5s ease;
     }
 
     header {
@@ -22,12 +28,15 @@ $img-asp-ratio: 66.667%;
       bottom: 0;
       width: 100%;
       max-width: $max-width;
+      padding: 0 10px 0 10px;
 
       display: none;
       justify-content: space-between;
       background-color: $prim-clr-trnslcnt;
-      color: $back-clr;
-      font-family: $prim-font;
+      color: #EEE;
+      font-family: $sec-font;
+      font-size: 15px;
+      opacity: 70%;
 
       span {
         padding: 5px;
@@ -48,11 +57,23 @@ $img-asp-ratio: 66.667%;
       right: 0;
       padding: 5px 15px 15px 15px;
       font-size: 30px;
+      transition: .5s ease;
+      opacity: 0.5;
     }
   }
 
-  div.wrapper:hover header {
-    display: flex;
+  div.preview-wrapper [data-action]:hover {
+    opacity: 1;
+  }
+
+  div.preview-wrapper:hover {
+    img {
+      opacity: 0.5;
+    }
+
+    header {
+      display: flex;
+    }
   }
 }
 

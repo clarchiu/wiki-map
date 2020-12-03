@@ -1,7 +1,7 @@
 const updateFormLatLng = function($lat, $long, mapState) {
   const { lat, lng } = mapState;
-  $lat.val(lat);
-  $long.val(lng);
+  $lat.text('Lat: ' + lat);
+  $long.text('Long: ' + lng);
 }
 
 // http://stackoverflow.com/questions/5524045/jquery-non-ajax-post
@@ -30,37 +30,24 @@ function submit(action, method, values) {
 $(function() {
   const DEFAULT = [49.2600, -123.1207];
   const MAP_ID = 'mapid';
-  const $lat = $("input[name='lat']");
-  const $long = $("input[name='long']");
+  const $lat = $("#coordinates .lat");
+  const $long = $("#coordinates .long");
 
   const mapView = createMapPreview(MAP_ID, DEFAULT);
   updateFormLatLng($lat, $long, getMapState(mapView));
 
   mapView.on('movestart', function() {
-    showErrMsg(false, 200);
-    updateFormLatLng($lat, $long, getMapState(mapView));
+    showErrMsg(false, 0);
   });
 
-  mapView.on('moveend', function() {
+  mapView.on('move', _.throttle(function() {
     updateFormLatLng($lat, $long, getMapState(mapView));
-  });
-
-  $("input.coord").on('input', _.debounce(function() {
-    const $this = $(this);
-    const input = $this.val();
-
-    if (!$.isNumeric(input)) {
-      showErrMsg(true, 1, $(`label[for=${$this.attr('name')}]`).text() + ' must be a number!');
-      return;
-    }
-    showErrMsg(false, 200);
-    updateMapCenter(mapView, input);
-  }, 500));
+  }, 100));
 
   // TODO: add client side input verification
   $('form').on('submit', function(event) {
     event.preventDefault();
-    const $name = $("input[name='name']");
+    const $name = $("#new-map-form input[name='name']");
 
     if (!$name.val()) {
       showErrMsg(true, 1, 'Name cannot be empty!');
@@ -78,5 +65,7 @@ $(function() {
     ]);
   });
 
-  $
+  $('.err').on('click', function(event) {
+    showErrMsg(false, 1);
+  })
 });

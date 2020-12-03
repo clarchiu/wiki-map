@@ -1,0 +1,112 @@
+#new-map {
+  padding: 25px 50px 0 50px;
+
+  h3 {
+    font-family: $prim-font;
+    color: $prim-clr;
+    margin-bottom: 15px;
+  }
+
+  form {
+    .section-head {
+      font-size: 20px;
+      font-family: $sec-font;
+      color: $prim-clr;
+      margin-bottom: 5px;
+
+      .number {
+        background: $sec-clr;
+        color: #EEE;
+        height: 30px;
+        width: 30px;
+        display: inline-block;
+        font-size: 12px;
+        margin-left: -10px;
+        margin-right: 10px;
+        line-height: 30px;
+        text-align: center;
+        border-radius: 15px 15px 15px 0px;
+      }
+    }
+
+    .input-wrapper {
+      width: auto;
+      display: flex;
+      padding-left: 30px;
+
+      label {
+        width: 70%;
+        display: block;
+        font: 20px $sec-font;
+        color: #888;
+        margin-bottom: 10px;
+      }
+
+      input {
+        display: block;
+        width: 100%;
+        padding: 5px;
+        border-radius: 6px;
+        border: 2px solid #fff;
+        box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.33);
+      }
+    }
+  }
+}
+
+#new-map-wrapper {
+  position: relative;
+  margin: 15px 30px 15px 30px;
+  min-width: 440px;
+
+  #mapid {
+    height: 440px;
+  }
+
+  #coordinates {
+    z-index: 1000;
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    padding: 5px 10px 5px 10px;
+    width: auto;
+    min-width: 45%;
+    display: none;
+    justify-content: center;
+
+    background-color: $prim-clr-trnslcnt;
+    opacity: 70%;
+    color: #EEE;
+    font-size: 10px;
+
+    > .lat {
+      margin-right: 5px;
+    }
+  }
+}
+
+#new-map-wrapper:hover #coordinates {
+  display: flex;
+}
+
+#submit-form {
+  margin: 30px 0px 30px 0;
+  padding-left: 50px;
+
+
+  button[form="new-map-form"] {
+    display: inline-block;
+    margin: 0 10px 0 10px;
+    padding: 8px 20px 8px 20px;
+    font-size: 20px;
+    background-color: $sec-clr;
+    color: #EEE;
+  }
+
+  .err {
+    display: none;
+    color: red;
+  }
+}
+

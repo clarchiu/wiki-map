@@ -25,7 +25,7 @@ const formatMapData = function(mapData, isLoggedIn, userFav) {
   const $map = $(`
     <div class="map-preview">
       <h4>${name}</h4>
-      <div class="wrapper">
+      <div class="preview-wrapper">
         <a href="/maps/${id}">
           <img
           src="https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/${long},${lat},${zoom}/660x440?access_token=pk.eyJ1IjoiZm9ybXNob290ZXIiLCJhIjoiY2tpNDdhd3I1MjB6czMzbzJuOTlhcm14ayJ9.HpP-a7lmU22QbOqwifry1A"
@@ -33,7 +33,6 @@ const formatMapData = function(mapData, isLoggedIn, userFav) {
         </a>
         <header>
           <span>Created by <a href="/users/${creator_id}">${creator_name}</a> on ${created_at.slice(0,10)}</span>
-          <span>${round(lat, 4)}, ${round(long, 4)}</span>
           <span><i class="fas fa-eye"></i> ${views}</span>
         </header>
       </div>
@@ -41,7 +40,7 @@ const formatMapData = function(mapData, isLoggedIn, userFav) {
   `);
 
   if (isLoggedIn) {
-    $map.find('.wrapper').append(`
+    $map.find('.preview-wrapper').append(`
       <span data-action="/users/${mapData.id}/favorite" class="${userFav[id] ? "favorited" : "unfavorited"}">
         <i class="fas fa-heart"></i>
       </span>

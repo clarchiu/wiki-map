@@ -111,11 +111,12 @@ module.exports = (db) => {
   });
 
   // POST /:id/favorite, used for added/removing a map from a user's favorites list
-  router.post("/:id/favorite", (req, res) => {
-    if (!req.session.user_id || !req.params.id) {
+  router.post("/:map_id/favorite", (req, res) => {
+    const mapId = req.params.map_id
+    if (!req.session.user_id || !mapId) {
       return res.status(401).json({ status: 401, msg: 'please log in to add maps to your favorites' });
     }
-    updateFavorite(db, req.session.user_id,req.params.id)
+    updateFavorite(db, req.session.user_id, mapId)
       .then(isFav => res.json(isFav))
       .catch(err => {
         res

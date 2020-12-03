@@ -102,7 +102,8 @@ const updateFavorite = (db,user_id,map_id) => {
       if (!res.rows[0]) {
         query = `INSERT INTO favorites (user_id, map_id, favorited) VALUES ($1, $2, true)
         RETURNING favorited;`;
-        return db.query(query,[user_id, map_id]).then(res => res.rows[0]);
+        return db.query(query,[user_id, map_id])
+          .then(res => res.rows[0]);
       }
       return res.rows[0];
     });

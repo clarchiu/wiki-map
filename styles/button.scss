@@ -3,11 +3,11 @@ button {
   height: auto;
   display: inline-block;
   border: none;
-
   border-radius: 0.2rem;
   margin: 0.15rem;
   color: white;
   background-color: $sec-clr;
+  
   &:hover {
     filter: brightness(115%);
   }
