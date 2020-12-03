@@ -3,15 +3,15 @@ $( function() {
   const loadFavorites = loadMapsData(window.location.pathname + '/favorites');
   const loadContributions = loadMapsData(window.location.pathname + '/contributions');
 
-  const getUserFavs = checkLoggedIn
+  const getMyFavMaps = checkLoggedIn
     .then(loggedIn => {
-      if (loggedIn) return getUserFavorites();
+      if (loggedIn) return getMyFavoriteMaps();
       return {};
     });
 
-  Promise.all([loadFavorites, loadContributions, checkLoggedIn, getUserFavs])
-    .then(([favorites, contributions, isLoggedIn, userFav]) => {
-      renderRequest($('#favorites'), favorites, isLoggedIn, userFav);
-      renderRequest($('#contributions'), contributions, isLoggedIn, userFav);
+  Promise.all([loadFavorites, loadContributions, checkLoggedIn, getMyFavMaps])
+    .then(([favorites, contributions, isLoggedIn, myFavs]) => {
+      renderMaps($('#favorites'), favorites, isLoggedIn, myFavs);
+      renderMaps($('#contributions'), contributions, isLoggedIn, myFavs);
     });
 });
