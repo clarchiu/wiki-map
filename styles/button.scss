@@ -1,12 +1,13 @@
 button {
   width: auto;
   height: auto;
-  display: block;
+  display: inline-block;
   border: none;
-
-  border-radius: 0.2em;
-  margin: 0.1em;
-  background-color: $tert-clr;
+  border-radius: 0.2rem;
+  margin: 0.15rem;
+  color: white;
+  background-color: $sec-clr;
+  
   &:hover {
     filter: brightness(115%);
   }
@@ -17,8 +18,21 @@ button {
     background-color: rgb(0, 180, 0);
   }
   &.adding {
-    background-color: rgb(255, 87, 87);
+    color: white;
+    background-color: rgb(180, 0, 0);
     border-color: $prim-clr;
+  }
+  &.edit {
+    color: $tert-clr;
+    background-color: $prim-clr;
+  }
+  &.submit {
+    color: white;
+    background-color:  rgb(0, 180, 0);
+  }
+  &.delete {
+    color: white;
+    background-color: rgb(180, 0, 0);
   }
   cursor: pointer;
 }

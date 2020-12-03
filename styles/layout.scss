@@ -1,13 +1,16 @@
 // See: https://sass-lang.com/
 
 @import 'vars';
-@import 'map-preview';
-@import 'maps-new';
+@import 'error';
 @import 'button';
 @import 'header';
 @import 'pin-popout';
+@import 'map-preview';
+@import 'maps-new';
+@import 'map-show';
 
 html {
+  height: 90%;
   box-sizing: border-box;
 }
 
@@ -16,7 +19,8 @@ html {
 }
 
 body {
-  background-color: #EEE;
+  height: 100%;
+  background-color: $back-clr;
 
   h1 {
     color: #244751;

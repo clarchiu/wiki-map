@@ -8,7 +8,7 @@
 const express = require('express');
 const router  = express.Router();
 
-const { getAllMaps, getMapById } = require('../db/helpers/maps-get.js');
+const { getAllMaps, getMapById, incrementViews } = require('../db/helpers/maps-get.js');
 const { createNewMap, createNewPin, editPin, deletePin } = require('../db/helpers/maps-post.js');
 
 const checkUserAuthenticated = (req) => {
@@ -58,7 +58,11 @@ module.exports = (db) => {
 
   // show map with map_id
   router.get("/:map_id", (req, res) => {
-    res.render("map_show");
+    incrementViews(db, req.params.map_id)
+      .then((data) => {
+        if (!data || !data.id) return res.status(404).render('error', { status: 404, msg: 'map not found' });
+        res.render("map_show");
+      });
   });
 
   router.get("/:map_id/json", (req, res) => {

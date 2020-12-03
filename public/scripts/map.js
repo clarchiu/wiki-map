@@ -9,11 +9,20 @@ $( function() {
   const formatBorder = function(data) {
     let map = `
     <div class="pinned-map">
-    <header>${escape(data.name)}</header>
-    <div id="mapid" style="height: 500px"></div>
-    <footer><span>${data.created_at}</span><span>${data.views}</span></footer>
-    ${ data.isAuth ? `<button class="add-pin">add pin</button>` : ``}
-    <button class="reset-view">reset view</button>
+    <header>
+      <span>${escape(data.name)}</span>
+      <div>
+        <span class="date">${data.created_at.slice(0,10)}</span>
+        <span class="views"><i class="fas fa-eye" aria-hidden="true"></i>${data.views}</span>
+      </div>
+    </header>
+    <div id="mapid"></div>
+    <footer>
+      <div class="buttons">
+        ${ data.isAuth ? `<button class="add-pin">add pin</button>` : ``}
+        <button class="reset-view">reset view</button>
+      </div>
+    </footer>
     </div>
     `;
     return map;
@@ -24,47 +33,45 @@ $( function() {
     `
       <div class="pin">
       <form class="pin-submit" action="${"/maps/" + pin.map_id}${ pin.id ? "/" +  pin.id : ``}" >
-      <header>
-        <span>Title</span>
+      <div class="input-form">
+        <span class="label">Title</span>
         <input name="title" value="${escape(pin.title || "")}" placeholder="title"/>
-      </header>
+      </div>
       <hr/>
-      <div class="body">
-        <span>Description</span>
+      <div class="text-form">
+        <span class="label">Description</span>
         <textarea name="description" placeholder="description"/>${escape(pin.description || "")}</textarea>
       </div>
       <hr/>
-      <div>
-        <span>Image URL</span>
+      <div class="input-form">
+        <span class="label">Image URL</span>
         <input name="imgUrl" value="${escape(pin.img_url || "")}" placeholder="image url"/>
       </div>
       <hr/>
       <div class="buttons">
-        <button type="submit">
+        <button class="submit" type="submit">
           <span>submit</span>
           <i class="fas fa-check-square"></i>
         </button>
         ${ pin.id ? `
-        <form class="pin-delete" action="${ "/maps/" + pin.map_id + "/" +  pin.id + "/delete"}">
-          <button type="submit">
+          <button class="delete" type="submit" formaction="${ "/maps/" + pin.map_id + "/" +  pin.id + "/delete"}">
             <span>delete</span>
             <i class="fas fa-trash-alt"></i>
           </button>
-        </form>` : ``
-        }
-      </div>
+        ` : ``}
+        </div>
       </form>
       </div>
     ` :
     `
       <div class="pin">
-        <header>${escape(pin.title)}</header>
+        <header class="label">${escape(pin.title)}</header>
         <div class="body">${escape(pin.description)}</div>
-        <img src="${escape(pin.img_url)}" placeholder="img-not-found"/>
+        <div class="preview-img"><img src="${escape(pin.img_url)}" placeholder="img-not-found"/></div>
         ${ user_id === pin.user_id ? `
         <form name=${pin.id}>
           <div class="buttons">
-            <button type="submit">
+            <button class="edit" type="submit">
               <span>edit</span>
               <i class="fas fa-edit"></i>
             </button>
@@ -87,7 +94,7 @@ $( function() {
 
   const submitPinHandler = function(marker, pinList, mapData, index, coord = null) {
   $('form.pin-submit').on('submit', function(event) {
-      $('form.pin-delete').off("submit");
+      $('button.delete').off("click");
       event.preventDefault();
       event.stopPropagation();
       const sData = `${$(event.target).serialize()}${coord ? `&lat=${coord.lat}&long=${coord.long}` : ""}`;
@@ -126,13 +133,14 @@ $( function() {
   };
 
   const onDeletePin = function(map, marker, pinList, mapData, index) {
-    $('form.pin-delete').on("submit", function(event) {
+    $('button.delete').on("click", function(event) {
+      if (!$(this).attr('formaction')) return;
       $('form.pin-submit').off('submit');
       event.preventDefault();
       event.stopPropagation();
       $.ajax({
         method: 'post',
-        url: `/maps/${mapData.id}/${mapData.pins[index].id}/delete`,
+        url: $(this).attr('formaction'),
       })
       .then( deletedPin => {
         delete pinList[deletedPin.id];
@@ -159,10 +167,8 @@ $( function() {
   const addMap = function(data) {
     const map = L.map('mapid',{
       minZoom: 1,
+      tap: false,
     }).setView([data.lat,data.long],data.zoom);
-
-    // const bounds = map.getBounds().pad(0.1);
-    // map.setMaxBounds([bounds.getSouthWest(),bounds.getNorthEast()]);
 
     L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
       attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
