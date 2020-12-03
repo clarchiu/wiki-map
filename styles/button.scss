@@ -1,10 +1,9 @@
-@use 'vars';
-
 button {
   width: auto;
   height: auto;
   display: block;
   border: none;
+
   border-radius: 0.2em;
   margin: 0.1em;
   background-color: vars.$tert-clr;

@@ -1,5 +1,3 @@
-@use 'vars';
-
 main {
   margin-top: 4em;
 }
@@ -8,7 +6,7 @@ nav#top-nav {
   z-index: 10000;
   position: fixed;
   top: 0;
-  background-color: vars.$prim-clr;
+  background-color: $prim-clr;
   width: 100%;
 
   > button {

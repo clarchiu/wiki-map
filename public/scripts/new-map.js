@@ -1,9 +1,7 @@
-const updateFormLatLng = function(mapState) {
+const updateFormLatLng = function($lat, $long, mapState) {
   const { lat, lng } = mapState;
-  $("input[name='lat']").val(lat);
-  $("input[name='long']").val(lng);
-  // $("input[name='lat']").attr('placeholder', lat);
-  // $("input[name='long']").attr('placeholder', lng);
+  $lat.val(lat);
+  $long.val(lng);
 }
 
 // http://stackoverflow.com/questions/5524045/jquery-non-ajax-post
@@ -32,22 +30,25 @@ function submit(action, method, values) {
 $(function() {
   const DEFAULT = [49.2600, -123.1207];
   const MAP_ID = 'mapid';
-  const mapView = createMapPreview(MAP_ID, DEFAULT);
+  const $lat = $("input[name='lat']");
+  const $long = $("input[name='long']");
 
-  updateFormLatLng(getMapState(mapView));
+  const mapView = createMapPreview(MAP_ID, DEFAULT);
+  updateFormLatLng($lat, $long, getMapState(mapView));
 
   mapView.on('movestart', function() {
     showErrMsg(false, 200);
-    updateFormLatLng(getMapState(mapView));
+    updateFormLatLng($lat, $long, getMapState(mapView));
   });
 
   mapView.on('moveend', function() {
-    updateFormLatLng(getMapState(mapView));
+    updateFormLatLng($lat, $long, getMapState(mapView));
   });
 
   $("input.coord").on('input', _.debounce(function() {
     const $this = $(this);
     const input = $this.val();
+
     if (!$.isNumeric(input)) {
       showErrMsg(true, 1, $(`label[for=${$this.attr('name')}]`).text() + ' must be a number!');
       return;
@@ -59,16 +60,23 @@ $(function() {
   // TODO: add client side input verification
   $('form').on('submit', function(event) {
     event.preventDefault();
+    const $name = $("input[name='name']");
 
+    if (!$name.val()) {
+      showErrMsg(true, 1, 'Name cannot be empty!');
+      return;
+    }
     const PATH = '/maps';
     const mapState = getMapState(mapView);
-    updateFormLatLng(mapState);
+    updateFormLatLng($lat, $long, mapState);
 
     submit(PATH, 'POST', [
-      { name: 'name', value: $("input[name='name']").val() },
+      { name: 'name', value: $name.val() },
       { name: 'lat', value: mapState.lat },
       { name: 'long', value: mapState.lng },
       { name: 'zoom', value: mapState.zoom }
     ]);
   });
+
+  $
 });

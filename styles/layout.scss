@@ -1,8 +1,9 @@
 // See: https://sass-lang.com/
-@use 'vars';
-@use 'button';
-@use 'header';
-@use 'pin-popout';
+
+@import 'vars';
+@import 'map-preview';
+@import 'button';
+@import 'header';
 
 html {
   box-sizing: border-box;

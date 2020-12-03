@@ -2,14 +2,14 @@ $(function() {
   const loadMaps = loadMapsData('/maps/json');
   const checkLoggedIn = checkUserLoggedIn();
 
-  const getUserFavs = checkLoggedIn
+  const getMyFavMaps = checkLoggedIn
     .then(loggedIn => {
-      if (loggedIn) return getUserFavorites();
+      if (loggedIn) return getMyFavoriteMaps();
       return {};
     });
 
-  Promise.all([checkLoggedIn, getUserFavs, loadMaps])
-    .then(([isLoggedIn, userFav, maps]) => {
-      renderRequest($('#all-maps'), maps, isLoggedIn, userFav);
+  Promise.all([checkLoggedIn, getMyFavMaps, loadMaps])
+    .then(([isLoggedIn, myFavs, maps]) => {
+      renderMaps($('#all-maps'), maps, isLoggedIn, myFavs);
     });
 });
