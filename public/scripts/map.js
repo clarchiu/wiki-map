@@ -96,6 +96,14 @@ $( function() {
 
   const submitPinHandler = function(marker, pinList, mapData, index, coord = null) {
   $('form.pin-submit').on('submit', function(event) {
+      const $form = $(event.target);
+      const items = $.merge($form.find('input'),($form.find('textarea')));
+      for (const item of items) {
+        if (!$(item).val()) {
+          $form.find('.err').remove();
+          return $form.append(createError('fields must not be empty'));
+        }
+      }
       $('button.delete').off("click");
       event.preventDefault();
       event.stopPropagation();

@@ -69,7 +69,7 @@ div.leaflet-popup-content {
       text-align: center;
     }
 
-    div {
+    div:not(.err) {
       display: flex;
       flex-direction: column;
       justify-content: stretch;
