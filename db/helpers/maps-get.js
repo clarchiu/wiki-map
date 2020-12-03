@@ -4,14 +4,15 @@
  */
 const getAllMaps = (db, uid) => {
   return db.query(`
-  SELECT users.name as creator_name, maps.*, favorited
-  FROM maps
-  JOIN users ON owner_id = users.id
-  LEFT JOIN (
-    SELECT *
-    FROM favorites
-    WHERE favorites.user_id = $1
-  ) as user_favorites ON maps.id = user_favorites.map_id
+    SELECT users.name as creator_name, users.id as creator_id, maps.*, favorited
+    FROM maps
+    JOIN users ON owner_id = users.id
+    LEFT JOIN (
+      SELECT *
+      FROM favorites
+      WHERE favorites.user_id = $1
+    ) as user_favorites ON maps.id = user_favorites.map_id
+    ORDER BY maps.views DESC
   `, [uid])
     .then((res) => {
       return res.rows;
@@ -28,10 +29,10 @@ const getAllMaps = (db, uid) => {
  */
 const _getPinsOnMap = (db, map) => {
   return db.query(`
-  SELECT pins.*, users.name as owner_name
-  FROM pins
-  JOIN users ON pins.user_id = users.id
-  WHERE map_id = $1
+    SELECT pins.*, users.name as owner_name
+    FROM pins
+    JOIN users ON pins.user_id = users.id
+    WHERE map_id = $1
   `, [map.id])
     .then(res => {
       map.pins = res.rows;

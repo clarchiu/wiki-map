@@ -1,0 +1,58 @@
+$max-height: 440px;
+$max-width: 660px;
+$img-asp-ratio: 66.667%;
+
+.map-preview {
+  padding: 25px 50px 25px 50px;
+
+  div.wrapper {
+    position: relative;
+    padding-top: $img-asp-ratio;
+    max-height: $max-height;
+
+    img {
+      width: 100%;
+      max-width: $max-width;
+      position: absolute;
+      top: 0;
+    }
+
+    header {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      max-width: $max-width;
+
+      display: none;
+      justify-content: space-between;
+      background-color: $prim-clr-trnslcnt;
+      color: $back-clr;
+      font-family: $prim-font;
+
+      span {
+        padding: 5px;
+      }
+
+      a:link {
+        color: $sec-clr;
+      }
+
+      a:visited {
+        color: $tert-clr;
+      }
+    }
+
+    [data-action] {
+      position: absolute;
+      top: 0;
+      right: 0;
+      padding: 5px 15px 15px 15px;
+      font-size: 30px;
+    }
+  }
+
+  div.wrapper:hover header {
+    display: flex;
+  }
+}
+

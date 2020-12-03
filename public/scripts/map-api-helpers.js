@@ -16,8 +16,8 @@ const getMapState = function(mapView) {
   const center = mapView.getCenter();
   return {
     zoom: mapView.getZoom(),
-    lat: Math.round(center.lat * 10000) / 10000,
-    lng: Math.round(center.lng * 10000) / 10000,
+    lat: round(center.lat, 4),
+    lng: round(center.lng, 4),
   };
 }
 
