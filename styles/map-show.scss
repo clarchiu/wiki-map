@@ -28,13 +28,13 @@ div.pinned-map {
 #map {
   width: 95vw;
   margin: auto;
-}
 
-#mapid {
-  width: $map-w;
-  height: $map-h;
-  border: 0.2rem solid $prim-clr;
-  border-radius: 0.5rem;
+  #mapid {
+    width: $map-w;
+    height: $map-h;
+    border: 0.2rem solid $prim-clr;
+    border-radius: 0.5rem;
+  }
 }
 
 footer {
