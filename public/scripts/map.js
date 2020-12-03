@@ -29,12 +29,12 @@ $( function() {
         <input class="label" name="title" value="${escape(pin.title || "")}" placeholder="title"/>
       </header>
       <hr/>
-      <div class="body">
+      <div>
         <span class="label">Description</span>
         <textarea name="description" placeholder="description"/>${escape(pin.description || "")}</textarea>
       </div>
       <hr/>
-      <div class="body">
+      <div>
         <span class="label">Image URL</span>
         <input name="imgUrl" value="${escape(pin.img_url || "")}" placeholder="image url"/>
       </div>
