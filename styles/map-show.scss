@@ -30,6 +30,7 @@ div.pinned-map {
   margin: auto;
 
   #mapid {
+    min-height: 570px;
     width: $map-w;
     height: $map-h;
     border: 0.2rem solid $prim-clr;

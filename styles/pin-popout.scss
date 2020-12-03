@@ -4,6 +4,8 @@ div.leaflet-popup-content-wrapper {
 }
 
 div.leaflet-popup-content {
+  max-height: 20rem;
+  min-height: 570px * 2 / 3;
   height: $map-h * 2 / 3;
   width: $map-w * 2 / 3;
   overflow-wrap: break-word;
@@ -95,7 +97,7 @@ div.leaflet-popup-content {
       }
 
       &.preview-img {
-        flex: 8 1 0;
+        flex: 5 1 0;
         background-color: $prim-clr;
         border: 0.25em solid $prim-clr;
         border-radius: 0.5rem;
