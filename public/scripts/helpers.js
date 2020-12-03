@@ -21,17 +21,17 @@ const createError = function(msg) {
 
 // TODO: need to escape mapData
 const formatMapData = function(mapData, isLoggedIn, userFav) {
-  const { creator_name, id, name, lat, long, created_at, views, zoom } = mapData;
+  const { creator_name, creator_id, id, name, lat, long, created_at, views, zoom } = mapData;
   const $map = $(`
     <div class="map-preview">
       <h4>${name}</h4>
       <a href="/maps/${id}">
         <img
-        src="https://api.mapbox.com/styles/v1/mapbox/light-v10/static/${long},${lat},${zoom}/300x300?access_token=pk.eyJ1IjoiZm9ybXNob290ZXIiLCJhIjoiY2tpNDdhd3I1MjB6czMzbzJuOTlhcm14ayJ9.HpP-a7lmU22QbOqwifry1A"
+        src="https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/${long},${lat},${zoom}/660x440?access_token=pk.eyJ1IjoiZm9ybXNob290ZXIiLCJhIjoiY2tpNDdhd3I1MjB6czMzbzJuOTlhcm14ayJ9.HpP-a7lmU22QbOqwifry1A"
         alt="Preview of a map of ${name} created by ${creator_name}.">
       </a>
       <footer>
-        <span>Created by ${creator_name} on ${created_at.slice(0,10)}</span>
+        <span>Created by <a href="/users/${creator_id}">${creator_name}</a> on ${created_at.slice(0,10)}</span>
         <span>${lat}, ${long}</span>
         <span>${views}</span>
       </footer>
@@ -58,7 +58,7 @@ const checkUserLoggedIn = function() {
   .catch(() => Promise.resolve(false));
 };
 
-const getUserFavorites = function() {
+const getMyFavoriteMaps = function() {
   return $.ajax({
     method: 'get',
     url: '/users/me/favorites',
@@ -80,12 +80,12 @@ const loadMapsData = function(url) {
   });
 };
 
-const renderRequest = function($target, maps, isLoggedIn, userFav) {
+const renderMaps = function($target, maps, isLoggedIn, myFavs) {
   if (!maps[0]) {
     return $target.append('<span>Nothing to see here...</span>');
   }
   for (const mapData of maps) {
-    let $map = formatMapData(mapData, isLoggedIn, userFav);
+    let $map = formatMapData(mapData, isLoggedIn, myFavs);
     $target.append($map);
   }
 };
