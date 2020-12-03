@@ -25,20 +25,17 @@ $( function() {
       <div class="pin">
       <form class="pin-submit" action="${"/maps/" + pin.map_id}${ pin.id ? "/" +  pin.id : ``}" >
       <header>
-        <span>Title</span>
+        <span class="label">Title</span>
         <input name="title" value="${escape(pin.title || "")}" placeholder="title"/>
       </header>
-      <hr/>
       <div class="body">
-        <span>Description</span>
+        <span class="label">Description</span>
         <textarea name="description" placeholder="description"/>${escape(pin.description || "")}</textarea>
       </div>
-      <hr/>
-      <div>
-        <span>Image URL</span>
+      <div class="body">
+        <span class="label">Image URL</span>
         <input name="imgUrl" value="${escape(pin.img_url || "")}" placeholder="image url"/>
       </div>
-      <hr/>
       <div class="buttons">
         <button type="submit">
           <span>submit</span>
@@ -58,9 +55,9 @@ $( function() {
     ` :
     `
       <div class="pin">
-        <header>${escape(pin.title)}</header>
+        <header class="label">${escape(pin.title)}</header>
         <div class="body">${escape(pin.description)}</div>
-        <img src="${escape(pin.img_url)}" placeholder="img-not-found"/>
+        <div class="preview-img"><img src="${escape(pin.img_url)}" placeholder="img-not-found"/></div>
         ${ user_id === pin.user_id ? `
         <form name=${pin.id}>
           <div class="buttons">
