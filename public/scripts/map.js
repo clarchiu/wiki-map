@@ -67,7 +67,9 @@ $( function() {
       <div class="pin">
         <header class="label">${escape(pin.title)}</header>
         <div class="body">${escape(pin.description)}</div>
-        <div class="preview-img"><img src="${escape(pin.img_url)}" placeholder="img-not-found"/></div>
+        <div class="preview-img">
+          <img src="${escape(pin.img_url)}" placeholder="img-not-found"/>
+        </div>
         ${ user_id === pin.user_id ? `
         <form name=${pin.id}>
           <div class="buttons">
