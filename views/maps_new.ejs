@@ -37,29 +37,30 @@
     <%- include('partials/_header') %>
 
     <main>
-      <div id="new-map-wrapper">
-        <div id="mapid" style="height: 500px"></div>
-      </div>
-      <section id="new-map-form">
-        <h2>Create a new map</h2>
-        <form action="/maps" method="POST">
-          <div class="form-section">
-            <label for="name">Name:<input type="text" name="name">
-            </label>
-          </div>
-          <div class="form-section">
-            <label for="lat">Latitude:<input class="coord" type="text" name="lat">
-            </label>
-            <label for="long">Longitude:<input class="coord" type="text" name="long">
-            </label>
-          </div>
-          <button type="submit">Submit</button>
-          <div class="err">
-            <span><i class="fas fa-exclamation-circle"></i></span>
-            <span class="errMsg"></span>
-          </div>
-        </form>
+      <section id="new-map">
+      <h3>Create A New Map</h3>
+      <form id="new-map-form" action="/maps" method="POST">
+        <div class="section-head"><span class="number">1</span>Give it a name</div>
+        <div class="input-wrapper">
+          <label for="name"><input type="text" name="name"></label>
+        </div>
+        <div class="section-head"><span class="number">2</span>Choose a location</div>
+      </form>
       </section>
+      <div id="new-map-wrapper">
+        <div id="mapid"></div>
+        <span id="coordinates">
+          <span class="lat">Lat: </span>
+          <span class="long">Long: </span>
+        </span>
+      </div>
+      <div id="submit-form">
+        <button form="new-map-form"type="submit">Submit</button>
+        <span class="err">
+          <span><i class="fas fa-exclamation-circle"></i></span>
+          <span class="errMsg"></span>
+        </span>
+      </div>
     </main>
 
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
