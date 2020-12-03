@@ -6,7 +6,7 @@ button {
 
   border-radius: 0.2em;
   margin: 0.1em;
-  background-color: vars.$tert-clr;
+  background-color: $tert-clr;
   &:hover {
     filter: brightness(115%);
   }
@@ -18,7 +18,7 @@ button {
   }
   &.adding {
     background-color: rgb(255, 87, 87);
-    border-color: vars.$prim-clr;
+    border-color: $prim-clr;
   }
   cursor: pointer;
 }

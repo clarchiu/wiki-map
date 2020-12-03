@@ -1,10 +1,8 @@
-@use 'vars';
-
 div.leaflet-popup-content {
-  max-height: vars.$map-h * 2 / 3;
-  width: vars.$map-w * 2 / 3;
+  max-height: $map-h * 2 / 3;
+  width: $map-w * 2 / 3;
   .pin {
-    height: vars.$map-h * 2 / 3;
+    height: $map-h * 2 / 3;
     width: 100%;
     display: flex;
     flex-direction: column;

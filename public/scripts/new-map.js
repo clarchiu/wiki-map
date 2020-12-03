@@ -77,6 +77,4 @@ $(function() {
       { name: 'zoom', value: mapState.zoom }
     ]);
   });
-
-  $
 });
