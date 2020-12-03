@@ -36,17 +36,19 @@ div.leaflet-popup-content {
       width: 100%;
       border-style: solid;
       border-color: $tert-clr $tert-clr $prim-clr $tert-clr;
-      border-width: 0.15rem 0.15rem 0.2rem 0.15rem;
-      border-radius: 0.1rem;
+      border-width: 0.1rem;
+      border-radius: 0.2rem;
       outline-color: $prim-clr;
+      box-shadow: inset 1px 1px 2px 0px $sec-clr;
     }
 
     textarea {
       width: 100%;
       height: 100%;
-      border: 0.15rem solid $tert-clr;
-      border-radius: 0.1rem;
+      border: 0.1rem solid $tert-clr;
+      border-radius: 0.2rem;
       outline-color: $prim-clr;
+      box-shadow: inset 1px 1px 2px 0px $sec-clr;
       resize: none;
     }
 
@@ -87,6 +89,8 @@ div.leaflet-popup-content {
         border-width: 0.15rem 0.1rem 0.15rem 0.1rem;
         border-color: $prim-clr $tert-clr $prim-clr $tert-clr;
         margin: 0.1em;
+        box-shadow: 1px 1px 4px 1px #bccad6;
+        border-radius: 0.1rem;
         overflow-y: auto;
       }
 
@@ -97,6 +101,7 @@ div.leaflet-popup-content {
         border-radius: 0.5rem;
         margin: 0.1em;
         height: 50%;
+        box-shadow: 1px 1px 4px 1px $prim-clr;
 
         img {
           object-fit: cover;

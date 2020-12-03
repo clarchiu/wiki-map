@@ -7,7 +7,9 @@ button {
   margin: 0.15rem;
   color: white;
   background-color: $sec-clr;
-  
+  box-shadow: 1px 1px 4px 1px $prim-clr;
+  cursor: pointer;
+
   &:hover {
     filter: brightness(115%);
   }
@@ -34,6 +36,5 @@ button {
     color: white;
     background-color: rgb(180, 0, 0);
   }
-  cursor: pointer;
 }
 
