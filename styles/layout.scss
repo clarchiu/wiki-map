@@ -4,6 +4,7 @@
 @import 'map-preview';
 @import 'button';
 @import 'header';
+@import 'map-show';
 @import 'pin-popout';
 
 html {
@@ -15,7 +16,7 @@ html {
 }
 
 body {
-  background-color: #EEE;
+  background-color: $back-clr;
 
   h1 {
     color: #244751;
