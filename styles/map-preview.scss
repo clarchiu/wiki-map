@@ -1,16 +1,17 @@
-$max-height: 400px;
-$max-width: 600px;
+$preview-max-h: 400px;
+$preview-max-w: 600px;
 $side-pad: 30px;
 $img-asp-ratio: 66.667%;
 
-@media (min-width: $max-width + $side-pad + $side-pad) {
+@media (min-width: $preview-max-w + $side-pad + $side-pad) {
   .map-preview {
     margin-left: auto;
     margin-right: auto;
-    width: $max-width + $side-pad + $side-pad;
+    width: $preview-max-w + $side-pad + $side-pad;
 
     div.preview-wrapper {
-      height: $max-height;
+      padding-top: 0;
+      height: $preview-max-h;
     }
   }
 }
@@ -27,12 +28,12 @@ $img-asp-ratio: 66.667%;
   div.preview-wrapper {
     position: relative;
     padding-top: $img-asp-ratio;
-    max-height: $max-height;
-    max-width: $max-width;
+    max-height: $preview-max-h;
+    max-width: $preview-max-w;
 
     img {
       width: 100%;
-      max-width: $max-width;
+      max-width: $preview-max-w;
       position: absolute;
       top: 0;
       transition: .5s ease;
@@ -42,7 +43,7 @@ $img-asp-ratio: 66.667%;
       position: absolute;
       bottom: 0;
       width: 100%;
-      max-width: $max-width;
+      max-width: $preview-max-w;
       padding: 0 10px 0 10px;
 
       display: none;
