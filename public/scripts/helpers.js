@@ -54,20 +54,20 @@ const getMyFavoriteMaps = function() {
 };
 
 const searchBarListener = function($target, $form, url, isLoggedIn, myFavs) {
-  $form.on('input', function(event){
-    event.preventDefault();
-    event.stopPropagation();
-    const sData = $(this).serialize().toLowerCase();
-    sendRequest('get', url, sData)
-      .then(maps => {
-        $target.empty();
-        renderMaps($target, maps, isLoggedIn, myFavs);
-      })
-      .catch(err => {
-        $form.find('.err').remove();
-        $form.append(createError(err.message));
-      });
-  });
+  $form.on('input', _.debounce(function(event) {
+      event.preventDefault();
+      event.stopPropagation();
+      const sData = $(this).serialize().toLowerCase();
+      sendRequest('get', url, sData)
+        .then(maps => {
+          $target.empty();
+          renderMaps($target, maps, isLoggedIn, myFavs);
+        })
+        .catch(err => {
+          $form.find('.err').remove();
+          $form.append(createError(err.message));
+        });
+    }, 1000));
 };
 
 const loadMapsData = function(url) {
