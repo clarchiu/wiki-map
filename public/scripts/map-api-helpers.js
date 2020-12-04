@@ -50,7 +50,6 @@ const centerMapOnUserLocation = function(map) {
 
 const parseGeocodeResponse = function (res, zoom) {
   for (const address of res) {
-    console.log(address);
     const types = address.types;
     if (types.includes('locality') || types.includes('neighborhood')) {
       return address.formatted_address;

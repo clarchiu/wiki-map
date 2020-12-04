@@ -59,7 +59,6 @@ $(function() {
   mapView.on('move', _.debounce(function() {
     // reverse geocode here
     const mapState = getMapState(mapView);
-    console.log(mapState.zoom);
     reverseGeocode(geocoder, mapState, (address) => {
       if (address) {
         $searchBox.val(address);
