@@ -21,8 +21,22 @@ html {
 }
 
 body {
+  width: 100%;
   height: 100%;
-  background-color: #EEE;
+  background-color: $back-clr;
+
+  > main {
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+
+    .maps {
+      margin-left: auto;
+      margin-right: auto;
+      max-width: 600px;
+    }
+
+  }
 
   h1 {
     color: #244751;
@@ -30,6 +44,46 @@ body {
 
   .favorited * {
     color: red;
+    animation-duration: 1s;
+    animation-name: pop;
+
+    @keyframes pop {
+      from {
+        color: black;
+        font-size: 100%
+      }
+      25% {
+        transform: rotate(30deg);
+      }
+      50% {
+        font-size: 200%;
+      }
+      75% {
+        transform: rotate(-30deg);
+      }
+      to {
+        color: red;
+        font-size: 100%;
+      }
+    }
+  }
+  .unfavorited * {
+    color: black;
+    animation-duration: 1s;
+    animation-name: whack;
+
+    @keyframes whack {
+      from {
+        color: red;
+      }
+      10% {
+        transform: rotate(60deg);
+      }
+      to {
+        transform: rotate(0deg);
+        color: black;
+      }
+    }
   }
 
 }
