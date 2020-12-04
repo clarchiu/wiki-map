@@ -67,7 +67,7 @@ const searchBarListener = function($target, $form, url, isLoggedIn, myFavs) {
           $form.find('.err').remove();
           $form.append(createError(err.message));
         });
-    }, 1000));
+    }, 500));
 };
 
 const loadMapsData = function(url) {
