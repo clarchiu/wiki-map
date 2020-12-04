@@ -2,7 +2,7 @@
  * Get all map data from db and return as Promise
  * @param {*} db
  */
-const getAllMaps = (db, uid) => {
+const getAllMaps = (db, uid, map_name = "") => {
   return db.query(`
     SELECT users.name as creator_name, users.id as creator_id, maps.*, favorited
     FROM maps
@@ -12,8 +12,9 @@ const getAllMaps = (db, uid) => {
       FROM favorites
       WHERE favorites.user_id = $1
     ) as user_favorites ON maps.id = user_favorites.map_id
+    WHERE LOWER(maps.name) LIKE $2
     ORDER BY maps.views DESC
-  `, [uid])
+  `, [uid, `%${map_name}%`])
     .then((res) => {
       return res.rows;
     })
@@ -55,19 +56,18 @@ const getMapById = (db, id) => {
     .catch(err => err || { msg: `Could not get map with id: ${id} from database` });
 };
 
-const incrementViews = (db, map_id) => {
-  let query = `
-  UPDATE maps SET views = views + 1
-  WHERE id = $1
-  RETURNING id;
+const getOwner = (db, map_id) => {
+  const query = `
+  SELECT users.name AS username, email, authenticated FROM users JOIN maps ON users.id=maps.owner_id
+  WHERE maps.id=$1
   `;
   return db.query(query, [map_id])
     .then(res => res.rows[0])
-    .catch(err => err || { msg: `Could not get map with id: ${map_id} from database` });
+    .catch(err => err || { msg: `Could not get an owner for map_id: ${map_id} from database` });
 };
 
 module.exports = {
   getAllMaps,
   getMapById,
-  incrementViews,
-}
+  getOwner,
+};
