@@ -78,7 +78,7 @@ $img-asp-ratio: 66.667%;
     }
   }
 
-  div.preview-wrapper [data-action]:hover {
+  div.preview-wrapper [data-action].favorited:hover {
     opacity: 1;
   }
 
