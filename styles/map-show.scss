@@ -26,37 +26,49 @@ div.pinned-map {
 }
 
 #map {
-  width: 95vw;
+  max-width: 992px;
+  width: $map-w;
   margin: auto;
 
   #mapid {
+    max-width: 992px;
     min-height: 500px;
-    width: $map-w;
+    width: 100%;
     height: $map-h;
     border: 0.2rem solid $prim-clr;
     border-radius: 0.5rem;
     &.pinpoint {
       cursor: crosshair;
     }
-  }
-}
-
-footer {
-  display: block;
-  .buttons {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    height: 100%;
-    justify-content: stretch;
-    > * {
-      font-size: 1em;
-      display: block;
-      span {
-        margin-left: 0.5em;
-        margin-right: 0.5em;
+    @media only screen and (max-width: 400px) {
+      .leaflet-control-zoom.leaflet-bar.leaflet-control a {
+        font-size: 16px;
+        width: 20px;
+        height: 25px;
+        line-height: 25px;
       }
-      flex: 1 1 0;
+    }
+
+  }
+
+  footer {
+    display: block;
+    .buttons {
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      height: 100%;
+      justify-content: stretch;
+      > * {
+        font-size: 1em;
+        display: block;
+        span {
+          margin-left: 0.5em;
+          margin-right: 0.5em;
+        }
+        flex: 1 1 0;
+      }
     }
   }
 }
+
