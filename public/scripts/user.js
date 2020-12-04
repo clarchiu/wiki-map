@@ -14,4 +14,18 @@ $( function() {
       renderMaps($('#favorites'), favorites, isLoggedIn, myFavs);
       renderMaps($('#contributions'), contributions, isLoggedIn, myFavs);
     });
+
+  $('li').on('click', function(e) {
+    const $this = $(this);
+    if ($this.hasClass('selected')) {
+      return;
+    }
+    const $selected = $('li.selected')
+
+    $selected.removeClass('selected');
+    $this.addClass('selected');
+
+    $(`#${$selected.attr('data-section')}`).removeClass('selected');
+    $(`#${$this.attr('data-section')}`).addClass('selected');
+  })
 });

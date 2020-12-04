@@ -3,7 +3,7 @@ const formatMapData = function(mapData, isLoggedIn, userFav) {
   const { creator_name, creator_id, id, name, lat, long, created_at, views, zoom } = mapData;
   const $map = $(`
     <div class="map-preview">
-      <h4>${escape(name)}</h4>
+      <h3>${escape(name)}</h3>
       <div class="preview-wrapper">
         <a href="/maps/${id}">
           <img
