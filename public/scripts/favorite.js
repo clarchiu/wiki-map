@@ -8,7 +8,6 @@ $( function() {
    * @returns a promise, containing either an error or undefined
    */
   const favorite = function($target, url) {
-    console.log(url);
     return $.ajax({
       method: 'post',
       url: url,

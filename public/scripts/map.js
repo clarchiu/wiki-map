@@ -74,30 +74,22 @@ $( function() {
     });
   };
 
-  const renderPinnedMap = function($target, promise) {
-    return promise.then((data) => {
-      let $border = formatBorder(data);
-      $target.append($border);
-      const map = addMap(data);
-      const pinList = bindPins(map,data);
-      addMapEventListeners(map, pinList, data);
-    })
+  const renderPinnedMap = function($target, data) {
+    let $border = formatBorder(data);
+    $target.append($border);
+    const map = addMap(data);
+    const pinList = bindPins(map,data);
+    addMapEventListeners(map, pinList, data);
   };
 
   const loadPinnedMap = function($target, url) {
-    renderPinnedMap($target, $.ajax({
-      method: 'get',
-      url: url,
-    })
-    .then(data => {
-      return $.ajax({
-        method: 'get',
-        url: '/users/me/json',
+    let mapData = {};
+    sendRequest('get',url)
+      .then(data => {
+        mapData = { ...mapData, ...data };
+        return sendRequest('get', '/users/me/json');
       })
-      .then(userData => {
-        return { ...userData, ...data };
-      });
-    }))
+      .then(userData => renderPinnedMap($target, {...userData, ...mapData}))
       .catch(err => {
         $target.append(createError(err.message));
       });

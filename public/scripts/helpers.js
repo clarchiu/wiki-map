@@ -1,30 +1,3 @@
-/** creates an error message element. Does not check for XXS as
- * this function is a helper function for devs and will only ever display on
- * a local client's page.
- *
- * @param {*} msg a string used as the error message
- */
-const createError = function(msg) {
-  const $err = $(`
-    <div class="err">
-      <span><i class="fas fa-exclamation-circle"></i></span>
-      <span>${msg}</span>
-    </div>
-  `);
-  $err.on('click', () => {
-    $err.slideUp(500,function() {
-      $err.remove();
-    });
-  });
-  return $err;
-};
-
-const escape = function (str) {
-  let div = document.createElement('div');
-  div.appendChild(document.createTextNode(str));
-  return div.innerHTML;
-}
-
 // TODO: need to escape mapData
 const formatMapData = function(mapData, isLoggedIn, userFav) {
   const { creator_name, creator_id, id, name, lat, long, created_at, views, zoom } = mapData;

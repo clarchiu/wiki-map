@@ -79,22 +79,19 @@ const submitPinHandler = function(marker, pinList, mapData, index, coord = null)
       event.preventDefault();
       event.stopPropagation();
       const sData = `${$(event.target).serialize()}${coord ? `&lat=${coord.lat}&long=${coord.long}` : ""}`;
-      $.ajax({
-        method: 'post',
-        data: sData,
-        url: `/maps/${mapData.id}${ index < 0 ? "" : `/${mapData.pins[index].id}` }`,
-      })
-      .then( newPin => {
-        if (!pinList[newPin.id]) pinList[newPin.id] = marker;
-        if ( index >= 0 ) mapData.pins[index] = newPin;
-        else mapData.pins.push(newPin);
-        marker.getPopup().off('remove');
-        marker.setPopupContent(formatPin(newPin.user_id, newPin)).openPopup();
-      })
-      .catch( err => {
-        submitPinHandler(marker, pinList, mapData, index, coord);
-        $('#map').append(createError(err.statusText));
-      });
+      const url = `/maps/${mapData.id}${ index < 0 ? "" : `/${mapData.pins[index].id}` }`;
+      sendRequest('post',url,sData)
+        .then( newPin => {
+          if (!pinList[newPin.id]) pinList[newPin.id] = marker;
+          if ( index >= 0 ) mapData.pins[index] = newPin;
+          else mapData.pins.push(newPin);
+          marker.getPopup().off('remove');
+          marker.setPopupContent(formatPin(newPin.user_id, newPin)).openPopup();
+        })
+        .catch( err => {
+          submitPinHandler(marker, pinList, mapData, index, coord);
+          $('#map').append(createError(err.statusText));
+        });
     });
   };
 
@@ -102,9 +99,9 @@ const addPin = function(map, pinList, mapData) {
   map.on('click', function(event) {
     const lat = event.latlng.lat;
     const long = event.latlng.lng;
-    const marker = L.marker([lat, long])
-      .addTo(map)
+    const marker = L.marker([lat, long]).addTo(map)
       .bindPopup(formatPin(null, {lat, long},true)).openPopup();
+
     marker.getPopup().on('remove', function() {
       map.removeLayer(marker);
     });
@@ -114,6 +111,27 @@ const addPin = function(map, pinList, mapData) {
 
 };
 
+const onDeletePin = function(map, marker, pinList, mapData, index) {
+  $('button.delete').on("click", function(event) {
+    const url = $(this).attr('formaction');
+    if (!url) return;
+    event.preventDefault();
+    event.stopPropagation();
+    $('form.pin-submit').off('submit');
+    $('button.delete').off('click');
+    sendRequest('post', url)
+      .then( deletedPin => {
+        delete pinList[deletedPin.id];
+        mapData.pins.splice(index,1);
+        map.removeLayer(marker);
+      })
+      .catch( err => {
+        onDeletePin(map, marker, pinList, mapData, index);
+        $('#map').append(createError(err.statusText));
+      });
+  });
+};
+
 const editPin = function(map, marker, pinList, mapData, index) {
   const pin = mapData.pins[index];
   marker.setPopupContent(formatPin(pin.user_id, pin, true));
@@ -121,29 +139,7 @@ const editPin = function(map, marker, pinList, mapData, index) {
     marker.setPopupContent(formatPin(pin.user_id, pin));
     marker.getPopup().off('remove');
   });
+
   onDeletePin(map, marker, pinList, mapData, index);
   submitPinHandler(marker, pinList, mapData, index);
-};
-
-const onDeletePin = function(map, marker, pinList, mapData, index) {
-  $('button.delete').on("click", function(event) {
-    if (!$(this).attr('formaction')) return;
-    $('form.pin-submit').off('submit');
-    $('button.delete').off('click');
-    event.preventDefault();
-    event.stopPropagation();
-    $.ajax({
-      method: 'post',
-      url: $(this).attr('formaction'),
-    })
-    .then( deletedPin => {
-      delete pinList[deletedPin.id];
-      mapData.pins.splice(index,1);
-      map.removeLayer(marker);
-    })
-    .catch( err => {
-      onDeletePin(map, marker, pinList, mapData, index);
-      $('#map').append(createError(err.statusText));
-    });
-  });
 };
