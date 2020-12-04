@@ -21,10 +21,48 @@ const getMapState = function(mapView) {
   };
 }
 
+const getMapBounds = function(mapView) {
+  const bounds = mapView.getBounds();
+  return {
+    northEast: bounds.getNorthEast(),
+    southWest: bounds.getSouthWest(),
+  }
+}
+
 const updateMapCenter = function (map, lat, lng) {
   const mapState = getMapState(map);
   const newLat = lat || mapState.lat;
   const newLng = lng || mapState.lng;
   map.panTo([newLat, newLng]);
+}
+
+const centerMapOnUserLocation = function(map) {
+  navigator.geolocation.getCurrentPosition(
+    (position) => {
+      const { latitude, longitude } = position.coords;
+      updateMapCenter(map, latitude, longitude);
+    },
+    () => updateMapCenter(map));
+}
+
+const parseGeocodeResponse = function (res, zoom) {
+  for (const address of res) {
+    console.log(address);
+    const types = address.types;
+    if (types.includes('locality') || types.includes('neighborhood')) {
+      return address.formatted_address;
+    }
+  }
+}
+
+const reverseGeocode = function(geocoder, mapState, complete) {
+  const { lat, lng } = mapState;
+  geocoder.geocode({location: { lat, lng }}, (res, status) => {
+    if (status !== 'OK' || res.length === 0) {
+      return '';
+    }
+    const address = parseGeocodeResponse(res, mapState.zoom);
+    complete(address);
+  });
 }
 
