@@ -10,7 +10,7 @@ const createMapPreview = function() {
     id: 'mapbox/streets-v11',
     tileSize: 512,
     zoomOffset: -1,
-    accessToken: 'pk.eyJ1IjoiZm9ybXNob290ZXIiLCJhIjoiY2tpNDdhd3I1MjB6czMzbzJuOTlhcm14ayJ9.HpP-a7lmU22QbOqwifry1A'
+    accessToken: mKey,
   }).addTo(mymap);
   return mymap;
 };
