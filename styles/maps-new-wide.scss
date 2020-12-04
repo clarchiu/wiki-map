@@ -2,6 +2,10 @@ $min-label-w: 270px;
 $max-label-w: 320px;
 
 @media (min-width: 768px) {
+  .form-container {
+    padding-top: 20px;
+  }
+
   #new-map {
     float: left;
     width: 35%;
@@ -10,13 +14,8 @@ $max-label-w: 320px;
     padding-right: 0;
 
     form {
-
-      .input-wrapper {
-
-        label {
+      input {
           width: 100%;
-        }
-
       }
     }
   }
