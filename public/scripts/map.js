@@ -7,6 +7,7 @@ $( function() {
       <span>${escape(data.name)}</span>
       <div>
         <span class="date">${data.created_at.slice(0,10)}</span>
+        <span>Created By: <a href="/users/${data.owner_id}">${escape(data.username)}</a></span>
         <span class="views"><i class="fas fa-eye" aria-hidden="true"></i>${data.views}</span>
       </div>
     </header>

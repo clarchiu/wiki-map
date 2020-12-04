@@ -8,8 +8,8 @@
 const express = require('express');
 const router  = express.Router();
 
-const { getAllMaps, getMapById, incrementViews } = require('../db/helpers/maps-get.js');
-const { createNewMap, createNewPin, editPin, deletePin } = require('../db/helpers/maps-post.js');
+const { getAllMaps, getMapById, getOwner } = require('../db/helpers/maps-get.js');
+const { createNewMap, createNewPin, editPin, deletePin, incrementViews } = require('../db/helpers/maps-post.js');
 
 const checkUserAuthenticated = (req) => {
   return req.session.isAuthenticated;
@@ -67,9 +67,14 @@ module.exports = (db) => {
   router.get("/:map_id/json", (req, res) => {
     // query database to get details about map,
     // including all pins and data
+    let mapInfo = {};
     getMapById(db, req.params.map_id)
       .then(map => {
-        res.json(map);
+        mapInfo = { ...map };
+        return getOwner(db, req.params.map_id);
+      })
+      .then(owner => {
+        res.json({...mapInfo, ...owner});
       })
       .catch(err => {
         res

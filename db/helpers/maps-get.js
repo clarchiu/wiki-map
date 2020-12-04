@@ -55,19 +55,18 @@ const getMapById = (db, id) => {
     .catch(err => err || { msg: `Could not get map with id: ${id} from database` });
 };
 
-const incrementViews = (db, map_id) => {
-  let query = `
-  UPDATE maps SET views = views + 1
-  WHERE id = $1
-  RETURNING id;
+const getOwner = (db, map_id) => {
+  const query = `
+  SELECT users.name AS username, email, authenticated FROM users JOIN maps ON users.id=maps.owner_id
+  WHERE maps.id=$1
   `;
   return db.query(query, [map_id])
     .then(res => res.rows[0])
-    .catch(err => err || { msg: `Could not get map with id: ${map_id} from database` });
+    .catch(err => err || { msg: `Could not get an owner for map_id: ${map_id} from database` });
 };
 
 module.exports = {
   getAllMaps,
   getMapById,
-  incrementViews,
-}
+  getOwner,
+};
