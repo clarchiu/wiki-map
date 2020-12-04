@@ -1,10 +1,10 @@
 const createNewMap = (db, mapData) => {
   const { ownerId, name, lat, long, zoom } = mapData;
   return db.query(`
-    INSERT INTO maps (owner_id, name, lat, long, zoom) VALUES
-    ($1, $2, $3, $4, $5)
-    RETURNING *
-  `, [ownerId || 1, name, lat || 49.26, long || -123.1207, zoom || 10]) //default for testing
+  INSERT INTO maps (owner_id, name, lat, long, zoom) VALUES
+  ($1, $2, $3, $4, $5)
+  RETURNING *
+  `, [ownerId, name, lat, long, zoom])
     .then(res => res.rows[0])
     .catch(() => { msg: "Could not insert map into database" });
 };
@@ -12,10 +12,10 @@ const createNewMap = (db, mapData) => {
 const createNewPin = (db, userId, pinData) => {
   const { mapId, title, description, imgUrl, lat, long } = pinData;
   return db.query(`
-    INSERT INTO pins (map_id, user_id, title, description, img_url, lat, long) VALUES
-    ($1, $2, $3, $4, $5, $6, $7)
-    RETURNING *
-  `, [mapId, userId || 1, title, description, imgUrl, lat, long])
+  INSERT INTO pins (map_id, user_id, title, description, img_url, lat, long) VALUES
+  ($1, $2, $3, $4, $5, $6, $7)
+  RETURNING *
+  `, [mapId, userId, title, description, imgUrl, lat, long])
     .then(res => res.rows[0])
     .catch(() => { msg: "Could not insert pin into database" });
 }

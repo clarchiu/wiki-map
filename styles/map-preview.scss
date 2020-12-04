@@ -1,33 +1,49 @@
-$max-height: 440px;
-$max-width: 660px;
+$preview-max-h: 400px;
+$preview-max-w: 600px;
+$side-pad: 30px;
 $img-asp-ratio: 66.667%;
 
+@media (min-width: $preview-max-w + $side-pad + $side-pad) {
+  .map-preview {
+    margin-left: auto;
+    margin-right: auto;
+    width: $preview-max-w + $side-pad + $side-pad;
+
+    div.preview-wrapper {
+      padding-top: 0;
+      height: $preview-max-h;
+    }
+  }
+}
+
 .map-preview {
-  padding: 25px 30px 25px 30px;
+  padding: 25px $side-pad 25px $side-pad;
 
   h4 {
     padding-left: 20px;
+    color: $prim-clr;
+    font-family: $prim-font;
   }
 
   div.preview-wrapper {
     position: relative;
     padding-top: $img-asp-ratio;
-    max-height: $max-height;
-    max-width: $max-width;
+    max-height: $preview-max-h;
+    max-width: $preview-max-w;
 
     img {
       width: 100%;
-      max-width: $max-width;
+      max-width: $preview-max-w;
       position: absolute;
       top: 0;
       transition: .5s ease;
     }
 
-    header {
+    div {
       position: absolute;
       bottom: 0;
       width: 100%;
-      max-width: $max-width;
+      max-width: $preview-max-w;
       padding: 0 10px 0 10px;
 
       display: none;
@@ -71,7 +87,7 @@ $img-asp-ratio: 66.667%;
       opacity: 0.5;
     }
 
-    header {
+    div {
       display: flex;
     }
   }
