@@ -1,9 +1,12 @@
-@media (min-width: 769px) {
+$min-label-w: 270px;
+$max-label-w: 320px;
+
+@media (min-width: 768px) {
   #new-map {
     float: left;
     width: 35%;
-    min-width: 270px;
-    max-width: 320px;
+    min-width: $min-label-w;
+    max-width: $max-label-w;
     padding-right: 0;
 
     form {
@@ -24,8 +27,8 @@
     flex-direction: column;
     align-items: flex-start;
     width: 35%;
-    min-width: 270px;
-    max-width: 320px;
+    min-width: $min-label-w;
+    max-width: $max-label-w;
     //margin-left: auto;
 
     button[form="new-map-form"] {
@@ -42,13 +45,4 @@
       height: auto;
     }
   }
-}
-
-@media (min-width: 992px) {
-  .form-container {
-    width: 992px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
 }

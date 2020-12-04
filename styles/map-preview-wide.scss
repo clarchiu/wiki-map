@@ -1,0 +1,34 @@
+@media (min-width: 768px) {
+  .maps {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: flex-start;
+    justify-content: flex-start;
+
+    .map-preview {
+      margin: 0;
+      width: 50%;
+
+      div.preview-wrapper {
+        padding-top: $img-asp-ratio;
+        height: auto;
+
+        div {
+          font-size: 1.5vw;
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 992px) {
+  .maps {
+    .map-preview {
+      div.preview-wrapper {
+        div {
+          font-size: 15px;
+        }
+      }
+    }
+  }
+}
