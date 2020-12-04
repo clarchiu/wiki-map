@@ -5,6 +5,8 @@ header.profile {
   align-items: center;
   max-width: 300px;
   margin: auto;
+  background-color: $tert-clr;
+  border-radius: 1rem;
   span.name {
     font-size: 1.5rem;
     font-weight: bold;
