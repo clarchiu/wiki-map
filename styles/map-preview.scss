@@ -19,7 +19,7 @@ $img-asp-ratio: 66.667%;
 .map-preview {
   padding: 25px $side-pad 25px $side-pad;
 
-  h4 {
+  h3 {
     padding-left: 20px;
     color: $prim-clr;
     font-family: $prim-font;
@@ -49,7 +49,7 @@ $img-asp-ratio: 66.667%;
       display: none;
       justify-content: space-between;
       background-color: $prim-clr-trnslcnt;
-      color: #EEE;
+      color: $body-clr;
       font-family: $sec-font;
       font-size: 15px;
       opacity: 70%;

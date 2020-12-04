@@ -1,0 +1,27 @@
+div.profile {
+  padding-top: 10px;
+
+  >header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    max-width: 300px;
+    margin: auto;
+    background-color: $tert-clr;
+    border-radius: 1rem;
+    span.name {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    span.email {
+      font-size: 0.5rem;
+      font-weight: bold;
+    }
+    img {
+      width: 100px;
+      height: auto;
+    }
+
+  }
+}

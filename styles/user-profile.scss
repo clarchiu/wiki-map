@@ -1,0 +1,42 @@
+$unselected-clr: #616161;
+$hover-clr: #b6b6b6;
+
+ul#profile-tabs {
+  position: -webkit-sticky; /* Safari */
+  position: sticky;
+  top: 3.99em;
+  z-index: 9999;
+
+  display: flex;
+  justify-content: center;
+
+  list-style: none;
+  padding: 0;
+  margin: 10px 0 10px 0;
+
+  li {
+    flex: 1 1 0px;
+    padding: 5px 0 5px 0;
+
+    background-color: $unselected-clr;
+    color: $body-clr;
+    font-size: 22px;
+    text-align: center;
+  }
+
+  li.selected {
+    background-color: $prim-clr;
+    color: $body-clr;
+  }
+
+  li:not(.selected):hover {
+    background-color: $hover-clr;
+    color: $prim-clr-trnslcnt;
+  }
+}
+
+.profile.maps:not(.selected) {
+  display: none;
+}
+
+

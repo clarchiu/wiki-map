@@ -27,19 +27,25 @@
   <body>
     <%- include("partials/_header") %>
     <main>
-      <header class="profile">
-        <span class="name"><%= other.name %></span>
-        <span class="email"><%= other.email %></span>
-        <img src="https://www.searchpng.com/wp-content/uploads/2019/02/Profile-ICon.png" alt="profile-picture"/>
-      </header>
-      <h1>Favorites:</h1>
-      <section id="favorites" class="maps" >
+      <div class="profile">
+        <header>
+          <span class="name"><%= other.name %></span>
+          <span class="email"><%= other.email %></span>
+          <img src="https://www.searchpng.com/wp-content/uploads/2019/02/Profile-ICon.png" alt="profile-picture"/>
+        </header>
+      </div>
+      <ul id="profile-tabs">
+        <li class="selected" data-section="favorites">Favorites</li>
+        <li data-section="contributions">Maps edited</li>
+        <!-- <li data-section="creations">Created maps</li> -->
+      </ul>
+      <section id="favorites" class="profile maps selected" >
       </section>
-      <h1>Maps edited:</h1>
-      <section id="contributions" class="maps" >
+      <section id="contributions" class="profile maps" >
+      </section>
+      <!-- <section id="creations" class="profile maps" > -->
       </section>
     </main>
-
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
   </body>
 </html>
