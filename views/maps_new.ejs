@@ -23,12 +23,15 @@
     crossorigin=""></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js" integrity="sha512-90vH1Z83AJY9DmlWa8WkjkV79yfS2n2Oxhsi2dZbIv0nC4E6m5AbH8Nh156kkM7JePmqD6tcZsfad1ueoaovww==" crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/c3a813e049.js" crossorigin="anonymous"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBCAplTJyT-ASYUBVXRl-BwWsWEmn-7P3A&libraries=places"></script>
+
 
     <!-- INTERNAL SCRIPTS -->
     <script type="text/javascript" src="/scripts/ui-helpers.js"></script>
     <script type="text/javascript" src="/scripts/utilities.js"></script>
     <script type="text/javascript" src="/scripts/map-api-helpers.js"></script>
     <script type="text/javascript" src="/scripts/helpers.js"></script>
+    <script type="text/javascript" src="/scripts/search-box.js"></script>
     <script type="text/javascript" src="/scripts/new-map.js"></script>
 
   </head>
@@ -42,10 +45,9 @@
           <h3>Create A New Map</h3>
           <form id="new-map-form" action="/maps" method="POST">
             <div class="section-head"><span class="number">1</span>Give it a name</div>
-            <div class="input-wrapper">
-              <label for="name"><input type="text" name="name"></label>
-            </div>
+            <input type="text" name="name">
             <div class="section-head"><span class="number">2</span>Choose a location</div>
+            <input id="search-box" type="text" name="location" placeholder="Search for a place...">
           </form>
           </section>
           <div id="new-map-wrapper">
