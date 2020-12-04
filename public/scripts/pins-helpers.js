@@ -64,21 +64,25 @@ const bindPins = function(map, data) {
   return pinList;
 };
 
+const validateForm = function($form, items) {
+  for (const item of items) {
+    if (!$(item).val()) {
+      $form.find('.err').remove();
+      return $form.append(createError('fields must not be empty'));
+    }
+  }
+};
+
 const submitPinHandler = function(marker, pinList, mapData, index, coord = null) {
   $('form.pin-submit').on('submit', function(event) {
       const $form = $(event.target);
       const items = $.merge($form.find('input'),($form.find('textarea')));
-      for (const item of items) {
-        if (!$(item).val()) {
-          $form.find('.err').remove();
-          return $form.append(createError('fields must not be empty'));
-        }
-      }
+      if (validateForm($form, items)) return;
       $('button.delete').off("click");
       $('form.pin-submit').off('submit');
       event.preventDefault();
       event.stopPropagation();
-      const sData = `${$(event.target).serialize()}${coord ? `&lat=${coord.lat}&long=${coord.long}` : ""}`;
+      const sData = `${$form.serialize()}${coord ? `&lat=${coord.lat}&long=${coord.long}` : ""}`;
       const url = `/maps/${mapData.id}${ index < 0 ? "" : `/${mapData.pins[index].id}` }`;
       sendRequest('post',url,sData)
         .then( newPin => {
