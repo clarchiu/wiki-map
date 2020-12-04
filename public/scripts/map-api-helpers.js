@@ -1,5 +1,8 @@
-const createMapPreview = function(id, latlng) {
-  const mymap = L.map(id).setView(latlng, 13);
+const createMapPreview = function() {
+  const DEFAULT = [49.2600, -123.1207];
+  const MAP_ID = 'mapid';
+
+  const mymap = L.map(MAP_ID).setView(DEFAULT, 13);
   L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
     maxZoom: 18,

@@ -28,14 +28,12 @@ function submit(action, method, values) {
 }
 
 $(function() {
-  const DEFAULT = [49.2600, -123.1207];
-  const MAP_ID = 'mapid';
   const $lat = $("#coordinates .lat");
   const $long = $("#coordinates .long");
   const $name = $("#new-map-form input[name='name']");
   const $searchBox = $('#search-box');
 
-  const mapView = createMapPreview(MAP_ID, DEFAULT);
+  const mapView = createMapPreview();
   const autocomplete = initAutocomplete(getMapBounds(mapView));
   const geocoder = new google.maps.Geocoder();
 
