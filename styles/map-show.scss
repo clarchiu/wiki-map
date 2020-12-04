@@ -11,14 +11,20 @@ div.pinned-map {
       display: flex;
       justify-content: space-between;
       span {
+        width: 30%;
         font-size: 0.5em;
-        margin-right: 0.2em;
-      }
-
-      span.views {
-        font-size: 0.5em;
-        > *{
-          margin-right: 0.2em;
+        &.date {
+          text-align: left;
+        }
+        &.creator {
+          width: 40%;
+          text-align: center;
+        }
+        &.views {
+          text-align: end;
+          > *{
+            margin-right: 0.2em;
+          }
         }
       }
     }
