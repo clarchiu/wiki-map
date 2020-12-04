@@ -9,6 +9,7 @@ nav#top-nav {
   background-color: $prim-clr;
   width: 100%;
   font-size: $nav-font;
+  min-height: 4em;
 
   > button {
     background-color: $prim-clr;

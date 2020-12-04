@@ -10,7 +10,8 @@
 @import 'maps-new';
 @import 'maps-new-wide';
 @import 'map-show';
-@import 'user';
+@import 'user-header';
+@import 'user-profile';
 
 html {
   height: 90%;
@@ -26,17 +27,8 @@ body {
   height: 100%;
   background-color: $back-clr;
 
-  > main {
-    max-width: 1000px;
-    margin-left: auto;
-    margin-right: auto;
-
-    .maps {
-      margin-left: auto;
-      margin-right: auto;
-      max-width: 600px;
-    }
-
+  >main {
+    padding-bottom: 50px;
   }
 
   h1 {

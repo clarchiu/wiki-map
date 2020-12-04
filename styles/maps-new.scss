@@ -17,7 +17,7 @@
 
       .number {
         background: $sec-clr;
-        color: #EEE;
+        color: $body-clr;
         height: 30px;
         width: 30px;
         display: inline-block;
@@ -79,7 +79,7 @@
 
     background-color: $prim-clr-trnslcnt;
     opacity: 70%;
-    color: #EEE;
+    color: $body-clr;
     font-size: 10px;
 
     > .lat {
@@ -103,7 +103,7 @@
     padding: 8px 20px 8px 20px;
     font-size: 20px;
     background-color: $sec-clr;
-    color: #EEE;
+    color: $body-clr;
   }
 
   #err {
