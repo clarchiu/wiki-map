@@ -1,0 +1,40 @@
+main {
+
+  header.search-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-width: 250px;
+    width: 60%;
+    background-color: $tert-clr;
+    padding: 1rem;
+    border: 0.2rem solid $sec-clr;
+    border-radius: 0.75rem;
+    margin: auto;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    box-shadow: 0.1rem 0.1rem 0.4rem 0.1rem $tert-clr;
+    form {
+      width: 100%;
+      text-align: center;
+      label[for="search"] {
+        width: 100%;
+        display: block;
+        font: 20px $sec-font;
+        font-weight: bold;
+        color: $prim-clr;
+        margin-bottom: 10px;
+      }
+      input[name="search"] {
+        display: block;
+        width: 100%;
+        padding: 5px;
+        border-radius: 0.25rem;
+        border: 2px solid #fff;
+        box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.33);
+        outline-color: $prim-clr;
+      }
+    }
+  }
+}

@@ -67,9 +67,21 @@ const deletePin = (db, userId, pinId) => {
     .then(res => res.rows[0]);
 }
 
+const incrementViews = (db, map_id) => {
+  let query = `
+  UPDATE maps SET views = views + 1
+  WHERE id = $1
+  RETURNING id;
+  `;
+  return db.query(query, [map_id])
+    .then(res => res.rows[0])
+    .catch(err => err || { msg: `Could not get map with id: ${map_id} from database` });
+};
+
 module.exports = {
   createNewMap,
   createNewPin,
   editPin,
-  deletePin
-}
+  deletePin,
+  incrementViews,
+};

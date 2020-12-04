@@ -3,7 +3,7 @@
   <head>
     <!-- META -->
     <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0' />
-    <title>Home Page</title>
+    <title>Wiki Map</title>
 
     <!-- EXTERNAL CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
@@ -16,6 +16,7 @@
     <!-- EXTERNAL SCRIPTS -->
     <script src="https://kit.fontawesome.com/293266615b.js" crossorigin="anonymous"></script>
     <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js" integrity="sha512-90vH1Z83AJY9DmlWa8WkjkV79yfS2n2Oxhsi2dZbIv0nC4E6m5AbH8Nh156kkM7JePmqD6tcZsfad1ueoaovww==" crossorigin="anonymous"></script>
 
     <!-- INTERNAL SCRIPTS -->
     <script type="text/javascript" src="/scripts/utilities.js"></script>
@@ -27,6 +28,12 @@
   <body>
     <%- include("partials/_header") %>
     <main>
+      <header class="search-wrapper">
+        <form id="search-maps">
+          <label for="search">Search for a map:</label>
+          <input name="search" type="text" autocomplete="off" placeholder="Enter a key word or name..." />
+        </form>
+      </header>
       <section id="all-maps" class="maps" >
       </section>
     </main>

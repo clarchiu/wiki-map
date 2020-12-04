@@ -53,6 +53,23 @@ const getMyFavoriteMaps = function() {
   .catch(() => Promise.resolve({}));
 };
 
+const searchBarListener = function($target, $form, url, isLoggedIn, myFavs) {
+  $form.on('input', _.debounce(function(event) {
+      event.preventDefault();
+      event.stopPropagation();
+      const sData = $(this).serialize().toLowerCase();
+      sendRequest('get', url, sData)
+        .then(maps => {
+          $target.empty();
+          renderMaps($target, maps, isLoggedIn, myFavs);
+        })
+        .catch(err => {
+          $form.find('.err').remove();
+          $form.append(createError(err.message));
+        });
+    }, 500));
+};
+
 const loadMapsData = function(url) {
   return $.ajax({
     method: 'get',
