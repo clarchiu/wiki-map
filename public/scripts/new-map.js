@@ -32,9 +32,23 @@ $(function() {
   const MAP_ID = 'mapid';
   const $lat = $("#coordinates .lat");
   const $long = $("#coordinates .long");
+  const $name = $("#new-map-form input[name='name']");
+  const $searchBox = $('#search-box');
 
   const mapView = createMapPreview(MAP_ID, DEFAULT);
+  const autocomplete = initAutocomplete(getMapBounds(mapView));
+  const geocoder = new google.maps.Geocoder();
+
+  //centerMapOnUserLocation(mapView);
   updateFormLatLng($lat, $long, getMapState(mapView));
+
+  autocomplete.addListener("place_changed", function() {
+    const place = autocomplete.getPlace();
+    const lat = place.geometry.location.lat();
+    const lng = place.geometry.location.lng();
+
+    updateMapCenter(mapView, lat, lng);
+  });
 
   mapView.on('movestart', function() {
     showErrMsg(false, 0);
@@ -44,10 +58,22 @@ $(function() {
     updateFormLatLng($lat, $long, getMapState(mapView));
   }, 100));
 
+  mapView.on('move', _.debounce(function() {
+    // reverse geocode here
+    const mapState = getMapState(mapView);
+    console.log(mapState.zoom);
+    reverseGeocode(geocoder, mapState, (address) => {
+      if (address) {
+        $searchBox.val(address);
+        return;
+      }
+      $searchBox.val('');
+    });
+  }, 500));
+
   // TODO: add client side input verification
   $('form').on('submit', function(event) {
     event.preventDefault();
-    const $name = $("#new-map-form input[name='name']");
 
     if (!$name.val()) {
       showErrMsg(true, 1, 'Name cannot be empty!');
