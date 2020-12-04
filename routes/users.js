@@ -83,7 +83,7 @@ module.exports = (db) => {
     getExistingUser(db, req.params.id)
       .then(data => {
         if (!data) return res.status(404).render('error.ejs', {user: req.session.name, email: req.session.email, status: 404, msg: 'not found'});
-        res.render('user.ejs', {user: req.session.name, email: req.session.email, ...data});
+        res.render('user.ejs', {user: req.session.name, email: req.session.email, other: data});
       })
       .catch(err => {
         res.status(500).render('error.ejs', {user: req.session.name, email: req.session.email, status: 500, err: err.message});

@@ -1,0 +1,22 @@
+header.profile {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 300px;
+  margin: auto;
+  span.name {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+  span.email {
+    font-size: 0.5rem;
+    font-weight: bold;
+  }
+  img {
+    width: 200px;
+    height: auto;
+    height: auto;
+  }
+
+}
