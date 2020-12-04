@@ -10,8 +10,10 @@
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
         <a class="nav-item nav-link" href="/maps">Maps</a>
-        <a class="nav-item nav-link" href="/maps/new">New Map</a>
-        <a class="nav-item nav-link" href="/users/me">My Profile</a>
+        <% if (locals["user"]) { %>
+          <a class="nav-item nav-link" href="/maps/new">New Map</a>
+          <a class="nav-item nav-link" href="/users/me"><%= user%>'s Profile (<%= locals["email"] ? email : "" %>)</a>
+        <% } %>
       </div>
     </div>
     </nav>

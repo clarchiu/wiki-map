@@ -30,7 +30,7 @@ const parsePinFormData = (req) => {
 module.exports = (db) => {
   // show index with all maps
   router.get("/", (req, res) => {
-    res.render("index");
+    res.render("index", {user: req.session.name, email: req.session.email,});
   });
 
   router.get("/json", (req, res) => {
@@ -41,7 +41,7 @@ module.exports = (db) => {
       .catch (err => {
         res
           .status(500)
-          .render("error", { status: 500, msg: err.msg });
+          .render("error", { user: req.session.name, email: req.session.email, status: 500, msg: err.msg });
       });
   });
 
@@ -50,18 +50,17 @@ module.exports = (db) => {
     if (!checkUserAuthenticated(req)) {
       return res
         .status(401)
-        .render("error", { status: 401, msg: "No access"});
+        .render("error", { user: req.session.name, email: req.session.email, status: 401, msg: "No access"});
     }
-    const templateVars = {};
-    res.render("maps_new", templateVars);
+    res.render("maps_new", {user: req.session.name, email: req.session.email,});
   });
 
   // show map with map_id
   router.get("/:map_id", (req, res) => {
     incrementViews(db, req.params.map_id)
       .then((data) => {
-        if (!data || !data.id) return res.status(404).render('error', { status: 404, msg: 'map not found' });
-        res.render("map_show");
+        if (!data || !data.id) return res.status(404).render('error', { user: req.session.name, email: req.session.email, status: 404, msg: 'map not found' });
+        res.render("map_show", {user: req.session.name, email: req.session.email,});
       });
   });
 
@@ -75,7 +74,7 @@ module.exports = (db) => {
       .catch(err => {
         res
           .status(500)
-          .render("error", { status: 400, msg: err.msg });
+          .render("error", { user: req.session.name, email: req.session.email, status: 400, msg: err.msg });
       });
   });
 
@@ -85,7 +84,7 @@ module.exports = (db) => {
     if (!checkUserAuthenticated(req)) {
       return res
         .status(401)
-        .render("error", { status: 401, msg: "No access"});
+        .render("error", { user: req.session.name, email: req.session.email, status: 401, msg: "No access"});
     }
     createNewMap(db, parseMapFormData(req))
       .then(map => {
@@ -94,7 +93,7 @@ module.exports = (db) => {
       .catch(err => {
         res
         .status(500)
-        .render("error", {status: 500, msg: err.msg });
+        .render("error", {user: req.session.name, email: req.session.email, status: 500, msg: err.msg });
       });
   });
 
@@ -105,7 +104,7 @@ module.exports = (db) => {
     if (!checkUserAuthenticated(req)) {
       return res
         .status(401)
-        .render("error", { status: 401, msg: "No access"});
+        .render("error", { user: req.session.name, email: req.session.email, status: 401, msg: "No access"});
     }
     createNewPin(db, req.session.user_id, parsePinFormData(req))
       .then(pin => {
@@ -128,7 +127,7 @@ module.exports = (db) => {
     if (!checkUserAuthenticated(req)) {
       return res
         .status(401)
-        .render("error", { status: 401, msg: "No access"});
+        .render("error", { user: req.session.name, email: req.session.email, status: 401, msg: "No access"});
     }
     editPin(db, req.session.user_id, req.params.pin_id, parsePinFormData(req)) // we don't know what leaflet will pass us yet
       .then(pin => {
@@ -151,7 +150,7 @@ module.exports = (db) => {
     if (!checkUserAuthenticated(req)) {
       return res
         .status(401)
-        .render("error", { status: 401, msg: "No access"});
+        .render("error", { user: req.session.name, email: req.session.email, status: 401, msg: "No access"});
     }
     deletePin(db, req.session.user_id, req.params.pin_id) // we don't know what leaflet will pass us yet
       .then(pin => {

@@ -69,7 +69,7 @@ module.exports = (db) => {
         res.redirect('/');
       })
       .catch(err => {
-        res.status(500).render('error.ejs', err);
+        res.status(500).render('error.ejs', {status: 500, err: err.message});
       })
   });
 
@@ -82,11 +82,11 @@ module.exports = (db) => {
   router.get("/:id", (req, res) => {
     getExistingUser(db, req.params.id)
       .then(data => {
-        if (!data) return res.status(404).render('error.ejs', {status: 404, msg: 'not found'});
-        res.render('user.ejs', {...data});
+        if (!data) return res.status(404).render('error.ejs', {user: req.session.name, email: req.session.email, status: 404, msg: 'not found'});
+        res.render('user.ejs', {user: req.session.name, email: req.session.email, ...data});
       })
       .catch(err => {
-        res.status(500).render('error.ejs', err);
+        res.status(500).render('error.ejs', {user: req.session.name, email: req.session.email, status: 500, err: err.message});
       });
   });
 
@@ -121,7 +121,7 @@ module.exports = (db) => {
       .catch(err => {
         res
           .status(500)
-          .render('error.ejs', { status: 500, msg: err.message });
+          .render('error.ejs', { user: req.session.name, email: req.session.email, status: 500, msg: err.message });
       });
   });
 
