@@ -29,6 +29,46 @@ body {
 
   .favorited * {
     color: red;
+    animation-duration: 1s;
+    animation-name: pop;
+
+    @keyframes pop {
+      from {
+        color: black;
+        font-size: 100%
+      }
+      25% {
+        transform: rotate(30deg);
+      }
+      50% {
+        font-size: 200%;
+      }
+      75% {
+        transform: rotate(-30deg);
+      }
+      to {
+        color: red;
+        font-size: 100%;
+      }
+    }
+  }
+  .unfavorited * {
+    color: black;
+    animation-duration: 1s;
+    animation-name: whack;
+
+    @keyframes whack {
+      from {
+        color: red;
+      }
+      10% {
+        transform: rotate(60deg);
+      }
+      to {
+        transform: rotate(0deg);
+        color: black;
+      }
+    }
   }
 
 }
