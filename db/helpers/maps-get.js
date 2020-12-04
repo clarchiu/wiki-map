@@ -2,7 +2,7 @@
  * Get all map data from db and return as Promise
  * @param {*} db
  */
-const getAllMaps = (db, uid) => {
+const getAllMaps = (db, uid, map_name = "") => {
   return db.query(`
     SELECT users.name as creator_name, users.id as creator_id, maps.*, favorited
     FROM maps
@@ -12,8 +12,9 @@ const getAllMaps = (db, uid) => {
       FROM favorites
       WHERE favorites.user_id = $1
     ) as user_favorites ON maps.id = user_favorites.map_id
+    WHERE LOWER(maps.name) LIKE $2
     ORDER BY maps.views DESC
-  `, [uid])
+  `, [uid, `%${map_name}%`])
     .then((res) => {
       return res.rows;
     })

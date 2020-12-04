@@ -34,7 +34,7 @@ module.exports = (db) => {
   });
 
   router.get("/json", (req, res) => {
-    getAllMaps(db, req.session.user_id)
+    getAllMaps(db, req.session.user_id, req.query.search)
       .then (maps => {
         res.json(maps);
       })

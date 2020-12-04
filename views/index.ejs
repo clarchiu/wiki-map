@@ -28,9 +28,9 @@
     <%- include("partials/_header") %>
     <main>
       <header class="search-wrapper">
-        <form action="/maps/json">
+        <form id="search-maps">
           <label for="search">Search for a map:</label>
-          <input name="search" type="text" placeholder="Enter a key word or name..." />
+          <input name="search" type="text" autocomplete="off" placeholder="Enter a key word or name..." />
         </form>
       </header>
       <section id="all-maps" class="maps" >
