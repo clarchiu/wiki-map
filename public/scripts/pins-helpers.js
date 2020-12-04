@@ -38,7 +38,7 @@ const formatPin = function(user_id, pin, form = false) {
       <header class="label">${escape(pin.title)}</header>
       <div class="body">${escape(pin.description)}</div>
       <div class="preview-img">
-        <img src="${escape(pin.img_url)}" placeholder="img-not-found"/>
+        <img src="${escape(pin.img_url)}" alt="img-at-${escape(pin.img_url)}-not-found"/>
       </div>
       ${ user_id === pin.user_id ? `
       <form name=${pin.id}>
