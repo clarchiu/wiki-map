@@ -11,6 +11,7 @@
 @import 'maps-new-wide';
 @import 'map-show';
 @import 'user';
+@import 'index';
 
 html {
   height: 90%;
@@ -27,7 +28,6 @@ body {
   background-color: $back-clr;
 
   > main {
-    max-width: 1000px;
     margin-left: auto;
     margin-right: auto;
 
