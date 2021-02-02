@@ -14,6 +14,7 @@ Generated from [lighthouse-labs/node-skeleton](https://github.com/lighthouse-lab
 - PostgresSQL
 - Node.js
 - Express
+- EJS
 - jQuery
 - SASS
 
